@@ -51,7 +51,7 @@ mypy:
 	@echo "- Testing mypy -"
 	@echo "----------------"
 
-	mypy src tests
+	mypy src
 
 	@echo ""
 
@@ -64,7 +64,7 @@ test-code:
 	@echo "- Testing code -"
 	@echo "----------------"
 
-	pytest --cov-report term-missing --cov src tests ${ARGS}
+	pytest --cov-report term-missing --cov src tests/* ${ARGS}
 
 	@echo ""
 

@@ -39,6 +39,7 @@ exclude = '''
 minversion = "6.0"
 addopts = "-vv --tb=short"
 python_paths = "."
+testpaths = "tests"
 norecursedirs = [
     ".tox",
     ".git",

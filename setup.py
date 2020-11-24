@@ -41,8 +41,9 @@ setup(
         "Topic :: Utilities",
         "Natural Language :: English",
     ],
-    install_requires=[
-        "click",
-        "ruamel.yaml",
-    ],
+    entry_points="""
+        [console_scripts]
+        yamlfix=yamlfix.entrypoints.cli:cli
+    """,
+    install_requires=["click", "ruyaml"],
 )

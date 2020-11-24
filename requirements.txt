@@ -5,5 +5,8 @@
 #    pip-compile --allow-unsafe
 #
 click==7.1.2              # via yamlfix (setup.py)
-ruamel.yaml.clib==0.2.2   # via ruamel.yaml
-ruamel.yaml==0.16.12      # via yamlfix (setup.py)
+distro==1.5.0             # via ruyaml
+ruyaml==0.19.2            # via yamlfix (setup.py)
+
+# The following packages are considered to be unsafe in a requirements file:
+setuptools==50.3.2        # via ruyaml

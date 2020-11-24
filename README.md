@@ -4,7 +4,7 @@
 [![Actions Status](https://github.com/lyz-code/yamlfix/workflows/Build/badge.svg)](https://github.com/lyz-code/yamlfix/actions)
 [![Coverage Status](https://coveralls.io/repos/github/lyz-code/yamlfix/badge.svg?branch=master)](https://coveralls.io/github/lyz-code/yamlfix?branch=master)
 
-A simple opionated yaml formatter that keeps your comments!
+A simple opinionated yaml formatter that keeps your comments!
 
 ## Help
 
