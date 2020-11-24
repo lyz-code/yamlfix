@@ -1,0 +1,22 @@
+{
+  "default": true,
+  "MD003": {
+    "style": "atx"
+  },
+  "MD013": {
+    "line_length": 180
+  },
+  "MD004": {
+    "style": "asterisk"
+  },
+  "MD007": {
+    "indent": 4
+  },
+  "MD025": false,
+  "MD030": false,
+  "MD035": {
+    "style": "---"
+  },
+  "MD041": false,
+  "MD046": false
+}

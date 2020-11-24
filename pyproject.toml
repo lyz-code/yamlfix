@@ -1,0 +1,133 @@
+# --------- Commitizen -------------
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.0.1"
+tag_format = "$version"
+version_files = [
+    "src/yamlfix/version.py",
+]
+
+# --------- Black -------------
+
+[tool.black]
+line-length = 88
+target-version = ['py36', 'py37', 'py38']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  # The following are specific to Black, you probably don't want those.
+  | blib2to3
+  | tests/data
+  | profiling
+)/
+'''
+
+# --------- Pytest -------------
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-vv --tb=short"
+python_paths = "."
+norecursedirs = [
+    ".tox",
+    ".git",
+    "*/migrations/*",
+    "*/static/*",
+    "docs",
+    "venv",
+    "*/yamlfix/*"
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "secondary: mark tests that use functionality tested in the same file (deselect with '-m \"not secondary\"')"
+]
+
+# --------- Isort -------------
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "test"]
+
+# --------- Flakehell -------------
+
+[tool.flakehell]
+format = "grouped"
+max_line_length = 88
+show_source = true
+docstring-convention = "google"
+
+[tool.flakehell.plugins]
+flake8-aaa = ["+*"]
+flake8-annotations = [
+  "+*",
+  "-ANN101", # There is usually no need to type the self argument of class methods.
+]
+flake8-annotations-complexity = ["+*"]
+flake8-bugbear = ["+*"]
+flake8-comprehensions = ["+*"]
+flake8-debugger = ["+*"]
+flake8-docstrings = ["+*"]
+flake8-eradicate = ["+*"]
+flake8-expression-complexity = ["+*"]
+flake8-fixme = ["+*"]
+flake8-markdown = ["+*"]
+flake8-mutable = ["+*"]
+flake8-pytest = ["+*"]
+flake8-pytest-style = ["+*"]
+flake8-simplify = ["+*"]
+flake8-use-fstring = [
+  "+*",
+  '-FS003' # f-string missing prefix
+]
+flake8-typing-imports = ["+*"]
+flake8-variables-names = ["+*"]
+dlint = ["+*"]
+pylint = [
+  "+*",
+  "-C0411", # %s should be placed before %s,
+           # see https://github.com/PyCQA/pylint/issues/2175 and https://github.com/PyCQA/pylint/issues/1797
+]
+mccabe = ["+*"]
+pep8-naming = ["+*"]
+pycodestyle = [
+  "+*",
+  "-W503", # No longer applies, incompatible with newer version of PEP8
+           # see https://github.com/PyCQA/pycodestyle/issues/197
+           # and https://github.com/psf/black/issues/113
+  ]
+pyflakes = ["+*"]
+
+[tool.flakehell.exceptions."tests/"]
+flake8-docstrings = [
+  "-D103", # Missing docstring in public function
+  "-D400", # First line should end with a period
+  "-D205"  # 1 blank line required between summary line and description
+]
+flake8-annotations = [
+  "-ANN001"
+]
+pylint = [
+  "-R0201", # Method could be a function. Raised because the methods of a test class
+            # don't use the self object, which is not wrong.
+]
+
+# --------- Pylint -------------
+[tool.pylint.'TYPECHECK']
+generated-members = "sh"
+
+# --------- Build-system -------------
+
+[build-system]
+requires = ["setuptools >= 40.6.0", "wheel"]
+build-backend = "setuptools.build_meta"

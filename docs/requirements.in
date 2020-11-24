@@ -1,0 +1,8 @@
+mkdocs
+mkdocs-git-revision-date-localized-plugin
+mkdocs-htmlproofer-plugin
+mkdocs-minify-plugin
+mkdocs-autolinks-plugin
+mkdocs-material
+mkdocstrings
+markdown-include

@@ -1,0 +1,47 @@
+-r requirements.txt
+-r docs/requirements.in
+
+# Testing
+pytest
+pytest-cov
+pytest-pythonpath
+
+# Linting
+yamllint
+flakehell
+flake8-aaa
+flake8-annotations
+flake8-annotations-complexity
+flake8-typing-imports
+flake8-bugbear
+flake8-debugger
+flake8-fixme
+flake8-markdown
+flake8-mutable
+flake8-pytest
+flake8-pytest-style
+flake8-simplify
+flake8-variables-names
+flake8-comprehensions
+pep8-naming
+flake8-expression-complexity
+flake8-use-fstring
+flake8-eradicate
+flake8-docstrings
+flake8-markdown
+pylint
+pre-commit
+dlint
+
+# Security
+pip-tools
+safety
+bandit
+
+# Type checkers
+mypy
+
+# Formatters
+autoimport
+black
+isort
