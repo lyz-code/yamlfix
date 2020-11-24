@@ -88,7 +88,7 @@ You'll need to have python 3.6, 3.7, or 3.8, virtualenv, git, and make installed
     should be all you need.
 
     If you need to pass specific arguments to pytest use the `ARGS` variable,
-    for example `make test ARGs='-k test_markdownlint_passes'`.
+    for example `make test ARGS='-k test_markdownlint_passes'`.
 
 * Build documentation: If you have changed the documentation, make sure it
     builds the static site. Once built it will serve the documentation at

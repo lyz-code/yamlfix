@@ -2,7 +2,7 @@
 [![Actions Status](https://github.com/lyz-code/yamlfix/workflows/Build/badge.svg)](https://github.com/lyz-code/yamlfix/actions)
 [![Coverage Status](https://coveralls.io/repos/github/lyz-code/yamlfix/badge.svg?branch=master)](https://coveralls.io/github/lyz-code/yamlfix?branch=master)
 
-A simple opionated yaml formatter that keeps your comments!
+A simple opinionated yaml formatter that keeps your comments!
 
 # Installing
 
@@ -10,11 +10,49 @@ A simple opionated yaml formatter that keeps your comments!
 pip install yamlfix
 ```
 
-# A Simple Example
+# Usage
 
-```python
-{! examples/simple-example.py !} # noqa
+Imagine we've got the following source code:
+
+```yaml
+book_library:
+- title: Why we sleep
+  author: Matthew Walker
+- title: Harry Potter and the Methods of Rationality
+  author: Eliezer Yudkowsky
 ```
+
+It has the following errors:
+
+* There is no `---` at the top.
+* The indentation is all wrong.
+
+After running `yamlfix` the resulting source code will be:
+
+```yaml
+---
+book_library:
+  - title: Why we sleep
+    author: Matthew Walker
+  - title: Harry Potter and the Methods of Rationality
+    author: Eliezer Yudkowsky
+```
+
+`yamlfix` can be used both as command line tool and as a library.
+
+* As a command line tool:
+
+    ```bash
+    $: yamlfix file.yaml
+    ```
+
+* As a library:
+
+    ```python
+    from yamlfix import fix_files
+
+    fix_files(['file.py'])
+    ```
 
 # Contributing
 

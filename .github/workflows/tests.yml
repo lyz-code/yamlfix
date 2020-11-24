@@ -45,7 +45,7 @@ jobs:
         run: make build-docs
   Coveralls:
     name: Finish Coveralls
-    needs: Pytest
+    needs: Tests
     runs-on: ubuntu-latest
     container: python:3-slim
     steps:
