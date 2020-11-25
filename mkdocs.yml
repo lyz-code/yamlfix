@@ -4,6 +4,7 @@ site_author: Lyz
 site_url: https://lyz-code.github.io/yamlfix
 nav:
   - Overview: index.md
+  - Editor Integration: editor_integration.md
   - Reference: reference.md
   - Contributing: contributing.md
 
@@ -41,7 +42,7 @@ markdown_extensions:
   - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+      emoji_generator: '!!python/name:pymdownx.emoji.to_svg'
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.mark
@@ -54,17 +55,17 @@ markdown_extensions:
 
 theme:
   name: material
-  custom_dir: 'docs/theme'
+  custom_dir: docs/theme
   # logo: 'images/logo.bmp'
   features:
     - navigation.instant
   palette:
-    primary: 'blue grey'
-    accent: 'light blue'
+    primary: blue grey
+    accent: light blue
 
 extra_css:
-  - 'stylesheets/extra.css'
-  - 'stylesheets/links.css'
+  - stylesheets/extra.css
+  - stylesheets/links.css
 
 repo_name: lyz-code/yamlfix
 repo_url: https://github.com/lyz-code/yamlfix
