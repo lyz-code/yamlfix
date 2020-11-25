@@ -33,7 +33,7 @@ def test_fix_code_doesnt_double_the_header() -> None:
 
 
 def test_fix_code_corrects_indentation_on_lists() -> None:
-    """Use two spaces for indentation."""
+    """Use two spaces for indentation of lists."""
     source = dedent(
         """\
         ---
@@ -52,6 +52,20 @@ def test_fix_code_corrects_indentation_on_lists() -> None:
     result = fix_code(source)
 
     assert result == fixed_source
+
+
+def test_fix_code_respects_parent_lists() -> None:
+    """Do not indent lists at the first level."""
+    source = dedent(
+        """\
+        ---
+        - item1
+        - item2"""
+    )
+
+    result = fix_code(source)
+
+    assert result == source
 
 
 def test_fix_code_preserves_comments() -> None:

@@ -5,8 +5,9 @@ and handlers to achieve the program's purpose.
 """
 
 
+import re
 from io import StringIO
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
 
 from _io import TextIOWrapper
 from ruamel.yaml import YAML  # type: ignore
@@ -63,7 +64,7 @@ def fix_code(source_code: str) -> str:
     Returns:
         Corrected source code.
     """
-    fixers = [_ruamel_yaml_fixer, _add_heading]
+    fixers = [_ruamel_yaml_fixer, _fix_top_level_lists]
     for fixer in fixers:
         source_code = fixer(source_code)
 
@@ -83,7 +84,7 @@ def _ruamel_yaml_fixer(source_code: str) -> str:
     yaml = YAML()
     yaml.indent(mapping=2, sequence=4, offset=2)
     yaml.allow_duplicate_keys = True
-    yaml.explicit_start = False
+    yaml.explicit_start = True  # Start the document with ---
     source_dict = yaml.load(source_code)
 
     # Return the output to a string
@@ -92,11 +93,29 @@ def _ruamel_yaml_fixer(source_code: str) -> str:
     source_code = string_stream.getvalue()
     string_stream.close()
 
-    return source_code
+    return source_code.strip()
 
 
-def _add_heading(source_code: str) -> str:
-    """Add --- at the beginning of the file.
+def _fix_top_level_lists(source_code: str) -> str:
+    """Deindent the source with a top level list.
+
+    Documents like the following:
+
+    ```yaml
+    ---
+    - item 1
+    - item 2
+    ```
+
+    Are wrongly indented by the ruyaml parser:
+
+    ```yaml
+    ---
+      - item 1
+      - item 2
+    ```
+
+    This function restores the indentation back to the original.
 
     Args:
         source_code: Source code to be corrected.
@@ -105,8 +124,31 @@ def _add_heading(source_code: str) -> str:
         Corrected source code.
     """
     source_lines = source_code.splitlines()
+    fixed_source_lines: List[str] = []
+    is_top_level_list: Optional[bool] = None
 
-    if source_lines[0] != "---":
-        source_lines = ["---"] + source_lines
+    for line in source_lines:
 
-    return "\n".join(source_lines)
+        # Skip the heading and first empty lines
+        if line in ["---", ""]:
+            fixed_source_lines.append(line)
+            continue
+
+        # Check if the first valid line is an indented list item
+        if re.match(r"\s*- +.*", line) and is_top_level_list is None:
+            is_top_level_list = True
+
+            # Extract the indentation level
+            serialized_line = re.match(r"(?P<indent>\s*)- +(?P<content>.*)", line)
+            if serialized_line is None:
+                raise ValueError(f"Error extracting the indentation of line: {line}")
+            indent = serialized_line.groupdict()["indent"]
+
+            # Remove the indentation from the line
+            fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
+        elif is_top_level_list:
+            fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
+        else:
+            return source_code
+
+    return "\n".join(fixed_source_lines)
