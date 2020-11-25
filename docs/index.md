@@ -54,6 +54,23 @@ book_library:
     fix_files(['file.py'])
     ```
 
+# References
+
+As most open sourced programs, `yamlfix` is standing on the shoulders of
+giants, namely:
+
+[yamlfmt](https://github.com/mmlb/yamlfmt)
+: Inspiration and alternative of this program. I created a new one because the
+    pace of their pull requests is really slow, they don't have tests, CI pipelines
+    or documentation.
+
+[ruyaml](https://github.com/pycontribs/ruyaml)
+: A git based community maintained for of
+[ruamel](https://yaml.readthedocs.io/en/latest/) yaml parser.
+
+[Click](https://click.palletsprojects.com/)
+: Used to create the command line interface.
+
 # Contributing
 
 For guidance on setting up a development environment, and how to make
