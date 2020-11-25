@@ -12,7 +12,7 @@
 <span class=sd>    Returns:</span>
 <span class=sd>        Corrected source code.</span>
 <span class=sd>    """</span>
-    <span class=n>fixers</span> <span class=o>=</span> <span class=p>[</span><span class=n>_ruamel_yaml_fixer</span><span class=p>,</span> <span class=n>_add_heading</span><span class=p>]</span>
+    <span class=n>fixers</span> <span class=o>=</span> <span class=p>[</span><span class=n>_ruamel_yaml_fixer</span><span class=p>,</span> <span class=n>_fix_top_level_lists</span><span class=p>]</span>
     <span class=k>for</span> <span class=n>fixer</span> <span class=ow>in</span> <span class=n>fixers</span><span class=p>:</span>
         <span class=n>source_code</span> <span class=o>=</span> <span class=n>fixer</span><span class=p>(</span><span class=n>source_code</span><span class=p>)</span>
 
