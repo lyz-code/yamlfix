@@ -54,6 +54,16 @@ book_library:
     fix_files(['file.py'])
     ```
 
+# Features
+
+yamlfix will do the following changes in your code:
+
+* Add the header `---` to your file.
+* [Correct truthy
+    strings](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.truthy):
+    'True' -> true, 'no' -> 'false'
+* Remove unnecessary apostrophes: `title: 'Why we sleep'` -> `title: Why we sleep`.
+
 # References
 
 As most open sourced programs, `yamlfix` is standing on the shoulders of
