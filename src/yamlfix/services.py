@@ -57,6 +57,9 @@ def fix_code(source_code: str) -> str:
     It corrects these errors:
 
         * Add --- at the beginning of the file.
+        * Correct truthy strings: 'True' -> true, 'no' -> 'false'
+        * Remove unnecessary apostrophes: `title: 'Why we sleep'` ->
+            `title: Why we sleep`.
 
     Args:
         source_code: Source code to be corrected.
@@ -64,7 +67,12 @@ def fix_code(source_code: str) -> str:
     Returns:
         Corrected source code.
     """
-    fixers = [_ruamel_yaml_fixer, _fix_top_level_lists]
+    fixers = [
+        _fix_truthy_strings,
+        _ruamel_yaml_fixer,
+        _restore_truthy_strings,
+        _fix_top_level_lists,
+    ]
     for fixer in fixers:
         source_code = fixer(source_code)
 
@@ -140,7 +148,7 @@ def _fix_top_level_lists(source_code: str) -> str:
 
             # Extract the indentation level
             serialized_line = re.match(r"(?P<indent>\s*)- +(?P<content>.*)", line)
-            if serialized_line is None:
+            if serialized_line is None:  # pragma: no cover
                 raise ValueError(f"Error extracting the indentation of line: {line}")
             indent = serialized_line.groupdict()["indent"]
 
@@ -150,5 +158,83 @@ def _fix_top_level_lists(source_code: str) -> str:
             fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
         else:
             return source_code
+
+    return "\n".join(fixed_source_lines)
+
+
+def _fix_truthy_strings(source_code: str) -> str:
+    """Convert common strings that refer to booleans.
+
+    All caps variations of true, yes and on are transformed to true, while false, no and
+    off are transformed to false.
+
+    Ruyaml understands these strings and converts them to the lower version of the word
+    instead of converting them to true and false.
+
+    [More
+    info](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.truthy)
+
+    Args:
+        source_code: Source code to be corrected.
+
+    Returns:
+        Corrected source code.
+    """
+    source_lines = source_code.splitlines()
+    fixed_source_lines: List[str] = []
+
+    for line in source_lines:
+        line_contains_true = re.match(
+            r"(?P<pre_boolean_text>.*(:|-) )(true|yes|on)$", line, re.IGNORECASE
+        )
+        line_contains_false = re.match(
+            r"(?P<pre_boolean_text>.*(:|-) )(false|no|off)$", line, re.IGNORECASE
+        )
+
+        if line_contains_true:
+            fixed_source_lines.append(
+                f"{line_contains_true.groupdict()['pre_boolean_text']}true"
+            )
+        elif line_contains_false:
+            fixed_source_lines.append(
+                f"{line_contains_false.groupdict()['pre_boolean_text']}false"
+            )
+        else:
+            fixed_source_lines.append(line)
+
+    return "\n".join(fixed_source_lines)
+
+
+def _restore_truthy_strings(source_code: str) -> str:
+    """Restore truthy strings to strings.
+
+    The Ruyaml parser removes the apostrophes of all the caps variations of the strings
+    'yes', 'on', no and 'off' as it interprets them as booleans.
+
+    As this function is run after _fix_truthy_strings, those strings are meant to be
+    strings. So we're turning them back from booleans to strings.
+
+    Args:
+        source_code: Source code to be corrected.
+
+    Returns:
+        Corrected source code.
+    """
+    source_lines = source_code.splitlines()
+    fixed_source_lines: List[str] = []
+
+    for line in source_lines:
+        line_contains_valid_truthy_string = re.match(
+            r"(?P<pre_boolean_text>.*(:|-) )(?P<boolean_text>yes|on|no|off)$",
+            line,
+            re.IGNORECASE,
+        )
+        if line_contains_valid_truthy_string:
+            fixed_source_lines.append(
+                f"{line_contains_valid_truthy_string.groupdict()['pre_boolean_text']}"
+                f"'{line_contains_valid_truthy_string.groupdict()['boolean_text']}'"
+            )
+        else:
+            fixed_source_lines.append(line)
 
     return "\n".join(fixed_source_lines)
