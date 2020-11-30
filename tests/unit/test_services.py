@@ -108,6 +108,21 @@ def test_fix_code_preserves_comments() -> None:
     assert result == source
 
 
+def test_fix_code_respects_parent_lists_with_comments() -> None:
+    """Do not indent lists at the first level even if there is a comment."""
+    source = dedent(
+        """\
+        ---
+        # Comment
+        - item1
+        - item2"""
+    )
+
+    result = fix_code(source)
+
+    assert result == source
+
+
 def test_fix_code_removes_extra_apostrophes() -> None:
     """Remove not needed apostrophes."""
     source = dedent(
