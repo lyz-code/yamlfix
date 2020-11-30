@@ -111,6 +111,7 @@ def _fix_top_level_lists(source_code: str) -> str:
 
     ```yaml
     ---
+    # Comment
     - item 1
     - item 2
     ```
@@ -119,6 +120,7 @@ def _fix_top_level_lists(source_code: str) -> str:
 
     ```yaml
     ---
+    # Comment
       - item 1
       - item 2
     ```
@@ -138,7 +140,7 @@ def _fix_top_level_lists(source_code: str) -> str:
     for line in source_lines:
 
         # Skip the heading and first empty lines
-        if line in ["---", ""]:
+        if re.match(r"^(---|#.*|)$", line):
             fixed_source_lines.append(line)
             continue
 
