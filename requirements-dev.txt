@@ -13,7 +13,7 @@ attrs==20.3.0             # via flake8-bugbear, flake8-eradicate, pytest
 autoflake==1.4            # via autoimport
 autoimport==0.2.0         # via -r requirements-dev.in
 babel==2.9.0              # via mkdocs-git-revision-date-localized-plugin
-bandit==1.6.2             # via -r requirements-dev.in
+bandit==1.6.3             # via -r requirements-dev.in
 beautifulsoup4==4.9.3     # via mkdocs-htmlproofer-plugin, mkdocstrings
 black==20.8b1             # via -r requirements-dev.in
 certifi==2020.11.8        # via requests
