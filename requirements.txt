@@ -23,7 +23,7 @@ markdown-include==0.6.0   # via -r docs/requirements.in
 markdown==3.3.3           # via markdown-include, mkdocs, mkdocs-material, pymdown-extensions
 markupsafe==1.1.1         # via jinja2
 mkdocs-autolinks-plugin==0.2.0  # via -r docs/requirements.in
-mkdocs-git-revision-date-localized-plugin==0.7.3  # via -r docs/requirements.in
+mkdocs-git-revision-date-localized-plugin==0.8  # via -r docs/requirements.in
 mkdocs-htmlproofer-plugin==0.0.3  # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.1  # via mkdocs-material
 mkdocs-material==6.1.7    # via -r docs/requirements.in, mkdocs-material-extensions
