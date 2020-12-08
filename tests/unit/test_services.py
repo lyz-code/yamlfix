@@ -212,3 +212,87 @@ def test_fix_code_respects_apostrophes_for_truthy_substitutions(
     result = fix_code(source)
 
     assert result == source
+
+
+def test_fix_code_adds_space_in_comment() -> None:
+    """Correct comments that don't have a space between
+    the # and the first character.
+    """
+    source = dedent(
+        """\
+        ---
+        #This is a comment
+        project: yamlfix"""
+    )
+    fixed_source = dedent(
+        """\
+        ---
+        # This is a comment
+        project: yamlfix"""
+    )
+
+    result = fix_code(source)
+
+    assert result == fixed_source
+
+
+def test_fix_code_not_add_extra_space_in_comment() -> None:
+    """Respects comments that already have a space between
+    the # and the first character.
+    """
+    source = dedent(
+        """\
+        ---
+        # This is a comment
+        project: yamlfix"""
+    )
+    fixed_source = dedent(
+        """\
+        ---
+        # This is a comment
+        project: yamlfix"""
+    )
+
+    result = fix_code(source)
+
+    assert result == fixed_source
+
+
+def test_fix_code_add_space_inline_comment() -> None:
+    """Fix inline comments that don't have a space between
+    the # and the first character.
+    """
+    source = dedent(
+        """\
+        ---
+        project: yamlfix  #This is a comment"""
+    )
+    fixed_source = dedent(
+        """\
+        ---
+        project: yamlfix  # This is a comment"""
+    )
+
+    result = fix_code(source)
+
+    assert result == fixed_source
+
+
+def test_fix_code_add_extra_space_inline_comment() -> None:
+    """Fix inline comments that don't have two spaces before
+    the #.
+    """
+    source = dedent(
+        """\
+        ---
+        project: yamlfix # This is a comment"""
+    )
+    fixed_source = dedent(
+        """\
+        ---
+        project: yamlfix  # This is a comment"""
+    )
+
+    result = fix_code(source)
+
+    assert result == fixed_source

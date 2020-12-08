@@ -69,6 +69,7 @@ def fix_code(source_code: str) -> str:
     """
     fixers = [
         _fix_truthy_strings,
+        _fix_comments,
         _ruamel_yaml_fixer,
         _restore_truthy_strings,
         _fix_top_level_lists,
@@ -238,5 +239,18 @@ def _restore_truthy_strings(source_code: str) -> str:
             )
         else:
             fixed_source_lines.append(line)
+
+    return "\n".join(fixed_source_lines)
+
+
+def _fix_comments(source_code: str) -> str:
+    fixed_source_lines = []
+
+    for line in source_code.splitlines():
+        if re.search(r"#\w", line):
+            line = line.replace("#", "# ")
+        if re.match(r".+\S\s#", line):
+            line = line.replace(" #", "  #")
+        fixed_source_lines.append(line)
 
     return "\n".join(fixed_source_lines)
