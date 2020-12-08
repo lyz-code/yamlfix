@@ -63,6 +63,7 @@ yamlfix will do the following changes in your code:
     strings](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.truthy):
     'True' -> true, 'no' -> 'false'
 * Remove unnecessary apostrophes: `title: 'Why we sleep'` -> `title: Why we sleep`.
+* [Correct comments](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments)
 
 # References
 
