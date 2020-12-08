@@ -14,7 +14,6 @@ gitdb==4.0.5              # via gitpython
 gitpython==3.1.11         # via mkdocs-git-revision-date-localized-plugin
 htmlmin==0.1.12           # via mkdocs-minify-plugin
 idna==2.10                # via requests
-importlib-metadata==3.1.0  # via markdown
 jinja2==2.11.2            # via mkdocs
 joblib==0.17.0            # via nltk
 jsmin==2.2.2              # via mkdocs-minify-plugin
@@ -27,7 +26,7 @@ mkdocs-autolinks-plugin==0.2.0  # via -r docs/requirements.in
 mkdocs-git-revision-date-localized-plugin==0.7.3  # via -r docs/requirements.in
 mkdocs-htmlproofer-plugin==0.0.3  # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.1  # via mkdocs-material
-mkdocs-material==6.1.6    # via -r docs/requirements.in, mkdocs-material-extensions
+mkdocs-material==6.1.7    # via -r docs/requirements.in, mkdocs-material-extensions
 mkdocs-minify-plugin==0.3.0  # via -r docs/requirements.in
 mkdocs==1.1.2             # via -r docs/requirements.in, mkdocs-autolinks-plugin, mkdocs-git-revision-date-localized-plugin, mkdocs-htmlproofer-plugin, mkdocs-material, mkdocs-minify-plugin, mkdocstrings
 mkdocstrings==0.13.6      # via -r docs/requirements.in
@@ -45,4 +44,3 @@ soupsieve==2.0.1          # via beautifulsoup4
 tornado==6.1              # via livereload, mkdocs
 tqdm==4.53.0              # via nltk
 urllib3==1.26.2           # via requests
-zipp==3.4.0               # via importlib-metadata
