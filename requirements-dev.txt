@@ -98,7 +98,7 @@ pymdown-extensions==8.0.1  # via mkdocs-material, mkdocstrings
 pyparsing==2.4.7          # via packaging
 pytest-cov==2.10.1        # via -r requirements-dev.in
 pytest-pythonpath==0.7.3  # via -r requirements-dev.in
-pytest==6.1.2             # via -r requirements-dev.in, pytest-cov, pytest-pythonpath
+pytest==6.2.0             # via -r requirements-dev.in, pytest-cov, pytest-pythonpath
 pytkdocs==0.9.0           # via mkdocstrings
 pytz==2020.4              # via babel
 pyyaml==5.3.1             # via bandit, dparse, mkdocs, pre-commit, yamllint
@@ -123,4 +123,4 @@ yamllint==1.25.0          # via -r requirements-dev.in
 
 # The following packages are considered to be unsafe in a requirements file:
 pip==20.2.4               # via pip-tools
-setuptools==50.3.2        # via -r requirements.txt, flake8-annotations-complexity, flake8-expression-complexity, flake8-variables-names, ruyaml, safety, yamllint
+setuptools==51.0.0        # via -r requirements.txt, flake8-annotations-complexity, flake8-expression-complexity, flake8-variables-names, ruyaml, safety, yamllint
