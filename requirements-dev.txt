@@ -87,7 +87,7 @@ pbr==5.5.1                # via stevedore
 pep8-naming==0.11.1       # via -r requirements-dev.in
 pip-tools==5.4.0          # via -r requirements-dev.in
 pluggy==0.13.1            # via pytest
-pre-commit==2.9.2         # via -r requirements-dev.in
+pre-commit==2.9.3         # via -r requirements-dev.in
 py==1.9.0                 # via pytest
 pycodestyle==2.6.0        # via flake8, flake8-debugger
 pydocstyle==5.1.1         # via flake8-docstrings
@@ -123,4 +123,4 @@ yamllint==1.25.0          # via -r requirements-dev.in
 
 # The following packages are considered to be unsafe in a requirements file:
 pip==20.2.4               # via pip-tools
-setuptools==50.3.2        # via -r requirements.txt, flake8-annotations-complexity, flake8-expression-complexity, flake8-variables-names, ruyaml, safety, yamllint
+setuptools==51.0.0        # via -r requirements.txt, flake8-annotations-complexity, flake8-expression-complexity, flake8-variables-names, ruyaml, safety, yamllint
