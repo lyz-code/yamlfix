@@ -25,6 +25,7 @@ setup(
     url="https://github.com/lyz-code/yamlfix",
     packages=find_packages("src"),
     package_dir={"": "src"},
+    package_data={"yamlfix": ["py.typed"]},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     python_requires=">=3.6",
     classifiers=[
