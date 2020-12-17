@@ -5,4 +5,8 @@ Functions:
     fix_files: Fix the yaml source code of a list of files.
 """
 
-from .services import fix_code, fix_files  # noqa W0611
+from typing import List
+
+from yamlfix.services import fix_code, fix_files
+
+__all__: List[str] = ["fix_code", "fix_files"]

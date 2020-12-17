@@ -4,7 +4,6 @@ Classes and functions that connect the different domain model objects with the a
 and handlers to achieve the program's purpose.
 """
 
-
 import re
 from io import StringIO
 from typing import List, Optional, Tuple

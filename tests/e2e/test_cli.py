@@ -1,6 +1,5 @@
 """Test the command line interface."""
 
-
 import re
 from textwrap import dedent
 
