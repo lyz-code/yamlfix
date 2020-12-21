@@ -57,7 +57,6 @@ gitpython==3.1.11         # via bandit, mkdocs-git-revision-date-localized-plugi
 htmlmin==0.1.12           # via mkdocs-minify-plugin
 identify==1.5.10          # via pre-commit
 idna==2.10                # via requests
-importlib-metadata==3.3.0  # via flake8, flake8-comprehensions, flake8-simplify, flake8-typing-imports, markdown, pluggy, pre-commit, pytest, stevedore, virtualenv
 iniconfig==1.1.1          # via pytest
 isort==5.6.4              # via -r requirements-dev.in, pylint
 jinja2==2.11.2            # via mkdocs
@@ -106,7 +105,7 @@ pyyaml==5.3.1             # via bandit, dparse, mkdocs, pre-commit, yamllint
 regex==2020.11.13         # via black, nltk
 requests==2.25.0          # via mkdocs-htmlproofer-plugin, safety
 ruyaml==0.19.2            # via -r requirements.txt
-safety==1.9.0             # via -r requirements-dev.in
+safety==1.10.0            # via -r requirements-dev.in
 six==1.15.0               # via astroid, asttokens, bandit, flake8-debugger, livereload, lunr, pip-tools, virtualenv
 smmap==3.0.4              # via gitdb
 snowballstemmer==2.0.0    # via pydocstyle
@@ -115,13 +114,12 @@ stevedore==3.3.0          # via bandit
 toml==0.10.2              # via black, dparse, flakehell, pre-commit, pylint, pytest
 tornado==6.1              # via livereload, mkdocs
 tqdm==4.54.1              # via nltk
-typed-ast==1.4.1          # via astroid, black, flake8-annotations, mypy
-typing-extensions==3.7.4.3  # via black, importlib-metadata, mypy
+typed-ast==1.4.1          # via black, mypy
+typing-extensions==3.7.4.3  # via black, mypy
 urllib3==1.26.2           # via flakehell, requests
 virtualenv==20.2.2        # via pre-commit
 wrapt==1.12.1             # via astroid
 yamllint==1.25.0          # via -r requirements-dev.in
-zipp==3.4.0               # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 pip==20.3.1               # via pip-tools
