@@ -1,1 +1,1 @@
-"""Module to define the configuration of the main program."""
+"""Define the configuration of the main program."""

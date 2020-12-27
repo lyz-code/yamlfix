@@ -1,12 +1,14 @@
 {
     "template": "https://github.com/lyz-code/cookiecutter-python-project",
-    "commit": "19fde1338b8205f5a4ad29d4fe4cf0a13c54d8ed",
+    "commit": "f21ed97ea55cb418c5b50c926bf0d8e019d385ae",
     "context": {
         "cookiecutter": {
             "project_name": "yamlfix",
             "project_slug": "yamlfix",
             "project_description": "A simple opionated yaml formatter that keeps your comments!",
             "requirements": "click, ruamel.yaml",
+            "configure_command_line": "False",
+            "read_configuration_from_yaml": "False",
             "github_user": "lyz-code",
             "github_token_pass_path": "internet/github.lyz-code.api_token",
             "pypi_token_pass_path": "internet/pypi.token",
@@ -14,6 +16,7 @@
             "author": "Lyz",
             "author_email": "lyz-code-security-advisories@riseup.net",
             "security_advisories_email": "lyz-code-security-advisories@riseup.net",
+            "project_underscore_slug": "yamlfix",
             "_template": "https://github.com/lyz-code/cookiecutter-python-project"
         }
     },
