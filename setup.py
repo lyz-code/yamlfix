@@ -7,16 +7,18 @@ from os.path import basename, splitext
 from setuptools import find_packages, setup
 
 # Avoid loading the package to extract the version
+
 with open("src/yamlfix/version.py") as fp:
     version_match = re.search(r'__version__ = "(?P<version>.*)"', fp.read())
     if version_match is None:
         raise ValueError("The version is not specified in the version.py file.")
     version = version_match["version"]
 
+
 setup(
     name="yamlfix",
     version=version,
-    description="A Cookiecutter template for creating Python projects",
+    description="A simple opionated yaml formatter that keeps your comments!",
     author="Lyz",
     author_email="lyz-code-security-advisories@riseup.net",
     license="GNU General Public License v3",
@@ -46,5 +48,5 @@ setup(
         [console_scripts]
         yamlfix=yamlfix.entrypoints.cli:cli
     """,
-    install_requires=["click", "ruyaml"],
+    install_requires=["click", "ruamel.yaml"],
 )

@@ -1,4 +1,4 @@
-.DEFAULT_GOAL := all
+.DEFAULT_GOAL := test
 isort = isort src docs/examples tests setup.py
 black = black --target-version py37 src docs/examples tests setup.py
 
@@ -89,6 +89,7 @@ clean:
 
 	rm -rf `find . -name __pycache__`
 	rm -f `find . -type f -name '*.py[co]' `
+	rm -f `find . -type f -name '*.rej' `
 	rm -f `find . -type f -name '*~' `
 	rm -f `find . -type f -name '.*~' `
 	rm -rf .cache
@@ -120,6 +121,30 @@ docs: test-examples
 
 	@echo ""
 
+.PHONY: bump
+bump: pull-master bump-version build-package upload-pypi clean
+
+.PHONY: pull-master
+pull-master:
+	@echo "------------------------"
+	@echo "- Updating repository  -"
+	@echo "------------------------"
+
+	git checkout master
+	git pull
+
+	@echo ""
+
+.PHONY: build-package
+build-package:
+	@echo "------------------------"
+	@echo "- Building the package -"
+	@echo "------------------------"
+
+	python -m pep517.build --source --binary --out-dir dist/ .
+
+	@echo ""
+
 .PHONY: build-docs
 build-docs: test-examples
 	@echo "--------------------------"
@@ -127,6 +152,29 @@ build-docs: test-examples
 	@echo "--------------------------"
 
 	mkdocs build
+
+	@echo ""
+
+.PHONY: upload-pypi
+upload-pypi:
+	@echo "-----------------------------"
+	@echo "- Uploading package to pypi -"
+	@echo "-----------------------------"
+
+	twine upload -r pypi dist/*
+
+	@echo ""
+
+.PHONY: bump-version
+bump-version:
+	@echo "---------------------------"
+	@echo "- Bumping program version -"
+	@echo "---------------------------"
+
+	cz bump --changelog --no-verify
+	git push
+	git push --tags
+
 	@echo ""
 
 .PHONY: security
