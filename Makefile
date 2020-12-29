@@ -15,9 +15,18 @@ update:
 	@echo "- Updating dependencies -"
 	@echo "-------------------------"
 
-	pip-compile -U --allow-unsafe
-	pip-compile -U --allow-unsafe docs/requirements.in --output-file docs/requirements.txt
-	pip-compile -U --allow-unsafe requirements-dev.in --output-file requirements-dev.txt
+	rm requirements.txt
+	touch requirements.txt
+	pip-compile -Ur --allow-unsafe
+
+	rm docs/requirements.txt
+	touch docs/requirements.txt
+	pip-compile -Ur --allow-unsafe docs/requirements.in --output-file docs/requirements.txt
+
+	rm requirements-dev.txt
+	touch requirements-dev.txt
+	pip-compile -Ur --allow-unsafe requirements-dev.in --output-file requirements-dev.txt
+
 	pip install -r requirements-dev.txt
 
 	@echo ""
