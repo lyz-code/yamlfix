@@ -11,7 +11,7 @@ astroid==2.4.2            # via pylint
 asttokens==2.0.4          # via flake8-aaa
 attrs==20.3.0             # via flake8-bugbear, flake8-eradicate, pytest
 autoflake==1.4            # via autoimport
-autoimport==0.4.1         # via -r requirements-dev.in
+autoimport==0.4.2         # via -r requirements-dev.in
 babel==2.9.0              # via -r docs/requirements.txt, mkdocs-git-revision-date-localized-plugin
 bandit==1.7.0             # via -r requirements-dev.in
 beautifulsoup4==4.9.3     # via -r docs/requirements.txt, mkdocs-htmlproofer-plugin, mkdocstrings
@@ -108,6 +108,7 @@ requests==2.25.1          # via -r docs/requirements.txt, mkdocs-htmlproofer-plu
 ruamel.yaml.clib==0.2.2   # via -r requirements.txt, ruamel.yaml
 ruamel.yaml==0.16.12      # via -r requirements.txt
 safety==1.10.0            # via -r requirements-dev.in
+sh==1.14.1                # via autoimport
 six==1.15.0               # via -r docs/requirements.txt, astroid, asttokens, bandit, flake8-debugger, livereload, lunr, pip-tools, virtualenv
 smmap==3.0.4              # via -r docs/requirements.txt, gitdb
 snowballstemmer==2.0.0    # via pydocstyle
