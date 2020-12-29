@@ -28,7 +28,7 @@ dparse==0.5.1             # via safety
 entrypoints==0.3          # via flakehell
 eradicate==2.0.0          # via flake8-eradicate
 filelock==3.0.12          # via virtualenv
-flake8-aaa==0.11.0        # via -r requirements-dev.in
+flake8-aaa==0.11.1        # via -r requirements-dev.in
 flake8-annotations-complexity==0.0.5  # via -r requirements-dev.in
 flake8-annotations==2.4.1  # via -r requirements-dev.in
 flake8-bugbear==20.11.1   # via -r requirements-dev.in
@@ -56,7 +56,7 @@ gitpython==3.1.11         # via -r docs/requirements.txt, bandit, mkdocs-git-rev
 htmlmin==0.1.12           # via -r docs/requirements.txt, mkdocs-minify-plugin
 identify==1.5.10          # via pre-commit
 idna==2.10                # via -r docs/requirements.txt, requests
-importlib-metadata==3.3.0  # via -r docs/requirements.txt, flake8, flake8-comprehensions, flake8-simplify, flake8-typing-imports, markdown, pluggy, pre-commit, pytest, stevedore, virtualenv
+importlib-metadata==3.3.0  # via -r docs/requirements.txt
 iniconfig==1.1.1          # via pytest
 isort==5.6.4              # via -r requirements-dev.in, pylint
 jinja2==2.11.2            # via -r docs/requirements.txt, mkdocs
@@ -105,7 +105,7 @@ pytz==2020.4              # via -r docs/requirements.txt, babel
 pyyaml==5.3.1             # via -r docs/requirements.txt, bandit, dparse, mkdocs, pre-commit, yamllint
 regex==2020.11.13         # via -r docs/requirements.txt, black, nltk
 requests==2.25.0          # via -r docs/requirements.txt, mkdocs-htmlproofer-plugin, safety
-ruamel.yaml.clib==0.2.2   # via -r requirements.txt, ruamel.yaml
+ruamel.yaml.clib==0.2.2   # via -r requirements.txt
 ruamel.yaml==0.16.12      # via -r requirements.txt
 safety==1.10.0            # via -r requirements-dev.in
 six==1.15.0               # via -r docs/requirements.txt, astroid, asttokens, bandit, flake8-debugger, livereload, lunr, pip-tools, virtualenv
@@ -116,8 +116,8 @@ stevedore==3.3.0          # via bandit
 toml==0.10.2              # via black, dparse, flakehell, pre-commit, pylint, pytest
 tornado==6.1              # via -r docs/requirements.txt, livereload, mkdocs
 tqdm==4.54.1              # via -r docs/requirements.txt, nltk
-typed-ast==1.4.1          # via astroid, black, flake8-annotations, mypy
-typing-extensions==3.7.4.3  # via -r docs/requirements.txt, black, importlib-metadata, mypy
+typed-ast==1.4.1          # via black, mypy
+typing-extensions==3.7.4.3  # via -r docs/requirements.txt, black, mypy
 urllib3==1.26.2           # via -r docs/requirements.txt, flakehell, requests
 virtualenv==20.2.2        # via pre-commit
 wrapt==1.12.1             # via astroid
