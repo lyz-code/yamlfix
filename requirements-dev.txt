@@ -151,7 +151,7 @@ htmlmin==0.1.12
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-identify==1.5.10
+identify==1.5.11
     # via pre-commit
 idna==2.10
     # via
