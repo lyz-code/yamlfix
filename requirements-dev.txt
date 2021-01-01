@@ -10,7 +10,7 @@ appdirs==1.4.4
     #   virtualenv
 astor==0.8.1
     # via flake8-simplify
-astpretty==2.0.0
+astpretty==2.1.0
     # via flake8-expression-complexity
 astroid==2.4.2
     # via pylint
