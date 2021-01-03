@@ -356,7 +356,7 @@ ruamel.yaml.clib==0.2.2
     #   ruamel.yaml
 ruamel.yaml==0.16.12
     # via -r requirements.txt
-safety==1.10.0
+safety==1.10.1
     # via -r requirements-dev.in
 sh==1.14.1
     # via autoimport
