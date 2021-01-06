@@ -142,7 +142,7 @@ gitdb==4.0.5
     # via
     #   -r docs/requirements.txt
     #   gitpython
-gitpython==3.1.11
+gitpython==3.1.12
     # via
     #   -r docs/requirements.txt
     #   bandit
