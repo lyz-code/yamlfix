@@ -22,7 +22,8 @@ setup(
     author="Lyz",
     author_email="lyz-code-security-advisories@riseup.net",
     license="GNU General Public License v3",
-    long_description=open("README.md").read(),
+    # SIM115: Use context handler for opening files. In this case it doesn't make sense.
+    long_description=open("README.md").read(),  # noqa: SIM115
     long_description_content_type="text/markdown",
     url="https://github.com/lyz-code/yamlfix",
     packages=find_packages("src"),
