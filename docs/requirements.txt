@@ -61,7 +61,7 @@ mkdocs-htmlproofer-plugin==0.0.3
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.1
     # via mkdocs-material
-mkdocs-material==6.2.3
+mkdocs-material==6.2.4
     # via
     #   -r docs/requirements.in
     #   mkdocs-material-extensions
@@ -108,7 +108,7 @@ tornado==6.1
     # via
     #   livereload
     #   mkdocs
-tqdm==4.55.1
+tqdm==4.55.2
     # via nltk
 typing-extensions==3.7.4.3
     # via
