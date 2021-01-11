@@ -26,7 +26,7 @@ htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==2.10
     # via requests
-importlib-metadata==3.3.0
+importlib-metadata==3.4.0
     # via markdown
 jinja2==2.11.2
     # via
@@ -108,7 +108,7 @@ tornado==6.1
     # via
     #   livereload
     #   mkdocs
-tqdm==4.55.2
+tqdm==4.56.0
     # via nltk
 typing-extensions==3.7.4.3
     # via
