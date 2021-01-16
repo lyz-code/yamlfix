@@ -240,7 +240,7 @@ mkdocs-material==6.2.4
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
     #   mkdocs-material-extensions
-mkdocs-minify-plugin==0.3.0
+mkdocs-minify-plugin==0.4.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -358,7 +358,7 @@ ruamel.yaml.clib==0.2.2
     #   ruamel.yaml
 ruamel.yaml==0.16.12
     # via -r requirements.txt
-safety==1.10.2.post1
+safety==1.10.3
     # via -r requirements-dev.in
 sh==1.14.1
     # via autoimport
