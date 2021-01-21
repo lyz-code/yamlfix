@@ -90,7 +90,7 @@ pytkdocs==0.10.1
     # via mkdocstrings
 pytz==2020.5
     # via babel
-pyyaml==5.4
+pyyaml==5.4.1
     # via mkdocs
 regex==2020.11.13
     # via nltk

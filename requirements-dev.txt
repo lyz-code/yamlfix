@@ -317,7 +317,7 @@ pyparsing==2.4.7
     # via packaging
 pyprojroot==0.2.0
     # via autoimport
-pytest-cov==2.11.0
+pytest-cov==2.11.1
     # via -r requirements-dev.in
 pytest-pythonpath==0.7.3
     # via -r requirements-dev.in
@@ -334,7 +334,7 @@ pytz==2020.5
     # via
     #   -r docs/requirements.txt
     #   babel
-pyyaml==5.4
+pyyaml==5.4.1
     # via
     #   -r docs/requirements.txt
     #   bandit
