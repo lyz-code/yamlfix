@@ -262,7 +262,7 @@ mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-mypy==0.790
+mypy==0.800
     # via -r requirements-dev.in
 nltk==3.5
     # via
@@ -372,7 +372,7 @@ six==1.15.0
     #   livereload
     #   lunr
     #   virtualenv
-smmap==3.0.4
+smmap==3.0.5
     # via
     #   -r docs/requirements.txt
     #   gitdb
