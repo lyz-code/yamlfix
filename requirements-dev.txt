@@ -431,9 +431,9 @@ zipp==3.4.0
     #   importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
-pip==20.3.3
+pip==21.0
     # via pip-tools
-setuptools==51.3.3
+setuptools==52.0.0
     # via
     #   flake8-annotations-complexity
     #   flake8-expression-complexity
