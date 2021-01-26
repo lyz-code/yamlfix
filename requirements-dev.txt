@@ -23,7 +23,7 @@ attrs==20.3.0
     #   pytest
 autoflake==1.4
     # via autoimport
-autoimport==0.4.3
+autoimport==0.5.0
     # via -r requirements-dev.in
 babel==2.9.0
     # via
@@ -308,7 +308,7 @@ pygments==2.7.4
     #   mkdocs-material
 pylint==2.6.0
     # via -r requirements-dev.in
-pymdown-extensions==8.1
+pymdown-extensions==8.1.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
@@ -321,7 +321,7 @@ pytest-cov==2.11.1
     # via -r requirements-dev.in
 pytest-pythonpath==0.7.3
     # via -r requirements-dev.in
-pytest==6.2.1
+pytest==6.2.2
     # via
     #   -r requirements-dev.in
     #   pytest-cov
