@@ -23,7 +23,7 @@ attrs==20.3.0
     #   pytest
 autoflake==1.4
     # via autoimport
-autoimport==0.4.3
+autoimport==0.5.0
     # via -r requirements-dev.in
 babel==2.9.0
     # via
@@ -157,18 +157,7 @@ idna==2.10
     #   -r docs/requirements.txt
     #   requests
 importlib-metadata==3.4.0
-    # via
-    #   -r docs/requirements.txt
-    #   flake8
-    #   flake8-comprehensions
-    #   flake8-simplify
-    #   flake8-typing-imports
-    #   markdown
-    #   pluggy
-    #   pre-commit
-    #   pytest
-    #   stevedore
-    #   virtualenv
+    # via -r docs/requirements.txt
 iniconfig==1.1.1
     # via pytest
 isort==5.7.0
@@ -353,9 +342,7 @@ requests==2.25.1
     #   mkdocs-htmlproofer-plugin
     #   safety
 ruamel.yaml.clib==0.2.2
-    # via
-    #   -r requirements.txt
-    #   ruamel.yaml
+    # via -r requirements.txt
 ruamel.yaml==0.16.12
     # via -r requirements.txt
 safety==1.10.3
@@ -403,17 +390,13 @@ tqdm==4.56.0
     #   nltk
 typed-ast==1.4.2
     # via
-    #   astroid
     #   black
-    #   flake8-annotations
     #   mypy
 typing-extensions==3.7.4.3
     # via
     #   -r docs/requirements.txt
     #   black
-    #   importlib-metadata
     #   mypy
-    #   pytkdocs
 urllib3==1.26.2
     # via
     #   -r docs/requirements.txt
