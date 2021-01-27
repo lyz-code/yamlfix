@@ -61,7 +61,7 @@ mkdocs-htmlproofer-plugin==0.0.3
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.1
     # via mkdocs-material
-mkdocs-material==6.2.5
+mkdocs-material==6.2.6
     # via
     #   -r docs/requirements.in
     #   mkdocs-material-extensions
@@ -114,7 +114,7 @@ typing-extensions==3.7.4.3
     # via
     #   importlib-metadata
     #   pytkdocs
-urllib3==1.26.2
+urllib3==1.26.3
     # via requests
 zipp==3.4.0
     # via importlib-metadata

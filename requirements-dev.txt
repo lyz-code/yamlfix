@@ -59,7 +59,7 @@ click==7.1.2
     #   safety
 colorama==0.4.4
     # via flakehell
-coverage==5.3.1
+coverage==5.4
     # via pytest-cov
 distlib==0.3.1
     # via virtualenv
@@ -235,7 +235,7 @@ mkdocs-material-extensions==1.0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-material==6.2.5
+mkdocs-material==6.2.6
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -414,7 +414,7 @@ typing-extensions==3.7.4.3
     #   importlib-metadata
     #   mypy
     #   pytkdocs
-urllib3==1.26.2
+urllib3==1.26.3
     # via
     #   -r docs/requirements.txt
     #   flakehell
