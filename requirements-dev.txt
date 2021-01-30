@@ -270,7 +270,7 @@ nltk==3.5
     #   lunr
 nodeenv==1.5.0
     # via pre-commit
-packaging==20.8
+packaging==20.9
     # via
     #   dparse
     #   pytest
@@ -423,7 +423,7 @@ virtualenv==20.4.0
     # via pre-commit
 wrapt==1.12.1
     # via astroid
-yamllint==1.25.0
+yamllint==1.26.0
     # via -r requirements-dev.in
 zipp==3.4.0
     # via
