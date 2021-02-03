@@ -30,7 +30,7 @@ jobs:
       - name: Upload Coverage
         run: |
           pip3 install coveralls
-          coveralls
+          coveralls --service=github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COVERALLS_FLAG_NAME: ${{ matrix.test-name }}
