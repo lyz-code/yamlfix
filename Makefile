@@ -192,7 +192,8 @@ security:
 	@echo "- Testing security -"
 	@echo "--------------------"
 
-	safety check
+	# There is currently no fix [#2981](https://github.com/tornadoweb/tornado/issues/2981)
+	safety check -i 39462
 	@echo ""
 	bandit -r src
 
