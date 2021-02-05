@@ -123,6 +123,20 @@ def test_fix_code_respects_parent_lists_with_comments() -> None:
     assert result == source
 
 
+def test_fix_code_preserves_indented_comments() -> None:
+    """Don't remove indentation from comments in the code."""
+    source = dedent(
+        """\
+        ---
+        - program:
+          # Keep comments!"""
+    )
+
+    result = fix_code(source)
+
+    assert result == source
+
+
 def test_fix_code_removes_extra_apostrophes() -> None:
     """Remove not needed apostrophes."""
     source = dedent(
