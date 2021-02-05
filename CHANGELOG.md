@@ -1,3 +1,13 @@
+## 0.4.0 (2021-02-05)
+
+### Feat
+
+- allow the use of yamlfix as a pre-commit hook
+
+### Fix
+
+- respect comments indentation in lists.
+
 ## 0.3.0 (2020-12-10)
 
 ### Feat
