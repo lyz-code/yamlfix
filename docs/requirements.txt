@@ -28,7 +28,7 @@ idna==2.10
     # via requests
 importlib-metadata==3.4.0
     # via markdown
-jinja2==2.11.2
+jinja2==2.11.3
     # via
     #   mkdocs
     #   mkdocstrings
@@ -61,7 +61,7 @@ mkdocs-htmlproofer-plugin==0.0.3
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.1
     # via mkdocs-material
-mkdocs-material==6.2.6
+mkdocs-material==6.2.8
     # via
     #   -r docs/requirements.in
     #   mkdocs-material-extensions
@@ -88,7 +88,7 @@ pymdown-extensions==8.1.1
     #   mkdocstrings
 pytkdocs==0.10.1
     # via mkdocstrings
-pytz==2020.5
+pytz==2021.1
     # via babel
 pyyaml==5.4.1
     # via mkdocs
