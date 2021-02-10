@@ -141,7 +141,7 @@ gitdb==4.0.5
     # via
     #   -r docs/requirements.txt
     #   gitpython
-gitpython==3.1.12
+gitpython==3.1.13
     # via
     #   -r docs/requirements.txt
     #   bandit
@@ -180,7 +180,7 @@ jinja2==2.11.3
     #   -r docs/requirements.txt
     #   mkdocs
     #   mkdocstrings
-joblib==1.0.0
+joblib==1.0.1
     # via
     #   -r docs/requirements.txt
     #   nltk
@@ -378,7 +378,7 @@ smmap==3.0.5
     #   gitdb
 snowballstemmer==2.1.0
     # via pydocstyle
-soupsieve==2.1
+soupsieve==2.2
     # via
     #   -r docs/requirements.txt
     #   beautifulsoup4
@@ -397,7 +397,7 @@ tornado==6.1
     #   -r docs/requirements.txt
     #   livereload
     #   mkdocs
-tqdm==4.56.0
+tqdm==4.56.1
     # via
     #   -r docs/requirements.txt
     #   nltk

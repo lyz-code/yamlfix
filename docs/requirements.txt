@@ -20,7 +20,7 @@ future==0.18.2
     # via lunr
 gitdb==4.0.5
     # via gitpython
-gitpython==3.1.12
+gitpython==3.1.13
     # via mkdocs-git-revision-date-localized-plugin
 htmlmin==0.1.12
     # via mkdocs-minify-plugin
@@ -32,7 +32,7 @@ jinja2==2.11.3
     # via
     #   mkdocs
     #   mkdocstrings
-joblib==1.0.0
+joblib==1.0.1
     # via nltk
 jsmin==2.2.2
     # via mkdocs-minify-plugin
@@ -102,13 +102,13 @@ six==1.15.0
     #   lunr
 smmap==3.0.5
     # via gitdb
-soupsieve==2.1
+soupsieve==2.2
     # via beautifulsoup4
 tornado==6.1
     # via
     #   livereload
     #   mkdocs
-tqdm==4.56.0
+tqdm==4.56.1
     # via nltk
 typing-extensions==3.7.4.3
     # via
