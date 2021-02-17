@@ -12,7 +12,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-astroid==2.5
+astroid==2.4.2
     # via pylint
 asttokens==2.0.4
     # via flake8-aaa
@@ -157,18 +157,7 @@ idna==2.10
     #   -r docs/requirements.txt
     #   requests
 importlib-metadata==3.4.0
-    # via
-    #   -r docs/requirements.txt
-    #   flake8
-    #   flake8-comprehensions
-    #   flake8-simplify
-    #   flake8-typing-imports
-    #   markdown
-    #   pluggy
-    #   pre-commit
-    #   pytest
-    #   stevedore
-    #   virtualenv
+    # via -r docs/requirements.txt
 iniconfig==1.1.1
     # via pytest
 isort==5.7.0
@@ -188,7 +177,7 @@ jsmin==2.2.2
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-lazy-object-proxy==1.5.2
+lazy-object-proxy==1.4.3
     # via astroid
 livereload==2.6.3
     # via
@@ -306,7 +295,7 @@ pygments==2.8.0
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.6.0
+pylint==2.6.2
     # via -r requirements-dev.in
 pymdown-extensions==8.1.1
     # via
@@ -353,9 +342,7 @@ requests==2.25.1
     #   mkdocs-htmlproofer-plugin
     #   safety
 ruamel.yaml.clib==0.2.2
-    # via
-    #   -r requirements.txt
-    #   ruamel.yaml
+    # via -r requirements.txt
 ruamel.yaml==0.16.12
     # via -r requirements.txt
 safety==1.10.3
@@ -365,6 +352,7 @@ sh==1.14.1
 six==1.15.0
     # via
     #   -r docs/requirements.txt
+    #   astroid
     #   asttokens
     #   bandit
     #   flake8-debugger
@@ -402,17 +390,13 @@ tqdm==4.56.2
     #   nltk
 typed-ast==1.4.2
     # via
-    #   astroid
     #   black
-    #   flake8-annotations
     #   mypy
 typing-extensions==3.7.4.3
     # via
     #   -r docs/requirements.txt
     #   black
-    #   importlib-metadata
     #   mypy
-    #   pytkdocs
 urllib3==1.26.3
     # via
     #   -r docs/requirements.txt
