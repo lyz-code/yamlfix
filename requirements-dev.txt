@@ -12,7 +12,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-astroid==2.5
+astroid==2.4.2
     # via pylint
 asttokens==2.0.4
     # via flake8-aaa
@@ -188,7 +188,7 @@ jsmin==2.2.2
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-lazy-object-proxy==1.5.2
+lazy-object-proxy==1.4.3
     # via astroid
 livereload==2.6.3
     # via
@@ -219,7 +219,7 @@ mccabe==0.6.1
     # via
     #   flake8
     #   pylint
-mkdocs-autolinks-plugin==0.2.0
+mkdocs-autolinks-plugin==0.3.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -306,7 +306,7 @@ pygments==2.8.0
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.6.0
+pylint==2.6.2
     # via -r requirements-dev.in
 pymdown-extensions==8.1.1
     # via
@@ -365,6 +365,7 @@ sh==1.14.1
 six==1.15.0
     # via
     #   -r docs/requirements.txt
+    #   astroid
     #   asttokens
     #   bandit
     #   flake8-debugger
