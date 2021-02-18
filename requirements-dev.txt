@@ -397,7 +397,7 @@ tornado==6.1
     #   -r docs/requirements.txt
     #   livereload
     #   mkdocs
-tqdm==4.56.2
+tqdm==4.57.0
     # via
     #   -r docs/requirements.txt
     #   nltk
