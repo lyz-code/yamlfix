@@ -262,7 +262,7 @@ mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-mypy==0.800
+mypy==0.812
     # via -r requirements-dev.in
 nltk==3.5
     # via
