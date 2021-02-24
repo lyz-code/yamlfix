@@ -156,7 +156,7 @@ idna==2.10
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==3.4.0
+importlib-metadata==3.6.0
     # via
     #   -r docs/requirements.txt
     #   flake8
@@ -306,7 +306,7 @@ pygments==2.8.0
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.7.0
+pylint==2.7.1
     # via -r requirements-dev.in
 pymdown-extensions==8.1.1
     # via
