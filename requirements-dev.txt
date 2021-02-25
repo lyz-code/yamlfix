@@ -156,7 +156,7 @@ idna==2.10
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==3.6.0
+importlib-metadata==3.7.0
     # via
     #   -r docs/requirements.txt
     #   flake8
@@ -202,7 +202,7 @@ markdown-include==0.6.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
-markdown==3.3.3
+markdown==3.3.4
     # via
     #   -r docs/requirements.txt
     #   markdown-include
@@ -235,7 +235,7 @@ mkdocs-material-extensions==1.0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-material==7.0.0
+mkdocs-material==7.0.1
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
