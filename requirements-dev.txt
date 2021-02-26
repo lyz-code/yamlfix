@@ -235,7 +235,7 @@ mkdocs-material-extensions==1.0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-material==7.0.1
+mkdocs-material==7.0.2
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -396,7 +396,7 @@ tornado==6.1
     #   -r docs/requirements.txt
     #   livereload
     #   mkdocs
-tqdm==4.57.0
+tqdm==4.58.0
     # via
     #   -r docs/requirements.txt
     #   nltk
@@ -432,7 +432,7 @@ zipp==3.4.0
 # The following packages are considered to be unsafe in a requirements file:
 pip==21.0.1
     # via pip-tools
-setuptools==53.0.0
+setuptools==53.1.0
     # via
     #   flake8-annotations-complexity
     #   flake8-expression-complexity
