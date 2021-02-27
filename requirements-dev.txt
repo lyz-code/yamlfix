@@ -150,7 +150,7 @@ htmlmin==0.1.12
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-identify==1.5.14
+identify==1.6.0
     # via pre-commit
 idna==2.10
     # via
@@ -235,7 +235,7 @@ mkdocs-material-extensions==1.0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-material==7.0.2
+mkdocs-material==7.0.3
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
