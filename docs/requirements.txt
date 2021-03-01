@@ -4,10 +4,14 @@
 #
 #    pip-compile --allow-unsafe --output-file=docs/requirements.txt docs/requirements.in
 #
+astunparse==1.6.3
+    # via pytkdocs
 babel==2.9.0
     # via mkdocs-git-revision-date-localized-plugin
 beautifulsoup4==4.9.3
     # via mkdocs-htmlproofer-plugin
+cached-property==1.5.2
+    # via pytkdocs
 certifi==2020.12.5
     # via requests
 chardet==4.0.0
@@ -46,6 +50,7 @@ markdown==3.3.4
     # via
     #   markdown-include
     #   mkdocs
+    #   mkdocs-autorefs
     #   mkdocs-material
     #   mkdocstrings
     #   pymdown-extensions
@@ -55,6 +60,8 @@ markupsafe==1.1.1
     #   mkdocstrings
 mkdocs-autolinks-plugin==0.3.0
     # via -r docs/requirements.in
+mkdocs-autorefs==0.1.1
+    # via mkdocstrings
 mkdocs-git-revision-date-localized-plugin==0.8
     # via -r docs/requirements.in
 mkdocs-htmlproofer-plugin==0.0.3
@@ -71,12 +78,13 @@ mkdocs==1.1.2
     # via
     #   -r docs/requirements.in
     #   mkdocs-autolinks-plugin
+    #   mkdocs-autorefs
     #   mkdocs-git-revision-date-localized-plugin
     #   mkdocs-htmlproofer-plugin
     #   mkdocs-material
     #   mkdocs-minify-plugin
     #   mkdocstrings
-mkdocstrings==0.14.0
+mkdocstrings==0.15.0
     # via -r docs/requirements.in
 nltk==3.5
     # via lunr
@@ -86,7 +94,7 @@ pymdown-extensions==8.1.1
     # via
     #   mkdocs-material
     #   mkdocstrings
-pytkdocs==0.10.1
+pytkdocs==0.11.0
     # via mkdocstrings
 pytz==2021.1
     # via babel
@@ -98,6 +106,7 @@ requests==2.25.1
     # via mkdocs-htmlproofer-plugin
 six==1.15.0
     # via
+    #   astunparse
     #   livereload
     #   lunr
 smmap==3.0.5
@@ -116,5 +125,7 @@ typing-extensions==3.7.4.3
     #   pytkdocs
 urllib3==1.26.3
     # via requests
+wheel==0.36.2
+    # via astunparse
 zipp==3.4.0
     # via importlib-metadata
