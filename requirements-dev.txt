@@ -85,7 +85,7 @@ flake8-aaa==0.11.1
     # via -r requirements-dev.in
 flake8-annotations-complexity==0.0.6
     # via -r requirements-dev.in
-flake8-annotations==2.5.0
+flake8-annotations==2.6.0
     # via -r requirements-dev.in
 flake8-bugbear==21.3.1
     # via -r requirements-dev.in
@@ -370,7 +370,7 @@ ruamel.yaml.clib==0.2.2
     # via
     #   -r requirements.txt
     #   ruamel.yaml
-ruamel.yaml==0.16.12
+ruamel.yaml==0.16.13
     # via -r requirements.txt
 safety==1.10.3
     # via -r requirements-dev.in
@@ -411,7 +411,7 @@ tornado==6.1
     #   -r docs/requirements.txt
     #   livereload
     #   mkdocs
-tqdm==4.58.0
+tqdm==4.59.0
     # via
     #   -r docs/requirements.txt
     #   nltk
@@ -451,7 +451,7 @@ zipp==3.4.1
 # The following packages are considered to be unsafe in a requirements file:
 pip==21.0.1
     # via pip-tools
-setuptools==54.0.0
+setuptools==54.1.0
     # via
     #   flake8-annotations-complexity
     #   flake8-expression-complexity

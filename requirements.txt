@@ -8,5 +8,5 @@ click==7.1.2
     # via yamlfix (setup.py)
 ruamel.yaml.clib==0.2.2
     # via ruamel.yaml
-ruamel.yaml==0.16.12
+ruamel.yaml==0.16.13
     # via yamlfix (setup.py)
