@@ -240,7 +240,7 @@ mkdocs-git-revision-date-localized-plugin==0.8
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
-mkdocs-htmlproofer-plugin==0.0.3
+mkdocs-htmlproofer-plugin==0.1.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -451,7 +451,7 @@ zipp==3.4.1
 # The following packages are considered to be unsafe in a requirements file:
 pip==21.0.1
     # via pip-tools
-setuptools==54.1.0
+setuptools==54.1.1
     # via
     #   flake8-annotations-complexity
     #   flake8-expression-complexity
