@@ -164,7 +164,7 @@ idna==2.10
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==3.7.0
+importlib-metadata==3.7.2
     # via
     #   -r docs/requirements.txt
     #   flake8
@@ -248,7 +248,7 @@ mkdocs-material-extensions==1.0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-material==7.0.4
+mkdocs-material==7.0.5
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -301,7 +301,7 @@ pip-tools==5.5.0
     # via -r requirements-dev.in
 pluggy==0.13.1
     # via pytest
-pre-commit==2.10.1
+pre-commit==2.11.0
     # via -r requirements-dev.in
 py==1.10.0
     # via pytest
@@ -315,7 +315,7 @@ pyflakes==2.2.0
     # via
     #   autoflake
     #   flake8
-pygments==2.8.0
+pygments==2.8.1
     # via
     #   -r docs/requirements.txt
     #   flakehell
