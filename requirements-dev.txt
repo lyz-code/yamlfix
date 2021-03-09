@@ -17,9 +17,7 @@ astroid==2.5.1
 asttokens==2.0.4
     # via flake8-aaa
 astunparse==1.6.3
-    # via
-    #   -r docs/requirements.txt
-    #   pytkdocs
+    # via -r docs/requirements.txt
 attrs==20.3.0
     # via
     #   flake8-bugbear
@@ -42,9 +40,7 @@ beautifulsoup4==4.9.3
 black==20.8b1
     # via -r requirements-dev.in
 cached-property==1.5.2
-    # via
-    #   -r docs/requirements.txt
-    #   pytkdocs
+    # via -r docs/requirements.txt
 certifi==2020.12.5
     # via
     #   -r docs/requirements.txt
@@ -87,7 +83,7 @@ flake8-annotations-complexity==0.0.6
     # via -r requirements-dev.in
 flake8-annotations==2.6.0
     # via -r requirements-dev.in
-flake8-bugbear==21.3.1
+flake8-bugbear==21.3.2
     # via -r requirements-dev.in
 flake8-comprehensions==3.3.1
     # via -r requirements-dev.in
@@ -165,18 +161,7 @@ idna==2.10
     #   -r docs/requirements.txt
     #   requests
 importlib-metadata==3.7.2
-    # via
-    #   -r docs/requirements.txt
-    #   flake8
-    #   flake8-comprehensions
-    #   flake8-simplify
-    #   flake8-typing-imports
-    #   markdown
-    #   pluggy
-    #   pre-commit
-    #   pytest
-    #   stevedore
-    #   virtualenv
+    # via -r docs/requirements.txt
 iniconfig==1.1.1
     # via pytest
 isort==5.7.0
@@ -417,17 +402,13 @@ tqdm==4.59.0
     #   nltk
 typed-ast==1.4.2
     # via
-    #   astroid
     #   black
-    #   flake8-annotations
     #   mypy
 typing-extensions==3.7.4.3
     # via
     #   -r docs/requirements.txt
     #   black
-    #   importlib-metadata
     #   mypy
-    #   pytkdocs
 urllib3==1.26.3
     # via
     #   -r docs/requirements.txt
