@@ -87,7 +87,7 @@ flake8-annotations-complexity==0.0.6
     # via -r requirements-dev.in
 flake8-annotations==2.6.0
     # via -r requirements-dev.in
-flake8-bugbear==21.3.1
+flake8-bugbear==21.3.2
     # via -r requirements-dev.in
 flake8-comprehensions==3.3.1
     # via -r requirements-dev.in
@@ -158,7 +158,7 @@ htmlmin==0.1.12
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-identify==2.1.0
+identify==2.1.1
     # via pre-commit
 idna==2.10
     # via
