@@ -301,7 +301,7 @@ pip-tools==5.5.0
     # via -r requirements-dev.in
 pluggy==0.13.1
     # via pytest
-pre-commit==2.11.0
+pre-commit==2.11.1
     # via -r requirements-dev.in
 py==1.10.0
     # via pytest
