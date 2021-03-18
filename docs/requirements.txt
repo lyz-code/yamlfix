@@ -30,7 +30,7 @@ htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==2.10
     # via requests
-importlib-metadata==3.7.2
+importlib-metadata==3.7.3
     # via markdown
 jinja2==2.11.3
     # via
@@ -68,7 +68,7 @@ mkdocs-htmlproofer-plugin==0.1.0
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.1
     # via mkdocs-material
-mkdocs-material==7.0.5
+mkdocs-material==7.0.6
     # via
     #   -r docs/requirements.in
     #   mkdocs-material-extensions
@@ -100,7 +100,7 @@ pytz==2021.1
     # via babel
 pyyaml==5.4.1
     # via mkdocs
-regex==2020.11.13
+regex==2021.3.17
     # via nltk
 requests==2.25.1
     # via mkdocs-htmlproofer-plugin
@@ -123,7 +123,7 @@ typing-extensions==3.7.4.3
     # via
     #   importlib-metadata
     #   pytkdocs
-urllib3==1.26.3
+urllib3==1.26.4
     # via requests
 wheel==0.36.2
     # via astunparse
