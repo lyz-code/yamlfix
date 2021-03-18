@@ -250,7 +250,7 @@ def _fix_comments(source_code: str) -> str:
     fixed_source_lines = []
 
     for line in source_code.splitlines():
-        if re.search(r"#\w", line):
+        if re.search(r"(^|\s)#\w", line):
             line = line.replace("#", "# ")
         if re.match(r".+\S\s#", line):
             line = line.replace(" #", "  #")

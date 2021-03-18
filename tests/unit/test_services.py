@@ -292,6 +292,20 @@ def test_fix_code_add_space_inline_comment() -> None:
     assert result == fixed_source
 
 
+def test_fix_code_respects_url_anchors() -> None:
+    """Comments that contain a url with an anchor should be respected."""
+    source = dedent(
+        """\
+        ---
+        # https://lyz-code.github.io/yamlfix/#usage
+        foo: bar"""
+    )
+
+    result = fix_code(source)
+
+    assert result == source
+
+
 def test_fix_code_add_extra_space_inline_comment() -> None:
     """Fix inline comments that don't have two spaces before
     the #.
