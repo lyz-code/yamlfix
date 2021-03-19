@@ -111,7 +111,7 @@ six==1.15.0
     #   lunr
 smmap==3.0.5
     # via gitdb
-soupsieve==2.2
+soupsieve==2.2.1
     # via beautifulsoup4
 tornado==6.1
     # via
