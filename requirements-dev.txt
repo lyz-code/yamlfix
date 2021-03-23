@@ -197,7 +197,7 @@ jsmin==2.2.2
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-lazy-object-proxy==1.5.2
+lazy-object-proxy==1.6.0
     # via astroid
 livereload==2.6.3
     # via
@@ -456,7 +456,7 @@ zipp==3.4.1
 # The following packages are considered to be unsafe in a requirements file:
 pip==21.0.1
     # via pip-tools
-setuptools==54.1.2
+setuptools==54.2.0
     # via
     #   flake8-annotations-complexity
     #   flake8-expression-complexity
