@@ -158,7 +158,7 @@ htmlmin==0.1.12
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-identify==2.2.0
+identify==2.2.1
     # via pre-commit
 idna==2.10
     # via
@@ -314,7 +314,7 @@ pycodestyle==2.7.0
     #   flake8-debugger
 pydocstyle==6.0.0
     # via flake8-docstrings
-pyflakes==2.3.0
+pyflakes==2.3.1
     # via
     #   autoflake
     #   flake8
