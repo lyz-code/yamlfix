@@ -22,7 +22,7 @@ click==7.1.2
     #   nltk
 future==0.18.2
     # via lunr
-gitdb==4.0.5
+gitdb==4.0.6
     # via gitpython
 gitpython==3.1.14
     # via mkdocs-git-revision-date-localized-plugin

@@ -145,7 +145,7 @@ future==0.18.2
     # via
     #   -r docs/requirements.txt
     #   lunr
-gitdb==4.0.5
+gitdb==4.0.6
     # via
     #   -r docs/requirements.txt
     #   gitpython
