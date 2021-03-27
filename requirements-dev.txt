@@ -145,7 +145,7 @@ future==0.18.2
     # via
     #   -r docs/requirements.txt
     #   lunr
-gitdb==4.0.6
+gitdb==4.0.7
     # via
     #   -r docs/requirements.txt
     #   gitpython
@@ -164,7 +164,7 @@ idna==2.10
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==3.7.3
+importlib-metadata==3.8.0
     # via
     #   -r docs/requirements.txt
     #   flake8
@@ -373,7 +373,7 @@ ruamel.yaml.clib==0.2.2
     # via
     #   -r requirements.txt
     #   ruamel.yaml
-ruamel.yaml==0.16.13
+ruamel.yaml==0.17.0
     # via -r requirements.txt
 safety==1.10.3
     # via -r requirements-dev.in
@@ -389,7 +389,7 @@ six==1.15.0
     #   livereload
     #   lunr
     #   virtualenv
-smmap==3.0.5
+smmap==4.0.0
     # via
     #   -r docs/requirements.txt
     #   gitdb

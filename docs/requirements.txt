@@ -22,7 +22,7 @@ click==7.1.2
     #   nltk
 future==0.18.2
     # via lunr
-gitdb==4.0.6
+gitdb==4.0.7
     # via gitpython
 gitpython==3.1.14
     # via mkdocs-git-revision-date-localized-plugin
@@ -30,7 +30,7 @@ htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==2.10
     # via requests
-importlib-metadata==3.7.3
+importlib-metadata==3.8.0
     # via markdown
 jinja2==2.11.3
     # via
@@ -109,7 +109,7 @@ six==1.15.0
     #   astunparse
     #   livereload
     #   lunr
-smmap==3.0.5
+smmap==4.0.0
     # via gitdb
 soupsieve==2.2.1
     # via beautifulsoup4
