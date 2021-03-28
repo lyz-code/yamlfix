@@ -164,7 +164,7 @@ idna==2.10
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==3.8.0
+importlib-metadata==3.8.1
     # via
     #   -r docs/requirements.txt
     #   flake8

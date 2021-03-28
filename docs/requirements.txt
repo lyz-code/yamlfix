@@ -30,7 +30,7 @@ htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==2.10
     # via requests
-importlib-metadata==3.8.0
+importlib-metadata==3.8.1
     # via markdown
 jinja2==2.11.3
     # via
