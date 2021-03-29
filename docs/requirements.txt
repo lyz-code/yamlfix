@@ -30,7 +30,7 @@ htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==2.10
     # via requests
-importlib-metadata==3.8.1
+importlib-metadata==3.9.0
     # via markdown
 jinja2==2.11.3
     # via
@@ -68,7 +68,7 @@ mkdocs-htmlproofer-plugin==0.1.0
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.1
     # via mkdocs-material
-mkdocs-material==7.0.6
+mkdocs-material==7.0.7
     # via
     #   -r docs/requirements.in
     #   mkdocs-material-extensions

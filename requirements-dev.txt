@@ -12,7 +12,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-astroid==2.5.1
+astroid==2.5.2
     # via pylint
 asttokens==2.0.4
     # via flake8-aaa
@@ -158,13 +158,13 @@ htmlmin==0.1.12
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-identify==2.2.1
+identify==2.2.2
     # via pre-commit
 idna==2.10
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==3.8.1
+importlib-metadata==3.9.0
     # via
     #   -r docs/requirements.txt
     #   flake8
@@ -249,7 +249,7 @@ mkdocs-material-extensions==1.0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-material==7.0.6
+mkdocs-material==7.0.7
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
