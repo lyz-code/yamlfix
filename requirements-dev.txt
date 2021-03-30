@@ -164,7 +164,7 @@ idna==2.10
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==3.9.0
+importlib-metadata==3.10.0
     # via
     #   -r docs/requirements.txt
     #   flake8
@@ -249,7 +249,7 @@ mkdocs-material-extensions==1.0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-material==7.0.7
+mkdocs-material==7.1.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -323,7 +323,7 @@ pygments==2.8.1
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.7.2
+pylint==2.7.4
     # via -r requirements-dev.in
 pymdown-extensions==8.1.1
     # via
@@ -373,7 +373,7 @@ ruamel.yaml.clib==0.2.2
     # via
     #   -r requirements.txt
     #   ruamel.yaml
-ruamel.yaml==0.17.0
+ruamel.yaml==0.17.2
     # via -r requirements.txt
 safety==1.10.3
     # via -r requirements-dev.in
