@@ -85,9 +85,9 @@ flake8-aaa==0.11.1
     # via -r requirements-dev.in
 flake8-annotations-complexity==0.0.6
     # via -r requirements-dev.in
-flake8-annotations==2.6.1
+flake8-annotations==2.6.2
     # via -r requirements-dev.in
-flake8-bugbear==21.3.2
+flake8-bugbear==21.4.3
     # via -r requirements-dev.in
 flake8-comprehensions==3.4.0
     # via -r requirements-dev.in
@@ -109,7 +109,7 @@ flake8-plugin-utils==1.3.1
     # via flake8-pytest-style
 flake8-polyfill==1.0.2
     # via pep8-naming
-flake8-pytest-style==1.4.0
+flake8-pytest-style==1.4.1
     # via -r requirements-dev.in
 flake8-pytest==1.3
     # via -r requirements-dev.in
@@ -338,12 +338,12 @@ pytest-cov==2.11.1
     # via -r requirements-dev.in
 pytest-pythonpath==0.7.3
     # via -r requirements-dev.in
-pytest==6.2.2
+pytest==6.2.3
     # via
     #   -r requirements-dev.in
     #   pytest-cov
     #   pytest-pythonpath
-pytkdocs==0.11.0
+pytkdocs==0.11.1
     # via
     #   -r docs/requirements.txt
     #   mkdocstrings
