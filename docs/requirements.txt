@@ -100,7 +100,7 @@ pytz==2021.1
     # via babel
 pyyaml==5.4.1
     # via mkdocs
-regex==2021.3.17
+regex==2021.4.4
     # via nltk
 requests==2.25.1
     # via mkdocs-htmlproofer-plugin
