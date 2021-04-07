@@ -304,7 +304,7 @@ pip-tools==6.0.1
     # via -r requirements-dev.in
 pluggy==0.13.1
     # via pytest
-pre-commit==2.11.1
+pre-commit==2.12.0
     # via -r requirements-dev.in
 py==1.10.0
     # via pytest
@@ -445,7 +445,7 @@ wheel==0.36.2
     #   astunparse
 wrapt==1.12.1
     # via astroid
-yamllint==1.26.0
+yamllint==1.26.1
     # via -r requirements-dev.in
 zipp==3.4.1
     # via
