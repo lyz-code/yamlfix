@@ -86,7 +86,7 @@ mkdocs==1.1.2
     #   mkdocstrings
 mkdocstrings==0.15.0
     # via -r docs/requirements.in
-nltk==3.5
+nltk==3.6.1
     # via lunr
 pygments==2.8.1
     # via mkdocs-material
