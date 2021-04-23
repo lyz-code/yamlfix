@@ -8,8 +8,8 @@ import re
 from io import StringIO
 from typing import List, Optional, Tuple
 
+import ruyaml
 from _io import TextIOWrapper
-from ruamel.yaml import YAML  # type: ignore
 
 
 def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
@@ -71,6 +71,7 @@ def fix_code(source_code: str) -> str:
         _fix_comments,
         _ruamel_yaml_fixer,
         _restore_truthy_strings,
+        _restore_double_exclamations,
         _fix_top_level_lists,
     ]
     for fixer in fixers:
@@ -89,10 +90,12 @@ def _ruamel_yaml_fixer(source_code: str) -> str:
         Corrected source code.
     """
     # Configure YAML formatter
-    yaml = YAML()
+    yaml = ruyaml.main.YAML()
     yaml.indent(mapping=2, sequence=4, offset=2)
     yaml.allow_duplicate_keys = True
-    yaml.explicit_start = True  # Start the document with ---
+    # Start the document with ---
+    # ignore: variable has type None, what can we do, it doesn't have type hints...
+    yaml.explicit_start = True  # type: ignore
     source_dict = yaml.load(source_code)
 
     # Return the output to a string
@@ -254,6 +257,23 @@ def _fix_comments(source_code: str) -> str:
             line = line.replace("#", "# ")
         if re.match(r".+\S\s#", line):
             line = line.replace(" #", "  #")
+        fixed_source_lines.append(line)
+
+    return "\n".join(fixed_source_lines)
+
+
+def _restore_double_exclamations(source_code: str) -> str:
+    """Restore the double exclamation marks.
+
+    The Ruyaml parser transforms the !!python statement to !%21python which breaks
+    some programs.
+    """
+    fixed_source_lines = []
+    double_exclamation = re.compile(r"!%21")
+
+    for line in source_code.splitlines():
+        if double_exclamation.search(line):
+            line = line.replace(r"!%21", "!!")
         fixed_source_lines.append(line)
 
     return "\n".join(fixed_source_lines)

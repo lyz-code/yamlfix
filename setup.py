@@ -49,5 +49,5 @@ setup(
         [console_scripts]
         yamlfix=yamlfix.entrypoints.cli:cli
     """,
-    install_requires=["click", "ruamel.yaml"],
+    install_requires=["click", "ruyaml"],
 )

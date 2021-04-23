@@ -324,3 +324,18 @@ def test_fix_code_add_extra_space_inline_comment() -> None:
     result = fix_code(source)
 
     assert result == fixed_source
+
+
+def test_fix_code_doesnt_change_double_exclamation_marks() -> None:
+    """Lines with starting double exclamation marks should be respected, otherwise
+    some programs like mkdocs-mermaidjs fail.
+    """
+    source = dedent(
+        """\
+        ---
+        format: !!python/name:mermaid2.fence_mermaid"""
+    )
+
+    result = fix_code(source)
+
+    assert result == source
