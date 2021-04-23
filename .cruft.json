@@ -1,24 +1,25 @@
 {
-    "template": "https://github.com/lyz-code/cookiecutter-python-project",
-    "commit": "eb843686f193e960289970605612eb9529973fa4",
-    "context": {
-        "cookiecutter": {
-            "project_name": "yamlfix",
-            "project_slug": "yamlfix",
-            "project_description": "A simple opionated yaml formatter that keeps your comments!",
-            "requirements": "click, ruamel.yaml",
-            "configure_command_line": "True",
-            "read_configuration_from_yaml": "True",
-            "github_user": "lyz-code",
-            "github_token_pass_path": "internet/github.lyz-code.api_token",
-            "pypi_token_pass_path": "internet/pypi.token",
-            "test_pypi_token_pass_path": "internet/test.pypi.token",
-            "author": "Lyz",
-            "author_email": "lyz-code-security-advisories@riseup.net",
-            "security_advisories_email": "lyz-code-security-advisories@riseup.net",
-            "project_underscore_slug": "yamlfix",
-            "_template": "https://github.com/lyz-code/cookiecutter-python-project"
-        }
-    },
-    "directory": null
+  "template": "https://github.com/lyz-code/cookiecutter-python-project",
+  "commit": "51d0afe22f5049c0eee3af4e546e794de695844e",
+  "context": {
+    "cookiecutter": {
+      "project_name": "yamlfix",
+      "project_slug": "yamlfix",
+      "project_description": "A simple opionated yaml formatter that keeps your comments!",
+      "requirements": "click, ruamel.yaml",
+      "configure_command_line": "True",
+      "read_configuration_from_yaml": "True",
+      "github_user": "lyz-code",
+      "github_token_pass_path": "internet/github.lyz-code.api_token",
+      "pypi_token_pass_path": "internet/pypi.token",
+      "test_pypi_token_pass_path": "internet/test.pypi.token",
+      "author": "Lyz",
+      "author_email": "lyz-code-security-advisories@riseup.net",
+      "security_advisories_email": "lyz-code-security-advisories@riseup.net",
+      "project_underscore_slug": "yamlfix",
+      "_template": "https://github.com/lyz-code/cookiecutter-python-project"
+    }
+  },
+  "directory": null,
+  "checkout": null
 }

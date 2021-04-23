@@ -5,6 +5,7 @@ from textwrap import dedent
 
 import pytest
 from click.testing import CliRunner
+from py._path.local import LocalPath
 
 from yamlfix.entrypoints.cli import cli
 from yamlfix.version import __version__
@@ -27,9 +28,10 @@ def test_version(runner: CliRunner) -> None:
     )
 
 
-def test_corrects_one_file(runner: CliRunner, tmpdir) -> None:
+def test_corrects_one_file(runner: CliRunner, tmpdir: LocalPath) -> None:
     """Correct the source code of a file."""
-    test_file = tmpdir.join("source.yaml")
+    # ignore: call to untyped join method, they don't have type hints
+    test_file = tmpdir.join("source.yaml")  # type: ignore
     test_file.write("program: yamlfix")
     fixed_source = dedent(
         """\
@@ -44,11 +46,12 @@ def test_corrects_one_file(runner: CliRunner, tmpdir) -> None:
 
 
 @pytest.mark.secondary()
-def test_corrects_three_files(runner: CliRunner, tmpdir) -> None:
+def test_corrects_three_files(runner: CliRunner, tmpdir: LocalPath) -> None:
     """Correct the source code of multiple files."""
     test_files = []
     for file_number in range(3):
-        test_file = tmpdir.join(f"source_{file_number}.yaml")
+        # ignore: call to untyped join method, they don't have type hints
+        test_file = tmpdir.join(f"source_{file_number}.yaml")  # type: ignore
         test_file.write("program: yamlfix")
         test_files.append(test_file)
     fixed_source = dedent(
@@ -64,7 +67,7 @@ def test_corrects_three_files(runner: CliRunner, tmpdir) -> None:
         assert test_file.read() == fixed_source
 
 
-def test_corrects_code_from_stdin(runner) -> None:
+def test_corrects_code_from_stdin(runner: CliRunner) -> None:
     """Correct the source code passed as stdin."""
     source = "program: yamlfix"
     fixed_source = dedent(
