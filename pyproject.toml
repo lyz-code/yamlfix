@@ -78,12 +78,14 @@ format = "grouped"
 max_line_length = 88
 show_source = true
 docstring-convention = "google"
+extended_default_ignore=[]  # Until https://github.com/flakehell/flakehell/issues/10 is solved
 
 [tool.flakehell.plugins]
 flake8-aaa = ["+*"]
 flake8-annotations = [
   "+*",
   "-ANN101", # There is usually no need to type the self argument of class methods.
+  "-ANN102", # There is usually no need to type the cls argument of class methods.
 ]
 flake8-annotations-complexity = ["+*"]
 flake8-bugbear = ["+*"]
@@ -102,7 +104,11 @@ flake8-use-fstring = [
   "+*",
   '-FS003' # f-string missing prefix
 ]
-flake8-typing-imports = ["+*"]
+flake8-typing-imports = [
+  "+*",
+  "-TYP001", # guard import by `if False:  # TYPE_CHECKING`: TYPE_CHECKING (not in
+             #   3.5.0, 3.5.1). We don't support Python < 3.6
+]
 flake8-variables-names = ["+*"]
 dlint = ["+*"]
 pylint = [
@@ -152,6 +158,9 @@ pycodestyle = [
 # --------- Pylint -------------
 [tool.pylint.'TYPECHECK']
 generated-members = "sh"
+
+[tool.pylint.'MESSAGES CONTROL']
+extension-pkg-whitelist = "pydantic"
 
 # --------- Build-system -------------
 

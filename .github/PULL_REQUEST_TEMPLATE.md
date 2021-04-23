@@ -1,4 +1,4 @@
-<!-- Describe what the change is, try to link it with open issues -->
+<!-- Describe what the change is, trying to link it with open issues -->
 
 ## Checklist
 

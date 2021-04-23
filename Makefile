@@ -99,13 +99,13 @@ clean:
 	rm -rf `find . -name __pycache__`
 	rm -f `find . -type f -name '*.py[co]' `
 	rm -f `find . -type f -name '*.rej' `
+	rm -rf `find . -type d -name '*.egg-info' `
 	rm -f `find . -type f -name '*~' `
 	rm -f `find . -type f -name '.*~' `
 	rm -rf .cache
 	rm -rf .pytest_cache
 	rm -rf .mypy_cache
 	rm -rf htmlcov
-	rm -rf *.egg-info
 	rm -f .coverage
 	rm -f .coverage.*
 	rm -rf build
@@ -145,12 +145,13 @@ pull-master:
 	@echo ""
 
 .PHONY: build-package
-build-package:
+build-package: clean
 	@echo "------------------------"
 	@echo "- Building the package -"
 	@echo "------------------------"
 
-	python -m pep517.build --source --binary --out-dir dist/ .
+	python setup.py -q bdist_wheel
+	python setup.py -q sdist
 
 	@echo ""
 
@@ -171,6 +172,16 @@ upload-pypi:
 	@echo "-----------------------------"
 
 	twine upload -r pypi dist/*
+
+	@echo ""
+
+.PHONY: upload-testing-pypi
+upload-testing-pypi:
+	@echo "-------------------------------------"
+	@echo "- Uploading package to pypi testing -"
+	@echo "-------------------------------------"
+
+	twine upload -r testpypi dist/*
 
 	@echo ""
 

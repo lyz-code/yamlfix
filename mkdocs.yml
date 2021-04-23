@@ -3,7 +3,7 @@ site_name: yamlfix
 site_author: Lyz
 site_url: https://lyz-code.github.io/yamlfix
 nav:
-  - Overview: index.md
+  - yamlfix: index.md
   - Editor Integration: editor_integration.md
   - Reference: reference.md
   - Contributing: contributing.md
@@ -24,6 +24,7 @@ plugins:
       fallback_to_build_date: true
   - minify:
       minify_html: true
+  - section-index
 
 markdown_extensions:
   - abbr

@@ -1,7 +1,15 @@
 ---
 name: Tests
 
-on: pull_request  # yamllint disable-line rule:truthy
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches:
+      - '*'          # matches every branch that doesn't contain a '/'
+      - '*/*'        # matches every branch containing a single '/'
+      - '**'         # matches every branch
+      - '!gh-pages'  # excludes gh-pages
+  pull_request:
+    types: [opened]
 
 jobs:
   Tests:
@@ -10,7 +18,6 @@ jobs:
       max-parallel: 3
       matrix:
         python-version: [3.6, 3.7, 3.8]
-
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python ${{ matrix.python-version }}
@@ -46,7 +53,7 @@ jobs:
       - name: Finished
         run: |
           pip3 install coveralls
-          coveralls --finish
+          coveralls --service=github --finish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   Python_Package:
