@@ -20,4 +20,4 @@ jobs:
       - name: Install the program
         run: pip install yamlfix
       - name: Test the program works
-run: yamlfix --version
+        run: yamlfix --version
