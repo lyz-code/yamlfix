@@ -51,7 +51,7 @@
             <span class=c1># AttributeError. But when you use it outside testing, no AttributeError</span>
             <span class=c1># is raised and name has the value &lt;stdin&gt;. So there is no way of testing</span>
             <span class=c1># this behaviour.</span>
-            <span class=k>if</span> <span class=n>file_wrapper</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;&lt;stdin&gt;&quot;</span><span class=p>:</span>  <span class=c1># pragma no cover</span>
+            <span class=k>if</span> <span class=n>file_wrapper</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;&lt;stdin&gt;&quot;</span><span class=p>:</span>  <span class=c1># pragma: no cover</span>
                 <span class=n>output</span> <span class=o>=</span> <span class=s2>&quot;output&quot;</span>
             <span class=k>else</span><span class=p>:</span>
                 <span class=n>output</span> <span class=o>=</span> <span class=s2>&quot;file&quot;</span>
