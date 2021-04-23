@@ -1,3 +1,13 @@
+## 0.5.0 (2021-04-23)
+
+### Fix
+
+- install wheel in the build pipeline
+
+### feat
+
+- add a ci job to test that the program is installable
+
 ## 0.4.2 (2021-04-23)
 
 ### Fix
