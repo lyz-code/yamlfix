@@ -33,7 +33,7 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
             # AttributeError. But when you use it outside testing, no AttributeError
             # is raised and name has the value <stdin>. So there is no way of testing
             # this behaviour.
-            if file_wrapper.name == "<stdin>":  # pragma no cover
+            if file_wrapper.name == "<stdin>":  # pragma: no cover
                 output = "output"
             else:
                 output = "file"
