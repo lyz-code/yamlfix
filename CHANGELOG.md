@@ -1,3 +1,13 @@
+## 0.4.2 (2021-04-23)
+
+### Fix
+
+- replace ruamel.yaml with ruyaml
+
+### fix
+
+- respect the double exclamation marks in the variables
+
 ## 0.4.1 (2021-03-18)
 
 ### Fix
