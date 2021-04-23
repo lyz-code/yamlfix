@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://lyz-code.github.io/yamlfix/</loc>
-     <lastmod>2021-04-04</lastmod>
+     <lastmod>2021-04-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lyz-code.github.io/yamlfix/editor_integration/</loc>
-     <lastmod>2021-04-04</lastmod>
+     <lastmod>2021-04-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lyz-code.github.io/yamlfix/reference/</loc>
-     <lastmod>2021-04-04</lastmod>
+     <lastmod>2021-04-23</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://lyz-code.github.io/yamlfix/contributing/</loc>
-     <lastmod>2021-04-04</lastmod>
+     <lastmod>2021-04-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
