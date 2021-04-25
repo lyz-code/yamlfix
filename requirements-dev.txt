@@ -12,7 +12,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-astroid==2.5.3
+astroid==2.5.5
     # via pylint
 asttokens==2.0.5
     # via flake8-aaa
@@ -253,7 +253,7 @@ mkdocs-material-extensions==1.0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-material==7.1.2
+mkdocs-material==7.1.3
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -332,7 +332,7 @@ pygments==2.8.1
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.7.4
+pylint==2.8.0
     # via -r requirements-dev.in
 pymdown-extensions==8.1.1
     # via
@@ -459,7 +459,7 @@ zipp==3.4.1
     #   pep517
 
 # The following packages are considered to be unsafe in a requirements file:
-pip==21.0.1
+pip==21.1
     # via pip-tools
 setuptools==56.0.0
     # via
