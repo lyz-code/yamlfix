@@ -303,7 +303,7 @@ pathspec==0.8.1
     # via
     #   black
     #   yamllint
-pbr==5.5.1
+pbr==5.6.0
     # via stevedore
 pep517==0.10.0
     # via pip-tools
@@ -332,7 +332,7 @@ pygments==2.8.1
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.8.1
+pylint==2.8.2
     # via -r requirements-dev.in
 pymdown-extensions==8.1.1
     # via
