@@ -39,7 +39,7 @@ beautifulsoup4==4.9.3
     # via
     #   -r docs/requirements.txt
     #   mkdocs-htmlproofer-plugin
-black==21.4b0
+black==21.4b1
     # via -r requirements-dev.in
 cached-property==1.5.2
     # via
