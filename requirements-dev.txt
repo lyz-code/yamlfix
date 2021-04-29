@@ -29,7 +29,7 @@ autoflake==1.4
     # via autoimport
 autoimport==0.7.0
     # via -r requirements-dev.in
-babel==2.9.0
+babel==2.9.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs-git-revision-date-localized-plugin
@@ -39,7 +39,7 @@ beautifulsoup4==4.9.3
     # via
     #   -r docs/requirements.txt
     #   mkdocs-htmlproofer-plugin
-black==21.4b1
+black==21.4b2
     # via -r requirements-dev.in
 cached-property==1.5.2
     # via
