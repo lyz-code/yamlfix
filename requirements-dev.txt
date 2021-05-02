@@ -430,7 +430,7 @@ typed-ast==1.4.3
     #   black
     #   flake8-annotations
     #   mypy
-typing-extensions==3.7.4.3
+typing-extensions==3.10.0.0
     # via
     #   -r docs/requirements.txt
     #   black

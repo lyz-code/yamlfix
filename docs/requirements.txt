@@ -122,7 +122,7 @@ tornado==6.1
     #   mkdocs
 tqdm==4.60.0
     # via nltk
-typing-extensions==3.7.4.3
+typing-extensions==3.10.0.0
     # via
     #   importlib-metadata
     #   pytkdocs
