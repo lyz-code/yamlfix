@@ -91,7 +91,7 @@ mkdocstrings==0.15.0
     # via -r docs/requirements.in
 nltk==3.6.2
     # via lunr
-pygments==2.8.1
+pygments==2.9.0
     # via mkdocs-material
 pymdown-extensions==8.1.1
     # via
