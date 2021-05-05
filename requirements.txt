@@ -12,5 +12,5 @@ ruyaml==0.20.0
     # via yamlfix (setup.py)
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==56.0.0
+setuptools==56.1.0
     # via ruyaml
