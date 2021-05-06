@@ -107,7 +107,7 @@ regex==2021.4.4
     # via nltk
 requests==2.25.1
     # via mkdocs-htmlproofer-plugin
-six==1.15.0
+six==1.16.0
     # via
     #   astunparse
     #   livereload
