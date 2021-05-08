@@ -20,7 +20,7 @@ astunparse==1.6.3
     # via
     #   -r docs/requirements.txt
     #   pytkdocs
-attrs==21.1.0
+attrs==21.2.0
     # via
     #   flake8-bugbear
     #   flake8-eradicate
