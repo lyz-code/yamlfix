@@ -4,7 +4,7 @@
 #
 #    pip-compile --allow-unsafe
 #
-click==7.1.2
+click==8.0.0
     # via yamlfix (setup.py)
 distro==1.5.0
     # via ruyaml
