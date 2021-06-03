@@ -15,6 +15,8 @@ update:
 	@echo "- Updating dependencies -"
 	@echo "-------------------------"
 
+	pip install -U pip
+
 	rm requirements.txt
 	touch requirements.txt
 	pip-compile -Ur --allow-unsafe

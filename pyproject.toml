@@ -37,7 +37,7 @@ exclude = '''
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-vv --tb=short"
+addopts = "-vv --tb=short -n auto"
 python_paths = "."
 testpaths = "tests"
 norecursedirs = [
