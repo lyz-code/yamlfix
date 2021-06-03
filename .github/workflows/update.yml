@@ -26,6 +26,7 @@ jobs:
         run: make all
       - name: Commit files
         run: |
+          rm -r .git/hooks
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add requirements.txt docs/requirements.txt requirements-dev.txt
