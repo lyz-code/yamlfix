@@ -6,17 +6,17 @@
 #
 astunparse==1.6.3
     # via pytkdocs
-babel==2.9.0
+babel==2.9.1
     # via mkdocs-git-revision-date-localized-plugin
 beautifulsoup4==4.9.3
     # via mkdocs-htmlproofer-plugin
 cached-property==1.5.2
     # via pytkdocs
-certifi==2020.12.5
+certifi==2021.5.30
     # via requests
 chardet==4.0.0
     # via requests
-click==7.1.2
+click==8.0.1
     # via
     #   mkdocs
     #   nltk
@@ -24,15 +24,17 @@ future==0.18.2
     # via lunr
 gitdb==4.0.7
     # via gitpython
-gitpython==3.1.14
+gitpython==3.1.17
     # via mkdocs-git-revision-date-localized-plugin
 htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==2.10
     # via requests
-importlib-metadata==4.0.1
-    # via markdown
-jinja2==2.11.3
+importlib-metadata==4.4.0
+    # via
+    #   click
+    #   markdown
+jinja2==3.0.1
     # via
     #   mkdocs
     #   mkdocstrings
@@ -54,27 +56,27 @@ markdown==3.3.4
     #   mkdocs-material
     #   mkdocstrings
     #   pymdown-extensions
-markupsafe==1.1.1
+markupsafe==2.0.1
     # via
     #   jinja2
     #   mkdocstrings
 mkdocs-autolinks-plugin==0.4.0
     # via -r docs/requirements.in
-mkdocs-autorefs==0.1.1
+mkdocs-autorefs==0.2.1
     # via mkdocstrings
-mkdocs-git-revision-date-localized-plugin==0.9
+mkdocs-git-revision-date-localized-plugin==0.9.2
     # via -r docs/requirements.in
-mkdocs-htmlproofer-plugin==0.1.0
+mkdocs-htmlproofer-plugin==0.2.0
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.1
     # via mkdocs-material
-mkdocs-material==7.1.2
+mkdocs-material==7.1.6
     # via
     #   -r docs/requirements.in
     #   mkdocs-material-extensions
 mkdocs-minify-plugin==0.4.0
     # via -r docs/requirements.in
-mkdocs-section-index==0.2.3
+mkdocs-section-index==0.3.0
     # via -r docs/requirements.in
 mkdocs==1.1.2
     # via
@@ -87,13 +89,13 @@ mkdocs==1.1.2
     #   mkdocs-minify-plugin
     #   mkdocs-section-index
     #   mkdocstrings
-mkdocstrings==0.15.0
+mkdocstrings==0.15.1
     # via -r docs/requirements.in
 nltk==3.6.2
     # via lunr
-pygments==2.8.1
+pygments==2.9.0
     # via mkdocs-material
-pymdown-extensions==8.1.1
+pymdown-extensions==8.2
     # via
     #   mkdocs-material
     #   mkdocstrings
@@ -107,7 +109,7 @@ regex==2021.4.4
     # via nltk
 requests==2.25.1
     # via mkdocs-htmlproofer-plugin
-six==1.15.0
+six==1.16.0
     # via
     #   astunparse
     #   livereload
@@ -120,13 +122,14 @@ tornado==6.1
     # via
     #   livereload
     #   mkdocs
-tqdm==4.60.0
+tqdm==4.61.0
     # via nltk
-typing-extensions==3.7.4.3
+typing-extensions==3.10.0.0
     # via
+    #   gitpython
     #   importlib-metadata
     #   pytkdocs
-urllib3==1.26.4
+urllib3==1.26.5
     # via requests
 wheel==0.36.2
     # via astunparse
