@@ -166,13 +166,13 @@ htmlmin==0.1.12
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-identify==2.2.7
+identify==2.2.8
     # via pre-commit
 idna==2.10
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==4.4.0
+importlib-metadata==4.5.0
     # via
     #   -r docs/requirements.txt
     #   -r requirements.txt
