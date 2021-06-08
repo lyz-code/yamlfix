@@ -17,11 +17,9 @@ certifi==2021.5.30
 chardet==4.0.0
     # via requests
 click==8.0.1
-    # via
-    #   mkdocs
-    #   nltk
-future==0.18.2
-    # via lunr
+    # via mkdocs
+ghp-import==2.0.1
+    # via mkdocs
 gitdb==4.0.7
     # via gitpython
 gitpython==3.1.17
@@ -34,18 +32,13 @@ importlib-metadata==4.5.0
     # via
     #   click
     #   markdown
+    #   mkdocs
 jinja2==3.0.1
     # via
     #   mkdocs
     #   mkdocstrings
-joblib==1.0.1
-    # via nltk
 jsmin==2.2.2
     # via mkdocs-minify-plugin
-livereload==2.6.3
-    # via mkdocs
-lunr[languages]==0.5.8
-    # via mkdocs
 markdown-include==0.6.0
     # via -r docs/requirements.in
 markdown==3.3.4
@@ -60,6 +53,8 @@ markupsafe==2.0.1
     # via
     #   jinja2
     #   mkdocstrings
+mergedeep==1.3.4
+    # via mkdocs
 mkdocs-autolinks-plugin==0.4.0
     # via -r docs/requirements.in
 mkdocs-autorefs==0.2.1
@@ -76,9 +71,9 @@ mkdocs-material==7.1.7
     #   mkdocs-material-extensions
 mkdocs-minify-plugin==0.4.0
     # via -r docs/requirements.in
-mkdocs-section-index==0.3.0
+mkdocs-section-index==0.3.1
     # via -r docs/requirements.in
-mkdocs==1.1.2
+mkdocs==1.2
     # via
     #   -r docs/requirements.in
     #   mkdocs-autolinks-plugin
@@ -91,39 +86,38 @@ mkdocs==1.1.2
     #   mkdocstrings
 mkdocstrings==0.15.1
     # via -r docs/requirements.in
-nltk==3.6.2
-    # via lunr
+packaging==20.9
+    # via mkdocs
 pygments==2.9.0
     # via mkdocs-material
 pymdown-extensions==8.2
     # via
     #   mkdocs-material
     #   mkdocstrings
+pyparsing==2.4.7
+    # via packaging
+python-dateutil==2.8.1
+    # via ghp-import
 pytkdocs==0.11.1
     # via mkdocstrings
 pytz==2021.1
     # via babel
-pyyaml==5.4.1
+pyyaml-env-tag==0.1
     # via mkdocs
-regex==2021.4.4
-    # via nltk
+pyyaml==5.4.1
+    # via
+    #   mkdocs
+    #   pyyaml-env-tag
 requests==2.25.1
     # via mkdocs-htmlproofer-plugin
 six==1.16.0
     # via
     #   astunparse
-    #   livereload
-    #   lunr
+    #   python-dateutil
 smmap==4.0.0
     # via gitdb
 soupsieve==2.2.1
     # via beautifulsoup4
-tornado==6.1
-    # via
-    #   livereload
-    #   mkdocs
-tqdm==4.61.0
-    # via nltk
 typing-extensions==3.10.0.0
     # via
     #   gitpython
@@ -131,6 +125,8 @@ typing-extensions==3.10.0.0
     #   pytkdocs
 urllib3==1.26.5
     # via requests
+watchdog==2.1.2
+    # via mkdocs
 wheel==0.36.2
     # via astunparse
 zipp==3.4.1
