@@ -41,7 +41,7 @@ beautifulsoup4==4.9.3
     # via
     #   -r docs/requirements.txt
     #   mkdocs-htmlproofer-plugin
-black==21.5b2
+black==21.6b0
     # via -r requirements-dev.in
 cached-property==1.5.2
     # via
@@ -284,7 +284,7 @@ mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-mypy==0.901
+mypy==0.902
     # via -r requirements-dev.in
 nodeenv==1.6.0
     # via pre-commit
