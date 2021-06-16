@@ -154,7 +154,7 @@ gitdb==4.0.7
     # via
     #   -r docs/requirements.txt
     #   gitpython
-gitpython==3.1.17
+gitpython==3.1.14
     # via
     #   -r docs/requirements.txt
     #   bandit
@@ -437,7 +437,6 @@ typing-extensions==3.10.0.0
     #   -r docs/requirements.txt
     #   -r requirements.txt
     #   black
-    #   gitpython
     #   importlib-metadata
     #   mypy
     #   pytkdocs

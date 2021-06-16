@@ -22,7 +22,7 @@ ghp-import==2.0.1
     # via mkdocs
 gitdb==4.0.7
     # via gitpython
-gitpython==3.1.17
+gitpython==3.1.14
     # via mkdocs-git-revision-date-localized-plugin
 htmlmin==0.1.12
     # via mkdocs-minify-plugin
@@ -120,7 +120,6 @@ soupsieve==2.2.1
     # via beautifulsoup4
 typing-extensions==3.10.0.0
     # via
-    #   gitpython
     #   importlib-metadata
     #   pytkdocs
 urllib3==1.26.5
