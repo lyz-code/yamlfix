@@ -74,7 +74,7 @@ mkdocs-git-revision-date-localized-plugin==0.9.2
     # via -r docs/requirements.in
 mkdocs-htmlproofer-plugin==0.3.0
     # via -r docs/requirements.in
-mkdocs-material==7.1.8
+mkdocs-material==7.1.9
     # via
     #   -r docs/requirements.in
     #   mkdocs-material-extensions
@@ -123,7 +123,7 @@ typing-extensions==3.10.0.0
     #   gitpython
     #   importlib-metadata
     #   pytkdocs
-urllib3==1.26.5
+urllib3==1.26.6
     # via requests
 watchdog==2.1.2
     # via mkdocs

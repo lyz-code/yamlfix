@@ -257,7 +257,7 @@ mkdocs-htmlproofer-plugin==0.3.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
-mkdocs-material==7.1.8
+mkdocs-material==7.1.9
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -441,7 +441,7 @@ typing-extensions==3.10.0.0
     #   importlib-metadata
     #   mypy
     #   pytkdocs
-urllib3==1.26.5
+urllib3==1.26.6
     # via
     #   -r docs/requirements.txt
     #   flakehell
