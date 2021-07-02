@@ -328,7 +328,7 @@ pygments==2.9.0
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.9.1
+pylint==2.9.3
     # via -r requirements-dev.in
 pymdown-extensions==8.2
     # via
@@ -381,7 +381,7 @@ pyyaml-env-tag==0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs
-regex==2021.4.4
+regex==2021.7.1
     # via black
 requests==2.25.1
     # via
