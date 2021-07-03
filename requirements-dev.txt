@@ -462,7 +462,7 @@ wrapt==1.12.1
     # via astroid
 yamllint==1.26.1
     # via -r requirements-dev.in
-zipp==3.4.1
+zipp==3.5.0
     # via
     #   -r docs/requirements.txt
     #   -r requirements.txt

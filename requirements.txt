@@ -14,7 +14,7 @@ ruyaml==0.20.0
     # via yamlfix (setup.py)
 typing-extensions==3.10.0.0
     # via importlib-metadata
-zipp==3.4.1
+zipp==3.5.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
