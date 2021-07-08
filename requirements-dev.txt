@@ -104,6 +104,7 @@ flake8==3.9.2
     #   flake8-typing-imports
     #   flake8-use-fstring
     #   flakehell
+    #   pep8-naming
 flake8-aaa==0.12.0
     # via -r requirements-dev.in
 flake8-annotations==2.6.2
@@ -253,7 +254,7 @@ mkdocs-git-revision-date-localized-plugin==0.9.2
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
-mkdocs-htmlproofer-plugin==0.3.0
+mkdocs-htmlproofer-plugin==0.4.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -301,7 +302,7 @@ pbr==5.6.0
     # via stevedore
 pep517==0.10.0
     # via pip-tools
-pep8-naming==0.11.1
+pep8-naming==0.12.0
     # via -r requirements-dev.in
 pip-tools==6.2.0
     # via -r requirements-dev.in
