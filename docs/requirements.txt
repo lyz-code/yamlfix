@@ -14,7 +14,7 @@ cached-property==1.5.2
     # via pytkdocs
 certifi==2021.5.30
     # via requests
-chardet==4.0.0
+charset-normalizer==2.0.1
     # via requests
 click==8.0.1
     # via mkdocs
@@ -26,7 +26,7 @@ gitpython==3.1.18
     # via mkdocs-git-revision-date-localized-plugin
 htmlmin==0.1.12
     # via mkdocs-minify-plugin
-idna==2.10
+idna==3.2
     # via requests
 importlib-metadata==4.6.1
     # via
@@ -108,7 +108,7 @@ pyyaml==5.4.1
     #   pyyaml-env-tag
 pyyaml-env-tag==0.1
     # via mkdocs
-requests==2.25.1
+requests==2.26.0
     # via mkdocs-htmlproofer-plugin
 six==1.16.0
     # via
