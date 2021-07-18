@@ -294,7 +294,7 @@ packaging==21.0
     #   mkdocs
     #   pytest
     #   safety
-pathspec==0.8.1
+pathspec==0.9.0
     # via
     #   black
     #   yamllint
