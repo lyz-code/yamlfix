@@ -10,7 +10,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-astroid==2.6.2
+astroid==2.6.4
     # via pylint
 asttokens==2.0.5
     # via flake8-aaa
@@ -480,6 +480,7 @@ pip==21.1.3
 setuptools==57.4.0
     # via
     #   -r requirements.txt
+    #   astroid
     #   flake8-annotations-complexity
     #   flake8-expression-complexity
     #   flake8-variables-names
