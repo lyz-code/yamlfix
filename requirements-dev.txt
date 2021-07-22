@@ -258,7 +258,7 @@ mkdocs-htmlproofer-plugin==0.4.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
-mkdocs-material==7.1.11
+mkdocs-material==7.2.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -331,7 +331,7 @@ pygments==2.9.0
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.9.4
+pylint==2.9.5
     # via -r requirements-dev.in
 pymdown-extensions==8.2
     # via
