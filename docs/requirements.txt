@@ -22,7 +22,7 @@ ghp-import==2.0.1
     # via mkdocs
 gitdb==4.0.7
     # via gitpython
-gitpython==3.1.18
+gitpython==3.1.20
     # via mkdocs-git-revision-date-localized-plugin
 htmlmin==0.1.12
     # via mkdocs-minify-plugin
