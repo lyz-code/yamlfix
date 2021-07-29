@@ -155,7 +155,7 @@ gitdb==4.0.7
     # via
     #   -r docs/requirements.txt
     #   gitpython
-gitpython==3.1.20
+gitpython==3.1.18
     # via
     #   -r docs/requirements.txt
     #   bandit
@@ -189,7 +189,7 @@ importlib-metadata==4.6.1
     #   virtualenv
 iniconfig==1.1.1
     # via pytest
-isort==5.9.2
+isort==5.9.3
     # via
     #   -r requirements-dev.in
     #   pylint
@@ -331,7 +331,7 @@ pygments==2.9.0
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.9.5
+pylint==2.9.6
     # via -r requirements-dev.in
 pymdown-extensions==8.2
     # via
