@@ -14,7 +14,7 @@ cached-property==1.5.2
     # via pytkdocs
 certifi==2021.5.30
     # via requests
-charset-normalizer==2.0.3
+charset-normalizer==2.0.4
     # via requests
 click==8.0.1
     # via mkdocs
@@ -28,7 +28,7 @@ htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==3.2
     # via requests
-importlib-metadata==4.6.1
+importlib-metadata==4.6.2
     # via
     #   click
     #   markdown
