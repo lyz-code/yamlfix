@@ -28,7 +28,7 @@ htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==3.2
     # via requests
-importlib-metadata==4.6.2
+importlib-metadata==4.6.3
     # via
     #   click
     #   markdown
@@ -44,6 +44,7 @@ markdown==3.3.4
     #   markdown-include
     #   mkdocs
     #   mkdocs-autorefs
+    #   mkdocs-htmlproofer-plugin
     #   mkdocs-material
     #   mkdocstrings
     #   pymdown-extensions
@@ -72,9 +73,9 @@ mkdocs-autorefs==0.2.1
     # via mkdocstrings
 mkdocs-git-revision-date-localized-plugin==0.9.2
     # via -r docs/requirements.in
-mkdocs-htmlproofer-plugin==0.4.0
+mkdocs-htmlproofer-plugin==0.5.0
     # via -r docs/requirements.in
-mkdocs-material==7.2.1
+mkdocs-material==7.2.2
     # via
     #   -r docs/requirements.in
     #   mkdocs-material-extensions
