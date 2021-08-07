@@ -164,7 +164,7 @@ htmlmin==0.1.12
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-identify==2.2.12
+identify==2.2.13
     # via pre-commit
 idna==3.2
     # via
@@ -311,7 +311,7 @@ platformdirs==2.2.0
     # via virtualenv
 pluggy==0.13.1
     # via pytest
-pre-commit==2.13.0
+pre-commit==2.14.0
     # via -r requirements-dev.in
 py==1.10.0
     # via
@@ -476,7 +476,7 @@ zipp==3.5.0
     #   pep517
 
 # The following packages are considered to be unsafe in a requirements file:
-pip==21.2.2
+pip==21.2.3
     # via pip-tools
 setuptools==57.4.0
     # via
