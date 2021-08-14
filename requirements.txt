@@ -8,7 +8,7 @@ click==8.0.1
     # via yamlfix (setup.py)
 distro==1.6.0
     # via ruyaml
-importlib-metadata==4.6.3
+importlib-metadata==4.6.4
     # via click
 ruyaml==0.20.0
     # via yamlfix (setup.py)
