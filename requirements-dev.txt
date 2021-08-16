@@ -327,7 +327,7 @@ pyflakes==2.3.1
     # via
     #   autoflake
     #   flake8
-pygments==2.9.0
+pygments==2.10.0
     # via
     #   -r docs/requirements.txt
     #   flakehell
