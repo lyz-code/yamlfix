@@ -96,12 +96,13 @@ def _ruamel_yaml_fixer(source_code: str) -> str:
     # Start the document with ---
     # ignore: variable has type None, what can we do, it doesn't have type hints...
     yaml.explicit_start = True  # type: ignore
-    source_dict = yaml.load(source_code)
+    source_dicts = yaml.load_all(source_code)
 
     # Return the output to a string
     string_stream = StringIO()
-    yaml.dump(source_dict, string_stream)
-    source_code = string_stream.getvalue()
+    for source_dict in source_dicts:
+        yaml.dump(source_dict, string_stream)
+        source_code = string_stream.getvalue()
     string_stream.close()
 
     return source_code.strip()
