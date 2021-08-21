@@ -339,3 +339,20 @@ def test_fix_code_doesnt_change_double_exclamation_marks() -> None:
     result = fix_code(source)
 
     assert result == source
+
+
+def test_fix_code_parses_files_with_multiple_documents() -> None:
+    """Files that contain multiple documents should be parsed as a collection of
+    separate documents and then dumped together again.
+    """
+    source = dedent(
+        """\
+        ---
+        project: yamlfix
+        ---
+        project: yamlfix"""
+    )
+
+    result = fix_code(source)
+
+    assert result == source
