@@ -1,3 +1,9 @@
+## 0.6.0 (2021-08-21)
+
+### Feat
+
+- allow formatting files with multiple documents
+
 ## 0.5.0 (2021-04-23)
 
 ### Fix
