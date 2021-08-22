@@ -7,7 +7,28 @@ Functions:
 import logging
 import sys
 
-log = logging.getLogger(__name__)
+# Ansi color codes
+RED = 31
+YELLOW = 33
+CYAN = 36
+GREEN = 32
+
+
+class ConsoleColorFormatter(logging.Formatter):
+    """Custom formatter that prints log levels to the console as colored plus signs."""
+
+    colors = {
+        logging.DEBUG: GREEN,
+        logging.INFO: CYAN,
+        logging.WARNING: YELLOW,
+        logging.ERROR: RED,
+    }
+
+    def format(self, record: logging.LogRecord) -> str:
+        """Format log records as a colored plus sign followed by the log message."""
+        color = self.colors.get(record.levelno, 0)
+        self._style._fmt = f"[\033[{color}m+\033[0m] %(message)s"
+        return super().format(record)
 
 
 # I have no idea how to test this function :(. If you do, please send a PR.
@@ -17,15 +38,7 @@ def load_logger(verbose: bool = False) -> None:  # pragma no cover
     Args:
         verbose: Set the logging level to Debug.
     """
-    logging.addLevelName(logging.INFO, "[\033[36m+\033[0m]")
-    logging.addLevelName(logging.ERROR, "[\033[31m+\033[0m]")
-    logging.addLevelName(logging.DEBUG, "[\033[32m+\033[0m]")
-    logging.addLevelName(logging.WARNING, "[\033[33m+\033[0m]")
-    if verbose:
-        logging.basicConfig(
-            stream=sys.stderr, level=logging.DEBUG, format="  %(levelname)s %(message)s"
-        )
-    else:
-        logging.basicConfig(
-            stream=sys.stderr, level=logging.INFO, format="  %(levelname)s %(message)s"
-        )
+    log_level = logging.DEBUG if verbose else logging.INFO
+    logging.basicConfig(stream=sys.stderr, level=log_level)
+    for handler in logging.getLogger().handlers:
+        handler.setFormatter(ConsoleColorFormatter())
