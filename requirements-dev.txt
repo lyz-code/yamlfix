@@ -5,9 +5,7 @@
 #    pip-compile --allow-unsafe --output-file=requirements-dev.txt requirements-dev.in
 #
 appdirs==1.4.4
-    # via
-    #   black
-    #   pylint
+    # via black
 astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
@@ -310,7 +308,9 @@ pep8-naming==0.12.1
 pip-tools==6.2.0
     # via -r requirements-dev.in
 platformdirs==2.2.0
-    # via virtualenv
+    # via
+    #   pylint
+    #   virtualenv
 pluggy==0.13.1
     # via pytest
 pre-commit==2.14.0
@@ -334,7 +334,7 @@ pygments==2.10.0
     #   -r docs/requirements.txt
     #   flakehell
     #   mkdocs-material
-pylint==2.10.1
+pylint==2.10.2
     # via -r requirements-dev.in
 pymdown-extensions==8.2
     # via
@@ -387,7 +387,7 @@ pyyaml-env-tag==0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs
-regex==2021.8.3
+regex==2021.8.21
     # via black
 requests==2.26.0
     # via
@@ -468,7 +468,7 @@ wheel==0.37.0
     #   pip-tools
 wrapt==1.12.1
     # via astroid
-yamllint==1.26.2
+yamllint==1.26.3
     # via -r requirements-dev.in
 zipp==3.5.0
     # via
