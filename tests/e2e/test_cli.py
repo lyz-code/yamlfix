@@ -1,5 +1,6 @@
 """Test the command line interface."""
 
+import logging
 import re
 from textwrap import dedent
 
@@ -80,3 +81,22 @@ def test_corrects_code_from_stdin(runner: CliRunner) -> None:
 
     assert result.exit_code == 0
     assert result.stdout == fixed_source
+
+
+@pytest.mark.secondary()
+@pytest.mark.parametrize("verbose", [True, False])
+def test_verbose_option(runner: CliRunner, verbose: bool) -> None:
+    """Prints debug level logs only when called with --verbose"""
+    # Clear logging handlers for logs to work with CliRunner
+    # For more info see https://github.com/pallets/click/issues/1053)
+    logging.getLogger().handlers = []
+    source = "program: yamlfix"
+    args = ["-", "--verbose"] if verbose else ["-"]
+
+    result = runner.invoke(cli, args, input=source)
+
+    debug_log_format = "[\033[32m+\033[0m]"
+    if verbose:
+        assert debug_log_format in result.stderr
+    else:
+        assert debug_log_format not in result.stderr

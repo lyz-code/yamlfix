@@ -3,13 +3,15 @@
 Classes and functions that connect the different domain model objects with the adapters
 and handlers to achieve the program's purpose.
 """
-
+import logging
 import re
 from io import StringIO
 from typing import List, Optional, Tuple
 
 import ruyaml
 from _io import TextIOWrapper
+
+log = logging.getLogger(__name__)
 
 
 def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
@@ -24,6 +26,7 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
         Fixed code retrieved from stdin or None.
     """
     for file_wrapper in files:
+        log.debug("Fixing file %s...", file_wrapper.name)
         source = file_wrapper.read()
         fixed_source = fix_code(source)
 
@@ -44,6 +47,7 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
             file_wrapper.seek(0)
             file_wrapper.write(fixed_source)
             file_wrapper.truncate()
+            log.debug("Fixed file %s.", file_wrapper.name)
         else:
             return fixed_source
 
@@ -89,6 +93,7 @@ def _ruamel_yaml_fixer(source_code: str) -> str:
     Returns:
         Corrected source code.
     """
+    log.debug("Running ruamel yaml fixer...")
     # Configure YAML formatter
     yaml = ruyaml.main.YAML()
     yaml.indent(mapping=2, sequence=4, offset=2)
@@ -137,6 +142,7 @@ def _fix_top_level_lists(source_code: str) -> str:
     Returns:
         Corrected source code.
     """
+    log.debug("Fixing top level lists...")
     source_lines = source_code.splitlines()
     fixed_source_lines: List[str] = []
     is_top_level_list: Optional[bool] = None
@@ -190,6 +196,7 @@ def _fix_truthy_strings(source_code: str) -> str:
     Returns:
         Corrected source code.
     """
+    log.debug("Fixing truthy strings...")
     source_lines = source_code.splitlines()
     fixed_source_lines: List[str] = []
 
@@ -230,6 +237,7 @@ def _restore_truthy_strings(source_code: str) -> str:
     Returns:
         Corrected source code.
     """
+    log.debug("Restoring truthy strings...")
     source_lines = source_code.splitlines()
     fixed_source_lines: List[str] = []
 
@@ -251,6 +259,7 @@ def _restore_truthy_strings(source_code: str) -> str:
 
 
 def _fix_comments(source_code: str) -> str:
+    log.debug("Fixing comments...")
     fixed_source_lines = []
 
     for line in source_code.splitlines():
@@ -269,6 +278,7 @@ def _restore_double_exclamations(source_code: str) -> str:
     The Ruyaml parser transforms the !!python statement to !%21python which breaks
     some programs.
     """
+    log.debug("Restoring double exclamations...")
     fixed_source_lines = []
     double_exclamation = re.compile(r"!%21")
 
