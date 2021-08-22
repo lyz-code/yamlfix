@@ -19,7 +19,7 @@ def _format_file_list(files: Tuple[TextIOWrapper]) -> str:
 @click.command()
 @click.version_option(version="", message=version.version_info())
 @click.option("--verbose", is_flag=True, help="Enable verbose logging.")
-@click.argument("files", type=click.File("r+"), nargs=-1)
+@click.argument("files", type=click.File("r+"), required=True, nargs=-1)
 def cli(files: Tuple[str], verbose: bool) -> None:
     """Corrects the source code of the specified files."""
     load_logger(verbose)
