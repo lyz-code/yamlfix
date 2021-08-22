@@ -29,27 +29,15 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
         log.debug("Fixing file %s...", file_wrapper.name)
         source = file_wrapper.read()
         fixed_source = fix_code(source)
+        log.warning(file_wrapper.name)
 
-        try:
-            # Click testing runner doesn't simulate correctly the reading from stdin
-            # instead of setting the name attribute to `<stdin>` it gives an
-            # AttributeError. But when you use it outside testing, no AttributeError
-            # is raised and name has the value <stdin>. So there is no way of testing
-            # this behaviour.
-            if file_wrapper.name == "<stdin>":  # pragma: no cover
-                output = "output"
-            else:
-                output = "file"
-        except AttributeError:
-            output = "output"
-
-        if output == "file":
+        if file_wrapper.name == "<stdin>":
+            return fixed_source
+        else:
             file_wrapper.seek(0)
             file_wrapper.write(fixed_source)
             file_wrapper.truncate()
             log.debug("Fixed file %s.", file_wrapper.name)
-        else:
-            return fixed_source
 
     return None
 
