@@ -1,5 +1,6 @@
 """Tests the service layer."""
 
+import logging
 from textwrap import dedent
 
 import pytest
@@ -356,3 +357,22 @@ def test_fix_code_parses_files_with_multiple_documents() -> None:
     result = fix_code(source)
 
     assert result == source
+
+
+def test_fix_code_functions_emit_debug_logs(caplog: pytest.LogCaptureFixture) -> None:
+    """Each fixer function should emit a log at the debug level in each run."""
+    caplog.set_level(logging.DEBUG)
+
+    fix_code("")  # act
+
+    expected_logs = [
+        "Fixing truthy strings...",
+        "Fixing comments...",
+        "Running ruamel yaml fixer...",
+        "Restoring truthy strings...",
+        "Restoring double exclamations...",
+        "Fixing top level lists...",
+    ]
+    assert caplog.messages == expected_logs
+    for record in caplog.records:
+        assert record.levelname == "DEBUG"
