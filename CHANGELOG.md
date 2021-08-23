@@ -1,3 +1,15 @@
+## 0.7.0 (2021-08-23)
+
+### Fix
+
+- remove workaround for stdin tests
+- turn 'files' into required arg
+- add logging formatter and preserve levels
+
+### Feat
+
+- add logs and logging tests
+
 ## 0.6.0 (2021-08-21)
 
 ### Feat
