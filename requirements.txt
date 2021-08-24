@@ -126,7 +126,7 @@ typing-extensions==3.10.0.0
     #   pytkdocs
 urllib3==1.26.6
     # via requests
-watchdog==2.1.4
+watchdog==2.1.5
     # via mkdocs
 wheel==0.37.0
     # via astunparse

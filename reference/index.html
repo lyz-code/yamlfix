@@ -45,7 +45,6 @@
         <span class=n>log</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=s2>&quot;Fixing file </span><span class=si>%s</span><span class=s2>...&quot;</span><span class=p>,</span> <span class=n>file_wrapper</span><span class=o>.</span><span class=n>name</span><span class=p>)</span>
         <span class=n>source</span> <span class=o>=</span> <span class=n>file_wrapper</span><span class=o>.</span><span class=n>read</span><span class=p>()</span>
         <span class=n>fixed_source</span> <span class=o>=</span> <span class=n>fix_code</span><span class=p>(</span><span class=n>source</span><span class=p>)</span>
-        <span class=n>log</span><span class=o>.</span><span class=n>warning</span><span class=p>(</span><span class=n>file_wrapper</span><span class=o>.</span><span class=n>name</span><span class=p>)</span>
 
         <span class=k>if</span> <span class=n>file_wrapper</span><span class=o>.</span><span class=n>name</span> <span class=o>==</span> <span class=s2>&quot;&lt;stdin&gt;&quot;</span><span class=p>:</span>
             <span class=k>return</span> <span class=n>fixed_source</span>
