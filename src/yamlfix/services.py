@@ -29,7 +29,6 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
         log.debug("Fixing file %s...", file_wrapper.name)
         source = file_wrapper.read()
         fixed_source = fix_code(source)
-        log.warning(file_wrapper.name)
 
         if file_wrapper.name == "<stdin>":
             return fixed_source
