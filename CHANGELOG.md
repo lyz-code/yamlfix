@@ -1,3 +1,9 @@
+## 0.7.1 (2021-08-24)
+
+### Fix
+
+- remove leftover warning log
+
 ## 0.7.0 (2021-08-23)
 
 ### Fix
