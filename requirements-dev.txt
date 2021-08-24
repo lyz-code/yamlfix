@@ -457,7 +457,7 @@ urllib3==1.26.6
     #   requests
 virtualenv==20.7.2
     # via pre-commit
-watchdog==2.1.4
+watchdog==2.1.5
     # via
     #   -r docs/requirements.txt
     #   mkdocs
