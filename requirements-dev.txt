@@ -170,7 +170,7 @@ idna==3.2
     # via
     #   -r docs/requirements.txt
     #   requests
-importlib-metadata==4.7.0
+importlib-metadata==4.7.1
     # via
     #   -r docs/requirements.txt
     #   -r requirements.txt
@@ -387,7 +387,7 @@ pyyaml-env-tag==0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs
-regex==2021.8.21
+regex==2021.8.27
     # via black
 requests==2.26.0
     # via
