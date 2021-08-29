@@ -38,7 +38,8 @@ def test_fix_code_adds_header() -> None:
     fixed_source = dedent(
         """\
         ---
-        program: yamlfix"""
+        program: yamlfix
+        """
     )
 
     result = fix_code(source)
@@ -51,7 +52,8 @@ def test_fix_code_doesnt_double_the_header() -> None:
     source = dedent(
         """\
         ---
-        program: yamlfix"""
+        program: yamlfix
+        """
     )
 
     result = fix_code(source)
@@ -66,14 +68,16 @@ def test_fix_code_corrects_indentation_on_lists() -> None:
         ---
         hosts:
         - item1
-        - item2"""
+        - item2
+        """
     )
     fixed_source = dedent(
         """\
         ---
         hosts:
           - item1
-          - item2"""
+          - item2
+        """
     )
 
     result = fix_code(source)
@@ -87,7 +91,8 @@ def test_fix_code_respects_parent_lists() -> None:
         """\
         ---
         - item1
-        - item2"""
+        - item2
+        """
     )
 
     result = fix_code(source)
@@ -101,7 +106,8 @@ def test_fix_code_preserves_comments() -> None:
         """\
         ---
         # Keep comments!
-        program: yamlfix"""
+        program: yamlfix
+        """
     )
 
     result = fix_code(source)
@@ -116,7 +122,8 @@ def test_fix_code_respects_parent_lists_with_comments() -> None:
         ---
         # Comment
         - item1
-        - item2"""
+        - item2
+        """
     )
 
     result = fix_code(source)
@@ -130,7 +137,8 @@ def test_fix_code_preserves_indented_comments() -> None:
         """\
         ---
         - program:
-          # Keep comments!"""
+          # Keep comments!
+        """
     )
 
     result = fix_code(source)
@@ -143,12 +151,14 @@ def test_fix_code_removes_extra_apostrophes() -> None:
     source = dedent(
         """\
         ---
-        title: 'Why we sleep'"""
+        title: 'Why we sleep'
+        """
     )
     fixed_source = dedent(
         """\
         ---
-        title: Why we sleep"""
+        title: Why we sleep
+        """
     )
 
     result = fix_code(source)
@@ -168,14 +178,16 @@ def test_fix_code_converts_non_valid_true_booleans(true_string: str) -> None:
         ---
         True dictionary: {true_string}
         True list:
-          - {true_string}"""
+          - {true_string}
+        """
     )
     fixed_source = dedent(
         """\
         ---
         True dictionary: true
         True list:
-          - true"""
+          - true
+        """
     )
 
     result = fix_code(source)
@@ -195,14 +207,16 @@ def test_fix_code_converts_non_valid_false_booleans(false_string: str) -> None:
         ---
         False dictionary: {false_string}
         False list:
-          - {false_string}"""
+          - {false_string}
+        """
     )
     fixed_source = dedent(
         """\
         ---
         False dictionary: false
         False list:
-          - false"""
+          - false
+        """
     )
 
     result = fix_code(source)
@@ -221,7 +235,8 @@ def test_fix_code_respects_apostrophes_for_truthy_substitutions(
     source = dedent(
         f"""\
         ---
-        title: '{truthy_string}'"""
+        title: '{truthy_string}'
+        """
     )
 
     result = fix_code(source)
@@ -237,13 +252,15 @@ def test_fix_code_adds_space_in_comment() -> None:
         """\
         ---
         #This is a comment
-        project: yamlfix"""
+        project: yamlfix
+        """
     )
     fixed_source = dedent(
         """\
         ---
         # This is a comment
-        project: yamlfix"""
+        project: yamlfix
+        """
     )
 
     result = fix_code(source)
@@ -259,13 +276,15 @@ def test_fix_code_not_add_extra_space_in_comment() -> None:
         """\
         ---
         # This is a comment
-        project: yamlfix"""
+        project: yamlfix
+        """
     )
     fixed_source = dedent(
         """\
         ---
         # This is a comment
-        project: yamlfix"""
+        project: yamlfix
+        """
     )
 
     result = fix_code(source)
@@ -280,12 +299,14 @@ def test_fix_code_add_space_inline_comment() -> None:
     source = dedent(
         """\
         ---
-        project: yamlfix  #This is a comment"""
+        project: yamlfix  #This is a comment
+        """
     )
     fixed_source = dedent(
         """\
         ---
-        project: yamlfix  # This is a comment"""
+        project: yamlfix  # This is a comment
+        """
     )
 
     result = fix_code(source)
@@ -299,7 +320,8 @@ def test_fix_code_respects_url_anchors() -> None:
         """\
         ---
         # https://lyz-code.github.io/yamlfix/#usage
-        foo: bar"""
+        foo: bar
+        """
     )
 
     result = fix_code(source)
@@ -314,12 +336,14 @@ def test_fix_code_add_extra_space_inline_comment() -> None:
     source = dedent(
         """\
         ---
-        project: yamlfix # This is a comment"""
+        project: yamlfix # This is a comment
+        """
     )
     fixed_source = dedent(
         """\
         ---
-        project: yamlfix  # This is a comment"""
+        project: yamlfix  # This is a comment
+        """
     )
 
     result = fix_code(source)
@@ -334,7 +358,8 @@ def test_fix_code_doesnt_change_double_exclamation_marks() -> None:
     source = dedent(
         """\
         ---
-        format: !!python/name:mermaid2.fence_mermaid"""
+        format: !!python/name:mermaid2.fence_mermaid
+        """
     )
 
     result = fix_code(source)
@@ -351,7 +376,8 @@ def test_fix_code_parses_files_with_multiple_documents() -> None:
         ---
         project: yamlfix
         ---
-        project: yamlfix"""
+        project: yamlfix
+        """
     )
 
     result = fix_code(source)
@@ -376,3 +402,26 @@ def test_fix_code_functions_emit_debug_logs(caplog: pytest.LogCaptureFixture) ->
     assert caplog.messages == expected_logs
     for record in caplog.records:
         assert record.levelname == "DEBUG"
+
+
+@pytest.mark.parametrize("whitespace", ["", "\n", "\n\n"])
+def test_fixed_code_has_exactly_one_newline_at_end_of_file(whitespace) -> None:
+    """Files should have exactly one newline at the end to comply with the POSIX
+    standard.
+    """
+    source = dedent(
+        """\
+        ---
+        program: yamlfix"""
+    )
+    source += whitespace
+    fixed_code = dedent(
+        """\
+        ---
+        program: yamlfix
+        """
+    )
+
+    result = fix_code(source)
+
+    assert result == fixed_code

@@ -37,7 +37,8 @@ def test_corrects_one_file(runner: CliRunner, tmpdir: LocalPath) -> None:
     fixed_source = dedent(
         """\
         ---
-        program: yamlfix"""
+        program: yamlfix
+        """
     )
 
     result = runner.invoke(cli, [str(test_file)])
@@ -58,7 +59,8 @@ def test_corrects_three_files(runner: CliRunner, tmpdir: LocalPath) -> None:
     fixed_source = dedent(
         """\
         ---
-        program: yamlfix"""
+        program: yamlfix
+        """
     )
 
     result = runner.invoke(cli, [str(test_file) for test_file in test_files])
@@ -74,7 +76,8 @@ def test_corrects_code_from_stdin(runner: CliRunner) -> None:
     fixed_source = dedent(
         """\
         ---
-        program: yamlfix"""
+        program: yamlfix
+        """
     )
 
     result = runner.invoke(cli, ["-"], input=source)
