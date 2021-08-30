@@ -8,11 +8,11 @@ click==8.0.1
     # via yamlfix (setup.py)
 distro==1.6.0
     # via ruyaml
-importlib-metadata==4.7.1
+importlib-metadata==4.8.1
     # via click
 ruyaml==0.20.0
     # via yamlfix (setup.py)
-typing-extensions==3.10.0.0
+typing-extensions==3.10.0.1
     # via importlib-metadata
 zipp==3.5.0
     # via importlib-metadata

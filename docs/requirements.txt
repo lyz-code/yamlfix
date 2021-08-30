@@ -28,7 +28,7 @@ htmlmin==0.1.12
     # via mkdocs-minify-plugin
 idna==3.2
     # via requests
-importlib-metadata==4.7.1
+importlib-metadata==4.8.1
     # via
     #   click
     #   markdown
@@ -119,7 +119,7 @@ smmap==4.0.0
     # via gitdb
 soupsieve==2.2.1
     # via beautifulsoup4
-typing-extensions==3.10.0.0
+typing-extensions==3.10.0.1
     # via
     #   gitpython
     #   importlib-metadata
