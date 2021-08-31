@@ -12,7 +12,7 @@ importlib-metadata==4.8.1
     # via click
 ruyaml==0.20.0
     # via yamlfix (setup.py)
-typing-extensions==3.10.0.1
+typing-extensions==3.10.0.2
     # via importlib-metadata
 zipp==3.5.0
     # via importlib-metadata

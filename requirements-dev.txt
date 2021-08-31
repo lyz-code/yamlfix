@@ -8,7 +8,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-astroid==2.7.2
+astroid==2.7.3
     # via pylint
 asttokens==2.0.5
     # via flake8-aaa
@@ -305,12 +305,12 @@ pep8-naming==0.12.1
     # via -r requirements-dev.in
 pip-tools==6.2.0
     # via -r requirements-dev.in
-platformdirs==2.2.0
+platformdirs==2.3.0
     # via
     #   black
     #   pylint
     #   virtualenv
-pluggy==0.13.1
+pluggy==1.0.0
     # via pytest
 pre-commit==2.14.1
     # via -r requirements-dev.in
@@ -346,7 +346,7 @@ pyparsing==2.4.7
     #   packaging
 pyprojroot==0.2.0
     # via autoimport
-pytest==6.2.4
+pytest==6.2.5
     # via
     #   -r requirements-dev.in
     #   pytest-cov
@@ -439,7 +439,7 @@ typed-ast==1.4.3
     #   black
     #   flake8-annotations
     #   mypy
-typing-extensions==3.10.0.1
+typing-extensions==3.10.0.2
     # via
     #   -r docs/requirements.txt
     #   -r requirements.txt
