@@ -64,6 +64,7 @@ def fix_code(source_code: str) -> str:
         _restore_truthy_strings,
         _restore_double_exclamations,
         _fix_top_level_lists,
+        _add_newline_at_end_of_file,
     ]
     for fixer in fixers:
         source_code = fixer(source_code)
@@ -275,3 +276,7 @@ def _restore_double_exclamations(source_code: str) -> str:
         fixed_source_lines.append(line)
 
     return "\n".join(fixed_source_lines)
+
+
+def _add_newline_at_end_of_file(source_code: str) -> str:
+    return source_code + "\n"
