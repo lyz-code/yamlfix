@@ -249,7 +249,7 @@ mkdocs-autorefs==0.2.1
     # via
     #   -r docs/requirements.txt
     #   mkdocstrings
-mkdocs-git-revision-date-localized-plugin==0.9.3
+mkdocs-git-revision-date-localized-plugin==0.10.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt

@@ -71,7 +71,7 @@ mkdocs-autolinks-plugin==0.4.0
     # via -r docs/requirements.in
 mkdocs-autorefs==0.2.1
     # via mkdocstrings
-mkdocs-git-revision-date-localized-plugin==0.9.3
+mkdocs-git-revision-date-localized-plugin==0.10.0
     # via -r docs/requirements.in
 mkdocs-htmlproofer-plugin==0.6.0
     # via -r docs/requirements.in
