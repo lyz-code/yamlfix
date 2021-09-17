@@ -37,7 +37,7 @@ jinja2==3.0.1
     # via
     #   mkdocs
     #   mkdocstrings
-jsmin==2.2.2
+jsmin==3.0.0
     # via mkdocs-minify-plugin
 markdown==3.3.4
     # via
