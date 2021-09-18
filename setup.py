@@ -51,5 +51,11 @@ setup(
         [console_scripts]
         yamlfix=yamlfix.entrypoints.cli:cli
     """,
-    install_requires=["click", "ruyaml"],
+    install_requires=[
+        "click",
+        # ruyaml pinned to 0.90.0.2 to include fix of anchors and aliases.
+        # This version is not available in pypi.
+        # See https://github.com/lyz-code/yamlfix/issues/120.
+        "ruyaml @ git+git://github.com/pycontribs/ruyaml@0.90.0.2#egg=ruyaml",
+    ],
 )

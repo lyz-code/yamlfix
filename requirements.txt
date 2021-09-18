@@ -10,7 +10,7 @@ distro==1.6.0
     # via ruyaml
 importlib-metadata==4.8.1
     # via click
-ruyaml==0.20.0
+git+git://github.com/pycontribs/ruyaml@0.90.0.2#egg=ruyaml
     # via yamlfix (setup.py)
 typing-extensions==3.10.0.2
     # via importlib-metadata

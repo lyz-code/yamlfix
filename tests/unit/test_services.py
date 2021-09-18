@@ -425,3 +425,36 @@ def test_fixed_code_has_exactly_one_newline_at_end_of_file(whitespace) -> None:
     result = fix_code(source)
 
     assert result == fixed_code
+
+
+def test_anchors_and_aliases_with_duplicate_merge_keys() -> None:
+    """All anchors and aliases should be preserved even with multiple merge keys
+    and merge keys should be formatted as a list in a single line.
+    """
+    source = dedent(
+        """\
+        ---
+        foo: &c
+          a: a
+        bar: &d
+          b: b
+        all:
+          <<: *c
+          <<: *d
+        """
+    )
+    fixed_code = dedent(
+        """\
+        ---
+        foo: &c
+          a: a
+        bar: &d
+          b: b
+        all:
+          <<: [*c, *d]
+        """
+    )
+
+    result = fix_code(source)
+
+    assert result == fixed_code
