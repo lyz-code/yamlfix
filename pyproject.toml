@@ -12,7 +12,7 @@ version_files = [
 
 [tool.black]
 line-length = 88
-target-version = ['py36', 'py37', 'py38']
+target-version = ['py37', 'py38']
 include = '\.pyi?$'
 exclude = '''
 /(
@@ -107,7 +107,7 @@ flake8-use-fstring = [
 flake8-typing-imports = [
   "+*",
   "-TYP001", # guard import by `if False:  # TYPE_CHECKING`: TYPE_CHECKING (not in
-             #   3.5.0, 3.5.1). We don't support Python < 3.6
+             #   3.5.0, 3.5.1). We don't support Python < 3.7
 ]
 flake8-variables-names = ["+*"]
 dlint = ["+*"]

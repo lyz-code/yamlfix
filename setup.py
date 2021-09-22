@@ -32,7 +32,7 @@ setup(
     package_dir={"": "src"},
     package_data={"yamlfix": ["py.typed"]},
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
@@ -41,7 +41,6 @@ setup(
         "Operating System :: POSIX",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Topic :: Utilities",
@@ -51,5 +50,11 @@ setup(
         [console_scripts]
         yamlfix=yamlfix.entrypoints.cli:cli
     """,
-    install_requires=["click", "ruyaml"],
+    install_requires=[
+        "click",
+        # ruyaml pinned to 0.90.0.2 to include fix of anchors and aliases.
+        # This version is not available in pypi.
+        # See https://github.com/lyz-code/yamlfix/issues/120.
+        "ruyaml @ git+git://github.com/pycontribs/ruyaml@0.90.0.2#egg=ruyaml",
+    ],
 )

@@ -76,7 +76,7 @@ linting locally.
     **tl;dr**: use `make format` to fix formatting, `make` to run tests and linting & `make docs`
     to build the docs.
 
-You'll need to have python 3.6, 3.7, or 3.8, virtualenv, git, and make installed.
+You'll need to have python 3.7 or 3.8, virtualenv, git, and make installed.
 
 * Clone your fork and go into the repository directory:
 
