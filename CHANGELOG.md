@@ -1,3 +1,9 @@
+## 0.7.3 (2021-09-22)
+
+### Fix
+
+- update ruyaml version with anchor bug fix
+
 ## 0.7.2 (2021-09-02)
 
 ### Fix
