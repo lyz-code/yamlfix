@@ -261,7 +261,7 @@ mkdocs-htmlproofer-plugin==0.7.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
-mkdocs-material==7.2.8
+mkdocs-material==7.3.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -396,7 +396,7 @@ requests==2.26.0
     #   -r docs/requirements.txt
     #   mkdocs-htmlproofer-plugin
     #   safety
-git+git://github.com/pycontribs/ruyaml@0.90.0.2#egg=ruyaml
+ruyaml @ git+git://github.com/pycontribs/ruyaml@0.90.0.2
     # via -r requirements.txt
 safety==1.10.3
     # via -r requirements-dev.in
@@ -453,7 +453,7 @@ typing-extensions==3.10.0.2
     #   mypy
     #   pylint
     #   pytkdocs
-urllib3==1.26.6
+urllib3==1.26.7
     # via
     #   -r docs/requirements.txt
     #   flakehell
