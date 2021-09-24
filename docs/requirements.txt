@@ -85,7 +85,7 @@ mkdocs-minify-plugin==0.4.1
     # via -r docs/requirements.in
 mkdocs-section-index==0.3.1
     # via -r docs/requirements.in
-mkdocstrings==0.16.0
+mkdocstrings==0.16.1
     # via -r docs/requirements.in
 packaging==21.0
     # via mkdocs

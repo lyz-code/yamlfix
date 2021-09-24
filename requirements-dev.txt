@@ -277,7 +277,7 @@ mkdocs-section-index==0.3.1
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
-mkdocstrings==0.16.0
+mkdocstrings==0.16.1
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
