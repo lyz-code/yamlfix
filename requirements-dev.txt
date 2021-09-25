@@ -389,7 +389,7 @@ pyyaml-env-tag==0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs
-regex==2021.8.28
+regex==2021.9.24
     # via black
 requests==2.26.0
     # via
@@ -458,7 +458,7 @@ urllib3==1.26.7
     #   -r docs/requirements.txt
     #   flakehell
     #   requests
-virtualenv==20.8.0
+virtualenv==20.8.1
     # via pre-commit
 watchdog==2.1.5
     # via
