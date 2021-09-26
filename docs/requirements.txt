@@ -18,7 +18,7 @@ charset-normalizer==2.0.6
     # via requests
 click==8.0.1
     # via mkdocs
-ghp-import==2.0.1
+ghp-import==2.0.2
     # via mkdocs
 gitdb==4.0.7
     # via gitpython

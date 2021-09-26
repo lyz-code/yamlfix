@@ -145,7 +145,7 @@ flake8-variables-names==0.0.4
     # via -r requirements-dev.in
 flakehell==0.9.0
     # via -r requirements-dev.in
-ghp-import==2.0.1
+ghp-import==2.0.2
     # via
     #   -r docs/requirements.txt
     #   mkdocs
@@ -308,7 +308,7 @@ pep8-naming==0.12.1
     # via -r requirements-dev.in
 pip-tools==6.3.0
     # via -r requirements-dev.in
-platformdirs==2.3.0
+platformdirs==2.4.0
     # via
     #   black
     #   pylint
