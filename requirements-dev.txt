@@ -389,7 +389,7 @@ pyyaml-env-tag==0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs
-regex==2021.9.24
+regex==2021.9.30
     # via black
 requests==2.26.0
     # via
