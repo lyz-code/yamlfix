@@ -162,7 +162,7 @@ htmlmin==0.1.12
     # via
     #   -r docs/requirements.txt
     #   mkdocs-minify-plugin
-identify==2.2.15
+identify==2.3.0
     # via pre-commit
 idna==3.2
     # via
@@ -372,7 +372,7 @@ pytkdocs==0.12.0
     # via
     #   -r docs/requirements.txt
     #   mkdocstrings
-pytz==2021.1
+pytz==2021.3
     # via
     #   -r docs/requirements.txt
     #   babel
@@ -460,7 +460,7 @@ urllib3==1.26.7
     #   requests
 virtualenv==20.8.1
     # via pre-commit
-watchdog==2.1.5
+watchdog==2.1.6
     # via
     #   -r docs/requirements.txt
     #   mkdocs
@@ -483,7 +483,7 @@ zipp==3.6.0
 # The following packages are considered to be unsafe in a requirements file:
 pip==21.2.4
     # via pip-tools
-setuptools==58.1.0
+setuptools==58.2.0
     # via
     #   -r requirements.txt
     #   astroid
