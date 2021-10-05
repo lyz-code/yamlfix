@@ -33,7 +33,7 @@ importlib-metadata==4.8.1
     #   click
     #   markdown
     #   mkdocs
-jinja2==3.0.1
+jinja2==3.0.2
     # via
     #   mkdocs
     #   mkdocstrings
@@ -77,21 +77,21 @@ mkdocs-git-revision-date-localized-plugin==0.10.0
     # via -r docs/requirements.in
 mkdocs-htmlproofer-plugin==0.7.0
     # via -r docs/requirements.in
-mkdocs-material==7.3.0
+mkdocs-material==7.3.1
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.3
     # via mkdocs-material
 mkdocs-minify-plugin==0.4.1
     # via -r docs/requirements.in
-mkdocs-section-index==0.3.1
+mkdocs-section-index==0.3.2
     # via -r docs/requirements.in
-mkdocstrings==0.16.1
+mkdocstrings==0.16.2
     # via -r docs/requirements.in
 packaging==21.0
     # via mkdocs
 pygments==2.10.0
     # via mkdocs-material
-pymdown-extensions==8.2
+pymdown-extensions==9.0
     # via
     #   mkdocs-material
     #   mkdocstrings
