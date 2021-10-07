@@ -8,7 +8,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-astroid==2.8.0
+astroid==2.8.2
     # via pylint
 asttokens==2.0.5
     # via flake8-aaa
@@ -64,7 +64,7 @@ click==8.0.1
     #   safety
 colorama==0.4.4
     # via flakehell
-coverage[toml]==6.0
+coverage[toml]==6.0.1
     # via pytest-cov
 distlib==0.3.3
     # via virtualenv
@@ -195,6 +195,7 @@ jinja2==3.0.2
     # via
     #   -r docs/requirements.txt
     #   mkdocs
+    #   mkdocs-material
     #   mkdocstrings
 jsmin==3.0.0
     # via
@@ -261,7 +262,7 @@ mkdocs-htmlproofer-plugin==0.7.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
-mkdocs-material==7.3.1
+mkdocs-material==7.3.2
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt

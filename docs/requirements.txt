@@ -36,6 +36,7 @@ importlib-metadata==4.8.1
 jinja2==3.0.2
     # via
     #   mkdocs
+    #   mkdocs-material
     #   mkdocstrings
 jsmin==3.0.0
     # via mkdocs-minify-plugin
@@ -77,7 +78,7 @@ mkdocs-git-revision-date-localized-plugin==0.10.0
     # via -r docs/requirements.in
 mkdocs-htmlproofer-plugin==0.7.0
     # via -r docs/requirements.in
-mkdocs-material==7.3.1
+mkdocs-material==7.3.2
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.3
     # via mkdocs-material
