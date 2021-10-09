@@ -43,7 +43,7 @@ cached-property==1.5.2
     # via
     #   -r docs/requirements.txt
     #   pytkdocs
-certifi==2021.5.30
+certifi==2021.10.8
     # via
     #   -r docs/requirements.txt
     #   requests
@@ -53,7 +53,7 @@ charset-normalizer==2.0.6
     # via
     #   -r docs/requirements.txt
     #   requests
-click==8.0.1
+click==8.0.2
     # via
     #   -r docs/requirements.txt
     #   -r requirements.txt
@@ -307,7 +307,7 @@ pep517==0.11.0
     # via pip-tools
 pep8-naming==0.12.1
     # via -r requirements-dev.in
-pip-tools==6.3.0
+pip-tools==6.3.1
     # via -r requirements-dev.in
 platformdirs==2.4.0
     # via
@@ -390,7 +390,7 @@ pyyaml-env-tag==0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs
-regex==2021.9.30
+regex==2021.10.8
     # via black
 requests==2.26.0
     # via
