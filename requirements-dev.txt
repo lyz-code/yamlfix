@@ -53,7 +53,7 @@ charset-normalizer==2.0.6
     # via
     #   -r docs/requirements.txt
     #   requests
-click==8.0.2
+click==8.0.3
     # via
     #   -r docs/requirements.txt
     #   -r requirements.txt
