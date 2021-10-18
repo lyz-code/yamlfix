@@ -78,7 +78,7 @@ mkdocs-git-revision-date-localized-plugin==0.10.0
     # via -r docs/requirements.in
 mkdocs-htmlproofer-plugin==0.7.0
     # via -r docs/requirements.in
-mkdocs-material==7.3.3
+mkdocs-material==7.3.4
     # via -r docs/requirements.in
 mkdocs-material-extensions==1.0.3
     # via mkdocs-material
