@@ -66,6 +66,10 @@ colorama==0.4.4
     # via flakehell
 coverage[toml]==6.0.2
     # via pytest-cov
+csscompressor==0.9.5
+    # via
+    #   -r docs/requirements.txt
+    #   mkdocs-minify-plugin
 distlib==0.3.3
     # via virtualenv
 distro==1.6.0
@@ -270,7 +274,7 @@ mkdocs-material-extensions==1.0.3
     # via
     #   -r docs/requirements.txt
     #   mkdocs-material
-mkdocs-minify-plugin==0.4.1
+mkdocs-minify-plugin==0.5.0
     # via
     #   -r docs/requirements.in
     #   -r docs/requirements.txt
@@ -303,7 +307,7 @@ pathspec==0.9.0
     #   yamllint
 pbr==5.6.0
     # via stevedore
-pep517==0.11.1
+pep517==0.12.0
     # via pip-tools
 pep8-naming==0.12.1
     # via -r requirements-dev.in
@@ -422,7 +426,7 @@ soupsieve==2.2.1
     # via
     #   -r docs/requirements.txt
     #   beautifulsoup4
-stevedore==3.4.0
+stevedore==3.5.0
     # via bandit
 toml==0.10.2
     # via
