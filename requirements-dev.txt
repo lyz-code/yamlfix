@@ -143,7 +143,7 @@ flake8-simplify==0.14.2
     # via -r requirements-dev.in
 flake8-typing-imports==1.11.0
     # via -r requirements-dev.in
-flake8-use-fstring==1.2
+flake8-use-fstring==1.2.1
     # via -r requirements-dev.in
 flake8-variables-names==0.0.4
     # via -r requirements-dev.in
@@ -394,7 +394,7 @@ pyyaml-env-tag==0.1
     # via
     #   -r docs/requirements.txt
     #   mkdocs
-regex==2021.10.8
+regex==2021.10.21
     # via black
 requests==2.26.0
     # via
