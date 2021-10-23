@@ -22,7 +22,7 @@ csscompressor==0.9.5
     # via mkdocs-minify-plugin
 ghp-import==2.0.2
     # via mkdocs
-gitdb==4.0.7
+gitdb==4.0.8
     # via gitpython
 gitpython==3.1.24
     # via mkdocs-git-revision-date-localized-plugin
@@ -118,7 +118,7 @@ six==1.16.0
     # via
     #   astunparse
     #   python-dateutil
-smmap==4.0.0
+smmap==5.0.0
     # via gitdb
 soupsieve==2.2.1
     # via beautifulsoup4
