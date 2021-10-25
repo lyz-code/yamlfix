@@ -22,7 +22,7 @@ csscompressor==0.9.5
     # via mkdocs-minify-plugin
 ghp-import==2.0.2
     # via mkdocs
-gitdb==4.0.8
+gitdb==4.0.9
     # via gitpython
 gitpython==3.1.24
     # via mkdocs-git-revision-date-localized-plugin
@@ -98,7 +98,7 @@ pymdown-extensions==9.0
     # via
     #   mkdocs-material
     #   mkdocstrings
-pyparsing==3.0.0
+pyparsing==3.0.1
     # via packaging
 python-dateutil==2.8.2
     # via ghp-import
