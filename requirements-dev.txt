@@ -8,7 +8,7 @@ astor==0.8.1
     # via flake8-simplify
 astpretty==2.1.0
     # via flake8-expression-complexity
-astroid==2.8.3
+astroid==2.8.4
     # via pylint
 asttokens==2.0.5
     # via flake8-aaa
@@ -436,7 +436,7 @@ toml==0.10.2
     #   pre-commit
     #   pylint
     #   pytest
-tomli==1.2.1
+tomli==1.2.2
     # via
     #   black
     #   coverage
