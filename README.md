@@ -24,4 +24,4 @@ yamlfix](https://lyz-code.github.io/yamlfix/contributing).
 
 ## License
 
-GPLv3
+GPLv3+
