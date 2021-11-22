@@ -23,7 +23,7 @@ setup(
     description="A simple opionated yaml formatter that keeps your comments!",
     author="Lyz",
     author_email="lyz-code-security-advisories@riseup.net",
-    license="GNU General Public License v3",
+    license="GPLv3+",
     # SIM115: Use context handler for opening files. In this case it doesn't make sense.
     long_description=readme,
     long_description_content_type="text/markdown",
