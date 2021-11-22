@@ -28,7 +28,12 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
     for file_wrapper in files:
         log.debug("Fixing file %s...", file_wrapper.name)
         source = file_wrapper.read()
-        fixed_source = fix_code(source)
+        if source.startswith("#!") :
+            # Skip the shebang line if present, leaving it unmodified
+            eolpos = source.find("\n") + 1
+            fixed_source = source[:eolpos] + fix_code(source[eolpos:])
+        else :
+            fixed_source = fix_code(source)
 
         if file_wrapper.name == "<stdin>":
             return fixed_source
