@@ -2,10 +2,11 @@
 
 import logging
 from textwrap import dedent
+from io import StringIO
 
 import pytest
 
-from yamlfix.services import fix_code
+from yamlfix.services import fix_files, fix_code
 
 true_strings = [
     "TRUE",
@@ -30,6 +31,23 @@ false_strings = [
     "Off",
     "off",
 ]
+
+
+def test_fix_files_ignore_shebang() -> None:
+    """Ignores shebang lines if present at the beginning of the source."""
+    source = dedent(
+        """\
+        #! /this/line/should/be/ignored
+        ---
+        program: yamlfix
+        """
+    )
+
+    fakestdin = StringIO(source)
+    fakestdin.name = "<stdin>"
+    result = fix_files((fakestdin,))
+
+    assert result == source
 
 
 def test_fix_code_adds_header() -> None:
