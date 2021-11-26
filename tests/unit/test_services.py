@@ -32,6 +32,20 @@ false_strings = [
 ]
 
 
+def test_fix_code_ignore_ansible_vaults() -> None:
+    """Adds the --- at the beginning of the source."""
+    source = dedent(
+        """\
+        $ANSIBLE_VAULT;1.1;AES256
+        3036303361343731386530393763...
+        """
+    )
+
+    result = fix_code(source)
+
+    assert result == source
+
+
 def test_fix_code_adds_header() -> None:
     """Adds the --- at the beginning of the source."""
     source = "program: yamlfix"

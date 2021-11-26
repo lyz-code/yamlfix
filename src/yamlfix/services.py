@@ -57,6 +57,9 @@ def fix_code(source_code: str) -> str:
     Returns:
         Corrected source code.
     """
+    # Leave Ansible vaults unmodified
+    if source_code.startswith("$ANSIBLE_VAULT;"):
+        return source_code
     fixers = [
         _fix_truthy_strings,
         _fix_comments,
