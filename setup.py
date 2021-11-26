@@ -52,9 +52,14 @@ setup(
     """,
     install_requires=[
         "click",
-        # ruyaml pinned to 0.90.0.2 to include fix of anchors and aliases.
-        # This version is not available in pypi.
-        # See https://github.com/lyz-code/yamlfix/issues/120.
-        "ruyaml @ git+git://github.com/pycontribs/ruyaml@0.90.0.2#egg=ruyaml",
+        "ruyaml",
+        # Until https://github.com/pycontribs/ruyaml/issues/58 is resolved, the issue
+        # https://github.com/lyz-code/yamlfix/issues/120 will remain because we can't
+        # hardcode dependencies from github in the setup.py because Pypi doesn't allow
+        # them.
+        #
+        # If you need that feature, please change the "ruyaml" line above with
+        # "ruyaml @ git+git://github.com/pycontribs/ruyaml@0.90.0.2#egg=ruyaml", # noqa E800
+        # and run `make install`.
     ],
 )
