@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
     """Fix the yaml source code of a list of files.
 
-    If the input is taken from stdin, it will output the value to stdout.
+    If the input is taken from stdin, it will return the fixed value.
 
     Args:
         files: List of files to fix.
