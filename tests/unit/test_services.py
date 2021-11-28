@@ -2,11 +2,10 @@
 
 import logging
 from textwrap import dedent
-from io import StringIO
 
 import pytest
 
-from yamlfix.services import fix_files, fix_code
+from yamlfix.services import fix_code
 
 true_strings = [
     "TRUE",
@@ -43,9 +42,21 @@ def test_fix_files_ignore_shebang() -> None:
         """
     )
 
-    fakestdin = StringIO(source)
-    fakestdin.name = "<stdin>"
-    result = fix_files((fakestdin,))
+    result = fix_code(source)
+
+    assert result == source
+
+
+def test_fix_code_ignore_ansible_vaults() -> None:
+    """Adds the --- at the beginning of the source."""
+    source = dedent(
+        """\
+        $ANSIBLE_VAULT;1.1;AES256
+        3036303361343731386530393763...
+        """
+    )
+
+    result = fix_code(source)
 
     assert result == source
 

@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
     """Fix the yaml source code of a list of files.
 
-    If the input is taken from stdin, it will output the value to stdout.
+    If the input is taken from stdin, it will return the fixed value.
 
     Args:
         files: List of files to fix.
@@ -28,12 +28,7 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
     for file_wrapper in files:
         log.debug("Fixing file %s...", file_wrapper.name)
         source = file_wrapper.read()
-        if source.startswith("#!"):
-            # Skip the shebang line if present, leaving it unmodified
-            eolpos = source.find("\n") + 1
-            fixed_source = source[:eolpos] + fix_code(source[eolpos:])
-        else:
-            fixed_source = fix_code(source)
+        fixed_source = fix_code(source)
 
         if file_wrapper.name == "<stdin>":
             return fixed_source
@@ -62,6 +57,18 @@ def fix_code(source_code: str) -> str:
     Returns:
         Corrected source code.
     """
+    # Leave Ansible vaults unmodified
+    if source_code.startswith("$ANSIBLE_VAULT;"):
+        return source_code
+
+    if source_code.startswith("#!"):
+        # Skip the shebang line if present, leaving it unmodified
+        eolpos = source_code.find("\n") + 1
+        shebang = source_code[:eolpos]
+        source_code = source_code[eolpos:]
+    else:
+        shebang = ""
+
     fixers = [
         _fix_truthy_strings,
         _fix_comments,
@@ -74,7 +81,7 @@ def fix_code(source_code: str) -> str:
     for fixer in fixers:
         source_code = fixer(source_code)
 
-    return source_code
+    return shebang + source_code
 
 
 def _ruamel_yaml_fixer(source_code: str) -> str:

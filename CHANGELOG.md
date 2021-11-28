@@ -1,3 +1,11 @@
+## 0.7.4 (2021-11-26)
+
+### Fix
+
+- revert the ruyaml dependency
+- don't modify Ansible vaults. Closes #135.
+- make docstring match functionality, closes #133
+
 ## 0.7.3 (2021-09-22)
 
 ### Fix
