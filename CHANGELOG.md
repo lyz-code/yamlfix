@@ -1,3 +1,9 @@
+## 0.7.5 (2021-11-29)
+
+### Fix
+
+- Moved shebang skipping code to fix_code instead of fix_files. Closes #123
+
 ## 0.7.4 (2021-11-26)
 
 ### Fix
