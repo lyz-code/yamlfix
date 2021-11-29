@@ -32,6 +32,21 @@ false_strings = [
 ]
 
 
+def test_fix_files_ignore_shebang() -> None:
+    """Ignores shebang lines if present at the beginning of the source."""
+    source = dedent(
+        """\
+        #! /this/line/should/be/ignored
+        ---
+        program: yamlfix
+        """
+    )
+
+    result = fix_code(source)
+
+    assert result == source
+
+
 def test_fix_code_ignore_ansible_vaults() -> None:
     """Adds the --- at the beginning of the source."""
     source = dedent(

@@ -60,6 +60,15 @@ def fix_code(source_code: str) -> str:
     # Leave Ansible vaults unmodified
     if source_code.startswith("$ANSIBLE_VAULT;"):
         return source_code
+
+    if source_code.startswith("#!"):
+        # Skip the shebang line if present, leaving it unmodified
+        eolpos = source_code.find("\n") + 1
+        shebang = source_code[:eolpos]
+        source_code = source_code[eolpos:]
+    else:
+        shebang = ""
+
     fixers = [
         _fix_truthy_strings,
         _fix_comments,
@@ -72,7 +81,7 @@ def fix_code(source_code: str) -> str:
     for fixer in fixers:
         source_code = fixer(source_code)
 
-    return source_code
+    return shebang + source_code
 
 
 def _ruamel_yaml_fixer(source_code: str) -> str:
