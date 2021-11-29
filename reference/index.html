@@ -21,6 +21,15 @@
     <span class=c1># Leave Ansible vaults unmodified</span>
     <span class=k>if</span> <span class=n>source_code</span><span class=o>.</span><span class=n>startswith</span><span class=p>(</span><span class=s2>&quot;$ANSIBLE_VAULT;&quot;</span><span class=p>):</span>
         <span class=k>return</span> <span class=n>source_code</span>
+
+    <span class=k>if</span> <span class=n>source_code</span><span class=o>.</span><span class=n>startswith</span><span class=p>(</span><span class=s2>&quot;#!&quot;</span><span class=p>):</span>
+        <span class=c1># Skip the shebang line if present, leaving it unmodified</span>
+        <span class=n>eolpos</span> <span class=o>=</span> <span class=n>source_code</span><span class=o>.</span><span class=n>find</span><span class=p>(</span><span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>)</span> <span class=o>+</span> <span class=mi>1</span>
+        <span class=n>shebang</span> <span class=o>=</span> <span class=n>source_code</span><span class=p>[:</span><span class=n>eolpos</span><span class=p>]</span>
+        <span class=n>source_code</span> <span class=o>=</span> <span class=n>source_code</span><span class=p>[</span><span class=n>eolpos</span><span class=p>:]</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=n>shebang</span> <span class=o>=</span> <span class=s2>&quot;&quot;</span>
+
     <span class=n>fixers</span> <span class=o>=</span> <span class=p>[</span>
         <span class=n>_fix_truthy_strings</span><span class=p>,</span>
         <span class=n>_fix_comments</span><span class=p>,</span>
@@ -33,7 +42,7 @@
     <span class=k>for</span> <span class=n>fixer</span> <span class=ow>in</span> <span class=n>fixers</span><span class=p>:</span>
         <span class=n>source_code</span> <span class=o>=</span> <span class=n>fixer</span><span class=p>(</span><span class=n>source_code</span><span class=p>)</span>
 
-    <span class=k>return</span> <span class=n>source_code</span>
+    <span class=k>return</span> <span class=n>shebang</span> <span class=o>+</span> <span class=n>source_code</span>
 </code></pre></div> </details> </div> </div> <div class="doc doc-object doc-function"> <h2 class="doc doc-heading" id=yamlfix.services.fix_files> <code class="highlight language-python"><span class=n>fix_files</span><span class=p>(</span><span class=n>files</span><span class=p>)</span></code> <a class=headerlink href=#yamlfix.services.fix_files title="Permanent link">&para;</a></h2> <div class="doc doc-contents "> <p>Fix the yaml source code of a list of files.</p> <p>If the input is taken from stdin, it will return the fixed value.</p> <p><strong>Parameters:</strong></p> <table> <thead> <tr> <th>Name</th> <th>Type</th> <th>Description</th> <th>Default</th> </tr> </thead> <tbody> <tr> <td><code>files</code></td> <td><code>Tuple[_io.TextIOWrapper]</code></td> <td><p>List of files to fix.</p></td> <td><em>required</em></td> </tr> </tbody> </table> <p><strong>Returns:</strong></p> <table> <thead> <tr> <th>Type</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td><code>Optional[str]</code></td> <td><p>Fixed code retrieved from stdin or None.</p></td> </tr> </tbody> </table> <details class=quote> <summary>Source code in <code>yamlfix/services.py</code></summary> <div class=highlight><pre><span></span><code><span class=k>def</span> <span class=nf>fix_files</span><span class=p>(</span><span class=n>files</span><span class=p>:</span> <span class=n>Tuple</span><span class=p>[</span><span class=n>TextIOWrapper</span><span class=p>])</span> <span class=o>-&gt;</span> <span class=n>Optional</span><span class=p>[</span><span class=nb>str</span><span class=p>]:</span>
     <span class=sd>&quot;&quot;&quot;Fix the yaml source code of a list of files.</span>
 
