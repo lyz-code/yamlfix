@@ -456,6 +456,7 @@ def test_fixed_code_has_exactly_one_newline_at_end_of_file(whitespace) -> None:
     assert result == fixed_code
 
 
+@pytest.mark.skip("Not until https://github.com/lyz-code/yamlfix/issues/120 is closed")
 def test_anchors_and_aliases_with_duplicate_merge_keys() -> None:
     """All anchors and aliases should be preserved even with multiple merge keys
     and merge keys should be formatted as a list in a single line.
@@ -487,3 +488,45 @@ def test_anchors_and_aliases_with_duplicate_merge_keys() -> None:
     result = fix_code(source)
 
     assert result == fixed_code
+
+
+def test_fix_code_respects_comment_symbol_in_strings_with_simple_quotes() -> None:
+    """
+    Given: Code with a string that contains a #
+    When: fix_code is run
+    Then: The string is left unchanged
+    """
+    source = dedent(
+        """\
+        ---
+        project: 'Here # is not a comment marker'
+        """
+    )
+
+    result = fix_code(source)
+
+    assert result == source
+
+
+def test_fix_code_respects_comment_symbol_in_strings_with_double_quotes() -> None:
+    """
+    Given: Code with a string that contains a #
+    When: fix_code is run
+    Then: The string is left unchanged
+    """
+    source = dedent(
+        """\
+        ---
+        project: "Here # is not a comment marker"
+        """
+    )
+    desired_source = dedent(
+        """\
+        ---
+        project: 'Here # is not a comment marker'
+        """
+    )
+
+    result = fix_code(source)
+
+    assert result == desired_source
