@@ -1,3 +1,9 @@
+## 0.7.6 (2021-11-30)
+
+### Fix
+
+- support comments in the middle of a string
+
 ## 0.7.5 (2021-11-29)
 
 ### Fix
