@@ -3,6 +3,7 @@
 Classes and functions that connect the different domain model objects with the adapters
 and handlers to achieve the program's purpose.
 """
+
 import logging
 import re
 from io import StringIO
@@ -263,9 +264,11 @@ def _fix_comments(source_code: str) -> str:
     fixed_source_lines = []
 
     for line in source_code.splitlines():
+        # Comment at the start of the line
         if re.search(r"(^|\s)#\w", line):
             line = line.replace("#", "# ")
-        if re.match(r".+\S\s#", line):
+        # Comment in the middle of the line, but it's not part of a string
+        if re.match(r".+\S\s#", line) and line[-1] not in ["'", '"']:
             line = line.replace(" #", "  #")
         fixed_source_lines.append(line)
 
