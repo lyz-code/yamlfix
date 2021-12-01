@@ -34,10 +34,13 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
         if file_wrapper.name == "<stdin>":
             return fixed_source
         else:
-            file_wrapper.seek(0)
-            file_wrapper.write(fixed_source)
-            file_wrapper.truncate()
-            log.debug("Fixed file %s.", file_wrapper.name)
+            if fixed_source != source:
+                file_wrapper.seek(0)
+                file_wrapper.write(fixed_source)
+                file_wrapper.truncate()
+                log.debug("Fixed file %s.", file_wrapper.name)
+            else:
+                log.debug("Left file %s unmodified.", file_wrapper.name)
 
     return None
 
