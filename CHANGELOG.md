@@ -1,3 +1,9 @@
+## 0.8.0 (2021-12-01)
+
+### Feat
+
+- don't overwrite files if content is not modified. Closes #142.
+
 ## 0.7.6 (2021-11-30)
 
 ### Fix
