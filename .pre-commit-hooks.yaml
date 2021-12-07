@@ -5,6 +5,6 @@
   require_serial: true
   language: python
   language_version: python3
-  types_or: [cython, pyi, python]
+  types: [file, yaml]
   args: []
   minimum_pre_commit_version: 2.9.0
