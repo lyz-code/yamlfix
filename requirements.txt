@@ -18,5 +18,5 @@ zipp==3.6.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==58.3.0
+setuptools==60.2.0
     # via ruyaml
