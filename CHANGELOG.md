@@ -1,3 +1,9 @@
+## 0.8.1 (2022-02-21)
+
+### Fix
+
+- fix types of pre-commit-hooks
+
 ## 0.8.0 (2021-12-01)
 
 ### Feat
