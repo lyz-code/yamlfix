@@ -48,11 +48,26 @@ book_library:
 
 * As a library:
 
+  For multiple files
+
     ```python
     from yamlfix import fix_files
 
     fix_files(['file.py'])
     ```
+  where `'[file.py]`can be replaced by using the following expression:
+    ```python
+    file_a = TextIOWrapper(open('fileA.yml', 'r+b'))
+    file_b = TextIOWrapper(open('fileB.yml', 'r+b'))
+    wrapper_tuple = file_a, file_b
+    fix_files(wrapper_tuple)
+    ```
+  For a single file using
+     ```python
+     from yamlfix import fix_code
+     file_a = 'fileA.yml'
+     yamlfix.fix_code(file_a)
+     ```
 
 # Features
 
