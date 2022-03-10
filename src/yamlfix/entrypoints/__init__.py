@@ -27,7 +27,7 @@ class ConsoleColorFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """Format log records as a colored plus sign followed by the log message."""
         color = self.colors.get(record.levelno, 0)
-        self._style._fmt = f"[\033[{color}m+\033[0m] %(message)s"
+        self._style._fmt = f"[\033[{color}m+\033[0m] %(message)s"  # noqa: W0212
         return super().format(record)
 
 

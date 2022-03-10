@@ -21,7 +21,8 @@ authors = [
 license = {text = "GPL-3.0-only"}
 requires-python = ">=3.7"
 dependencies = [
-"click>=8.0.3",
+    "click>=8.0.3",
+    "ruyaml>=0.91.0",
 ]
 name = "yamlfix"
 description = "A simple opionated yaml formatter that keeps your comments!"
@@ -163,7 +164,6 @@ exclude = '''
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = "-vv --tb=short -n auto"
-python_paths = "."
 testpaths = "tests"
 norecursedirs = [
     ".tox",
@@ -278,6 +278,7 @@ pylint = [
   "-W0613", # Unused argument in function, but in tests there are fixtures that even
             # though they are not used in the function directly, they are used to
             # configure the test.
+  "-R0904", # Too many public methods (25/20) (too-many-public-methods)
 ]
 
 [tool.flakeheaven.exceptions."tests/factories.py"]

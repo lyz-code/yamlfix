@@ -33,14 +33,14 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
 
         if file_wrapper.name == "<stdin>":
             return fixed_source
+
+        if fixed_source != source:
+            file_wrapper.seek(0)
+            file_wrapper.write(fixed_source)
+            file_wrapper.truncate()
+            log.debug("Fixed file %s.", file_wrapper.name)
         else:
-            if fixed_source != source:
-                file_wrapper.seek(0)
-                file_wrapper.write(fixed_source)
-                file_wrapper.truncate()
-                log.debug("Fixed file %s.", file_wrapper.name)
-            else:
-                log.debug("Left file %s unmodified.", file_wrapper.name)
+            log.debug("Left file %s unmodified.", file_wrapper.name)
 
     return None
 
@@ -171,11 +171,7 @@ def _fix_top_level_lists(source_code: str) -> str:
             # Remove the indentation from the line
             fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
         elif is_top_level_list:
-            # ruyaml doesn't change the indentation of comments
-            if re.match(r"\s*#.*", line):
-                fixed_source_lines.append(line)
-            else:
-                fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
+            fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
         else:
             return source_code
 
