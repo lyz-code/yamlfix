@@ -5,19 +5,18 @@ on:  # yamllint disable-line rule:truthy
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   PyPI:
-    name: Build and publish Python distributions to PyPI and TestPyPI
+    name: Build and publish Python distributions to TestPyPI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v1
+      - uses: pdm-project/setup-pdm@main
+        name: Setup Python and PDM
         with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: pip install wheel
+          python-version: 3.9
       - name: Build package
         run: make build-package
       - name: Publish distribution to Test PyPI
@@ -26,13 +25,8 @@ jobs:
           password: ${{ secrets.test_pypi_password }}
           repository_url: https://test.pypi.org/legacy/
           skip_existing: true
-      - name: Publish distribution to PyPI
-        if: startsWith(github.ref, 'refs/tags')
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          password: ${{ secrets.pypi_password }}
   Documentation:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -40,13 +34,12 @@ jobs:
           # Number of commits to fetch. 0 indicates all history.
           # Default: 1
           fetch-depth: 0
-      - uses: actions/setup-python@v2
+      - uses: pdm-project/setup-pdm@main
+        name: Setup Python and PDM
         with:
-          python-version: 3.7
+          python-version: 3.9
       - name: Install dependencies
-        run: >-
-          pip install -r ./docs/requirements.txt
-          pip install -e .
+        run: make install
       - name: Build the Documentation
         run: make build-docs
       - name: Deploy

@@ -1,4 +1,4 @@
-"""Gather all the orchestration functionality required by the program to work.
+"""Define all the orchestration functionality required by the program to work.
 
 Classes and functions that connect the different domain model objects with the adapters
 and handlers to achieve the program's purpose.
@@ -7,15 +7,17 @@ and handlers to achieve the program's purpose.
 import logging
 import re
 from io import StringIO
-from typing import List, Optional, Tuple
+from typing import TYPE_CHECKING, List, Optional, Tuple
 
 import ruyaml
-from _io import TextIOWrapper
+
+if TYPE_CHECKING:
+    from _io import TextIOWrapper
 
 log = logging.getLogger(__name__)
 
 
-def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
+def fix_files(files: Tuple["TextIOWrapper"]) -> Optional[str]:
     """Fix the yaml source code of a list of files.
 
     If the input is taken from stdin, it will return the fixed value.
@@ -33,14 +35,14 @@ def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
 
         if file_wrapper.name == "<stdin>":
             return fixed_source
+
+        if fixed_source != source:
+            file_wrapper.seek(0)
+            file_wrapper.write(fixed_source)
+            file_wrapper.truncate()
+            log.debug("Fixed file %s.", file_wrapper.name)
         else:
-            if fixed_source != source:
-                file_wrapper.seek(0)
-                file_wrapper.write(fixed_source)
-                file_wrapper.truncate()
-                log.debug("Fixed file %s.", file_wrapper.name)
-            else:
-                log.debug("Left file %s unmodified.", file_wrapper.name)
+            log.debug("Left file %s unmodified.", file_wrapper.name)
 
     return None
 
@@ -171,11 +173,7 @@ def _fix_top_level_lists(source_code: str) -> str:
             # Remove the indentation from the line
             fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
         elif is_top_level_list:
-            # ruyaml doesn't change the indentation of comments
-            if re.match(r"\s*#.*", line):
-                fixed_source_lines.append(line)
-            else:
-                fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
+            fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
         else:
             return source_code
 

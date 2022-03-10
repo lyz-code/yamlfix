@@ -91,9 +91,9 @@ giants, namely:
 [Mypy](https://mypy.readthedocs.io/en/stable/)
 : Python static type checker.
 
-[Flakehell](https://github.com/life4/flakehell)
+[Flakeheaven](https://github.com/flakeheaven/flakeheaven)
 : Python linter with [lots of
-    checks](https://lyz-code.github.io/blue-book/devops/flakehell/#plugins).
+    checks](https://lyz-code.github.io/blue-book/devops/flakeheaven#plugins).
 
 [Black](https://black.readthedocs.io/en/stable/)
 : Python formatter to keep a nice style without effort.

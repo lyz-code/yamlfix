@@ -3,6 +3,7 @@ name: Update
 on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: 11 7 * * *
+  workflow_dispatch:
 
 jobs:
   Update:
@@ -12,16 +13,21 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 0
-      - name: Set up Python 3.7
+      - name: Set up Python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.7
-      - name: Install dependencies
-        run: pip install pip-tools
+          python-version: 3.9
+      - name: Install program
+        run: |
+          # All these steps are required so that mypy behaves equally than the
+          # local environment, once mypy supports __pypackages__ try to use the
+          # github action
+          pip install virtualenv pdm
+          virtualenv .venv
+          source .venv/bin/activate
+          pdm config use_venv True
       - name: Update requirements
         run: make update
-      - name: Install the program
-        run: make install
       - name: Run tests
         run: make all
       - name: Commit files
@@ -29,7 +35,7 @@ jobs:
           rm -r .git/hooks
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add requirements.txt docs/requirements.txt requirements-dev.txt
+          git add pdm.lock
           git diff-index --quiet HEAD \
             || git commit -m "chore: update dependency requirements"
       - name: Push changes

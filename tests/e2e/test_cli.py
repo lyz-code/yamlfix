@@ -5,6 +5,7 @@ import re
 from textwrap import dedent
 
 import pytest
+from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
 from py._path.local import LocalPath
 
@@ -24,7 +25,7 @@ def test_version(runner: CliRunner) -> None:
 
     assert result.exit_code == 0
     assert re.match(
-        fr" *yamlfix version: {__version__}\n" r" *python version: .*\n *platform: .*",
+        rf" *yamlfix version: {__version__}\n" r" *python version: .*\n *platform: .*",
         result.stdout,
     )
 
@@ -103,3 +104,23 @@ def test_verbose_option(runner: CliRunner, verbose: bool) -> None:
         assert debug_log_format in result.stderr
     else:
         assert debug_log_format not in result.stderr
+
+
+def test_ignores_correct_files(
+    runner: CliRunner, tmpdir: LocalPath, caplog: LogCaptureFixture
+) -> None:
+    """Correct the source code of an already correct file."""
+    # ignore: call to untyped join method, they don't have type hints
+    caplog.set_level(logging.DEBUG)
+    test_file = tmpdir.join("source.yaml")  # type: ignore
+    test_file.write("---\na: 1\n")
+
+    result = runner.invoke(cli, [str(test_file)])
+
+    assert result.exit_code == 0
+    assert test_file.read() == "---\na: 1\n"
+    assert (
+        "yamlfix.services",
+        logging.DEBUG,
+        f"Left file {test_file} unmodified.",
+    ) in caplog.record_tuples
