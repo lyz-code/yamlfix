@@ -3,6 +3,7 @@ name: Install
 on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: 21 08 * * *
+  workflow_dispatch:
 
 jobs:
   Install:
@@ -10,7 +11,7 @@ jobs:
     strategy:
       max-parallel: 3
       matrix:
-        python-version: [3.7, 3.8]
+        python-version: [3.7, 3.8, 3.9, '3.10']
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python ${{ matrix.python-version }}
