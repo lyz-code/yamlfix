@@ -328,5 +328,6 @@ disallow_untyped_decorators = false
 module = [
     "goodconf",
     "pytest",
+    "_io.*"
 ]
 ignore_missing_imports = true

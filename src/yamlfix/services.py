@@ -7,15 +7,17 @@ and handlers to achieve the program's purpose.
 import logging
 import re
 from io import StringIO
-from typing import List, Optional, Tuple
+from typing import TYPE_CHECKING, List, Optional, Tuple
 
 import ruyaml
-from _io import TextIOWrapper
+
+if TYPE_CHECKING:
+    from _io import TextIOWrapper
 
 log = logging.getLogger(__name__)
 
 
-def fix_files(files: Tuple[TextIOWrapper]) -> Optional[str]:
+def fix_files(files: Tuple["TextIOWrapper"]) -> Optional[str]:
     """Fix the yaml source code of a list of files.
 
     If the input is taken from stdin, it will return the fixed value.
