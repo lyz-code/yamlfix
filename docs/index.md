@@ -54,6 +54,13 @@ book_library:
     fix_files(['file.py'])
     ```
 
+    If instead of reading from a file you want to fix the code saved into
+    a variable, use `fix_code`:
+
+    ```python
+    {! examples/fix_code.py !}
+    ```
+
 # Features
 
 yamlfix will do the following changes in your code:
