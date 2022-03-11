@@ -843,6 +843,7 @@ dependencies = [
 [[package]]
 name = "pathspec"
 version = "0.9.0"
+requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 summary = "Utility library for gitignore style pattern matching of file paths."
 
 [[package]]
@@ -919,6 +920,7 @@ summary = "Python style guide checker"
 [[package]]
 name = "pycparser"
 version = "2.21"
+requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 summary = "C parser in Python"
 
 [[package]]
