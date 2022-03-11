@@ -4,7 +4,9 @@ import logging
 from textwrap import dedent
 
 import pytest
+from py._path.local import LocalPath
 
+from yamlfix import fix_files
 from yamlfix.services import fix_code
 
 true_strings = [
@@ -30,6 +32,29 @@ false_strings = [
     "Off",
     "off",
 ]
+
+
+class TestFixFiles:
+    """Test the fix_files function."""
+
+    def test_fix_files_can_process_string_arguments(self, tmpdir: LocalPath) -> None:
+        """
+        Given: A file to fix
+        When: Passing the string with the path to the file to fix_files
+        Then: The file is fixed
+        """
+        test_file = tmpdir.join("source.yaml")  # type: ignore
+        test_file.write("program: yamlfix")
+        fixed_source = dedent(
+            """\
+            ---
+            program: yamlfix
+            """
+        )
+
+        fix_files([str(test_file)])  # act
+
+        assert test_file.read() == fixed_source
 
 
 class TestFixCode:

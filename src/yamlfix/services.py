@@ -7,17 +7,17 @@ and handlers to achieve the program's purpose.
 import logging
 import re
 from io import StringIO
-from typing import TYPE_CHECKING, List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 import ruyaml
-
-if TYPE_CHECKING:
-    from _io import TextIOWrapper
+from _io import TextIOWrapper
 
 log = logging.getLogger(__name__)
 
+Files = Union[Tuple[TextIOWrapper], List[str]]
 
-def fix_files(files: Tuple["TextIOWrapper"]) -> Optional[str]:
+
+def fix_files(files: Files) -> Optional[str]:
     """Fix the yaml source code of a list of files.
 
     If the input is taken from stdin, it will return the fixed value.
@@ -28,21 +28,32 @@ def fix_files(files: Tuple["TextIOWrapper"]) -> Optional[str]:
     Returns:
         Fixed code retrieved from stdin or None.
     """
-    for file_wrapper in files:
-        log.debug("Fixing file %s...", file_wrapper.name)
-        source = file_wrapper.read()
+    for file_ in files:
+        if isinstance(file_, str):
+            with open(file_, "r", encoding="utf-8") as file_descriptor:
+                source = file_descriptor.read()
+                file_name = file_
+        else:
+            source = file_.read()
+            file_name = file_.name
+
+        log.debug("Fixing file %s...", file_name)
         fixed_source = fix_code(source)
 
-        if file_wrapper.name == "<stdin>":
+        if file_name == "<stdin>":
             return fixed_source
 
         if fixed_source != source:
-            file_wrapper.seek(0)
-            file_wrapper.write(fixed_source)
-            file_wrapper.truncate()
-            log.debug("Fixed file %s.", file_wrapper.name)
+            if isinstance(file_, str):
+                with open(file_, "w", encoding="utf-8") as file_descriptor:
+                    file_descriptor.write(fixed_source)
+            else:
+                file_.seek(0)
+                file_.write(fixed_source)
+                file_.truncate()
+            log.debug("Fixed file %s.", file_name)
         else:
-            log.debug("Left file %s unmodified.", file_wrapper.name)
+            log.debug("Left file %s unmodified.", file_name)
 
     return None
 
