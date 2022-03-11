@@ -1,3 +1,15 @@
+## 0.9.0 (2022-03-11)
+
+### Fix
+
+- allow fix_files to read paths to files as arguments
+- allow fix_files to read paths to files as arguments
+
+### Feat
+
+- use pdm as package manager
+- use pdm as package manager
+
 ## 0.8.2 (2022-03-07)
 
 ## 0.8.1 (2022-02-21)
