@@ -909,7 +909,7 @@ dependencies = [
 
 [[package]]
 name = "prompt-toolkit"
-version = "3.0.28"
+version = "3.0.29"
 requires_python = ">=3.6.2"
 summary = "Library for building powerful interactive command lines in Python"
 dependencies = [
@@ -1206,7 +1206,7 @@ dependencies = [
 
 [[package]]
 name = "setuptools"
-version = "61.3.1"
+version = "62.0.0"
 requires_python = ">=3.7"
 summary = "Easily download, build, install, upgrade, and uninstall Python packages"
 
@@ -2079,9 +2079,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "pre_commit-2.18.1-py2.py3-none-any.whl", hash = "sha256:02226e69564ebca1a070bd1f046af866aa1c318dbc430027c50ab832ed2b73f2"},
     {file = "pre_commit-2.18.1.tar.gz", hash = "sha256:5d445ee1fa8738d506881c5d84f83c62bb5be6b2838e32207433647e8e5ebe10"},
 ]
-"prompt-toolkit 3.0.28" = [
-    {file = "prompt_toolkit-3.0.28-py3-none-any.whl", hash = "sha256:30129d870dcb0b3b6a53efdc9d0a83ea96162ffd28ffe077e94215b233dc670c"},
-    {file = "prompt_toolkit-3.0.28.tar.gz", hash = "sha256:9f1cd16b1e86c2968f2519d7fb31dd9d669916f515612c269d14e9ed52b51650"},
+"prompt-toolkit 3.0.29" = [
+    {file = "prompt_toolkit-3.0.29-py3-none-any.whl", hash = "sha256:62291dad495e665fca0bda814e342c69952086afb0f4094d0893d357e5c78752"},
+    {file = "prompt_toolkit-3.0.29.tar.gz", hash = "sha256:bd640f60e8cecd74f0dc249713d433ace2ddc62b65ee07f96d358e0b152b6ea7"},
 ]
 "py 1.11.0" = [
     {file = "py-1.11.0-py2.py3-none-any.whl", hash = "sha256:607c53218732647dff4acdfcd50cb62615cedf612e72d1724fb1a0cc6405b378"},
@@ -2275,9 +2275,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "SecretStorage-3.3.1-py3-none-any.whl", hash = "sha256:422d82c36172d88d6a0ed5afdec956514b189ddbfb72fefab0c8a1cee4eaf71f"},
     {file = "SecretStorage-3.3.1.tar.gz", hash = "sha256:fd666c51a6bf200643495a04abb261f83229dcb6fd8472ec393df7ffc8b6f195"},
 ]
-"setuptools 61.3.1" = [
-    {file = "setuptools-61.3.1-py3-none-any.whl", hash = "sha256:41aface2e85b517c3a466b4689b8055c02cd2e623461f09af7d93f3da65c4709"},
-    {file = "setuptools-61.3.1.tar.gz", hash = "sha256:88fafba4abc2f047e08a188fd4bbc10b0e464592c37b514c19f8f8f88d94450b"},
+"setuptools 62.0.0" = [
+    {file = "setuptools-62.0.0-py3-none-any.whl", hash = "sha256:a65e3802053e99fc64c6b3b29c11132943d5b8c8facbcc461157511546510967"},
+    {file = "setuptools-62.0.0.tar.gz", hash = "sha256:7999cbd87f1b6e1f33bf47efa368b224bed5e27b5ef2c4d46580186cbcb1a86a"},
 ]
 "sh 1.14.2" = [
     {file = "sh-1.14.2-py2.py3-none-any.whl", hash = "sha256:4921ac9c1a77ec8084bdfaf152fe14138e2b3557cc740002c1a97076321fce8a"},
