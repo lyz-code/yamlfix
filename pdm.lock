@@ -309,7 +309,7 @@ summary = "Irregular methods for regular expressions"
 
 [[package]]
 name = "faker"
-version = "13.3.5"
+version = "13.4.0"
 requires_python = ">=3.6"
 summary = "Faker is a Python package that generates fake data for you."
 dependencies = [
@@ -1658,9 +1658,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
 "exrex 0.10.5" = [
     {file = "exrex-0.10.5.tar.gz", hash = "sha256:3fb8b18fd9832eaff8b13dc042a4f63b13c5d684ee069f70a23ddfc6bcb708f3"},
 ]
-"faker 13.3.5" = [
-    {file = "Faker-13.3.5-py3-none-any.whl", hash = "sha256:9b7d5875b3081cd7782f290ae0e067c1c71cb2c47ac789155423ca88f73ae129"},
-    {file = "Faker-13.3.5.tar.gz", hash = "sha256:5cefb998adcc2030f569710aa5fdcc220df33de293a7394c1a8cbc71a4be007f"},
+"faker 13.4.0" = [
+    {file = "Faker-13.4.0-py3-none-any.whl", hash = "sha256:2d4139254c1cc69f2b5203f4a9aaab33a9e65f7994059856300ef6e21ac93f39"},
+    {file = "Faker-13.4.0.tar.gz", hash = "sha256:2a9716f2c409224121144f0d2fdc7105e978e2e266deb4d8216061d9668951fc"},
 ]
 "filelock 3.6.0" = [
     {file = "filelock-3.6.0-py3-none-any.whl", hash = "sha256:f8314284bfffbdcfa0ff3d7992b023d4c628ced6feb957351d4c48d059f56bc0"},
