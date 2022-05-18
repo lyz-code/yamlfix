@@ -1205,7 +1205,7 @@ dependencies = [
 
 [[package]]
 name = "setuptools"
-version = "62.3.0"
+version = "62.3.1"
 requires_python = ">=3.7"
 summary = "Easily download, build, install, upgrade, and uninstall Python packages"
 
@@ -2277,9 +2277,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "SecretStorage-3.3.2-py3-none-any.whl", hash = "sha256:755dc845b6ad76dcbcbc07ea3da75ae54bb1ea529eb72d15f83d26499a5df319"},
     {file = "SecretStorage-3.3.2.tar.gz", hash = "sha256:0a8eb9645b320881c222e827c26f4cfcf55363e8b374a021981ef886657a912f"},
 ]
-"setuptools 62.3.0" = [
-    {file = "setuptools-62.3.0-py3-none-any.whl", hash = "sha256:512dfeb3cca6747fd9074f91d8cd4714b50d0d8726b3f6a25f8c33ee9ad22b5a"},
-    {file = "setuptools-62.3.0.tar.gz", hash = "sha256:d4eebe23c2ed4d73fa69d4f78e4b59b9648cbd22c43018ee2e8b911866535463"},
+"setuptools 62.3.1" = [
+    {file = "setuptools-62.3.1-py3-none-any.whl", hash = "sha256:588ffd1dc6e20e9f4f7057aa9873fcdc26e0270362602735d32476bad67d82c5"},
+    {file = "setuptools-62.3.1.tar.gz", hash = "sha256:28c79c24d83c42a5e6d6cc711e5e9a6c1b89326229feaa5807fc277040658600"},
 ]
 "sh 1.14.2" = [
     {file = "sh-1.14.2-py2.py3-none-any.whl", hash = "sha256:4921ac9c1a77ec8084bdfaf152fe14138e2b3557cc740002c1a97076321fce8a"},
