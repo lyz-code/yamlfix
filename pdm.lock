@@ -246,7 +246,7 @@ summary = "Minimal, easy-to-use, declarative cli tool"
 
 [[package]]
 name = "dill"
-version = "0.3.5"
+version = "0.3.5.1"
 requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, !=3.6.*"
 summary = "serialize all of python"
 
@@ -945,7 +945,7 @@ dependencies = [
 
 [[package]]
 name = "pydantic-factories"
-version = "1.2.8"
+version = "1.2.9"
 requires_python = ">=3.7,<4.0"
 summary = "Mock data generation for pydantic based models"
 dependencies = [
@@ -1623,9 +1623,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "decli-0.5.2-py3-none-any.whl", hash = "sha256:d3207bc02d0169bf6ed74ccca09ce62edca0eb25b0ebf8bf4ae3fb8333e15ca0"},
     {file = "decli-0.5.2.tar.gz", hash = "sha256:f2cde55034a75c819c630c7655a844c612f2598c42c21299160465df6ad463ad"},
 ]
-"dill 0.3.5" = [
-    {file = "dill-0.3.5-py2.py3-none-any.whl", hash = "sha256:6eb4bb70a98509e69204e621942c4306580d5bf2229f450f04fcf2efca3908e5"},
-    {file = "dill-0.3.5.tar.gz", hash = "sha256:3a11d19c15d409296a2ee714b1dbd5efb733a329f0d89c0e58aad6154ab6f2f5"},
+"dill 0.3.5.1" = [
+    {file = "dill-0.3.5.1-py2.py3-none-any.whl", hash = "sha256:33501d03270bbe410c72639b350e941882a8b0fd55357580fbc873fba0c59302"},
+    {file = "dill-0.3.5.1.tar.gz", hash = "sha256:d75e41f3eff1eee599d738e76ba8f4ad98ea229db8b085318aa2b3333a208c86"},
 ]
 "distlib 0.3.4" = [
     {file = "distlib-0.3.4-py2.py3-none-any.whl", hash = "sha256:6564fe0a8f51e734df6333d08b8b94d4ea8ee6b99b5ed50613f731fd4089f34b"},
@@ -2135,9 +2135,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "pydantic-1.9.1-py3-none-any.whl", hash = "sha256:4988c0f13c42bfa9ddd2fe2f569c9d54646ce84adc5de84228cfe83396f3bd58"},
     {file = "pydantic-1.9.1.tar.gz", hash = "sha256:1ed987c3ff29fff7fd8c3ea3a3ea877ad310aae2ef9889a119e22d3f2db0691a"},
 ]
-"pydantic-factories 1.2.8" = [
-    {file = "pydantic_factories-1.2.8-py3-none-any.whl", hash = "sha256:e09fe7e8cc20d06dc96bda0f3d9cb5986cfc1281424b1ec19b4dbe6723714401"},
-    {file = "pydantic-factories-1.2.8.tar.gz", hash = "sha256:d97b10c251874e87aa306bb001a75eb340f58debbe9124a572331f4926484e5e"},
+"pydantic-factories 1.2.9" = [
+    {file = "pydantic_factories-1.2.9-py3-none-any.whl", hash = "sha256:6fa3130bca2e484c5492163bfb0ebe0766e520ab4360c48cfbc4c8fb70f53215"},
+    {file = "pydantic-factories-1.2.9.tar.gz", hash = "sha256:8f2be46059aac1420fde12045ba2289c4770402d3d11359dfc13852f21ff1176"},
 ]
 "pydocstyle 6.1.1" = [
     {file = "pydocstyle-6.1.1-py3-none-any.whl", hash = "sha256:6987826d6775056839940041beef5c08cc7e3d71d63149b48e36727f70144dc4"},
