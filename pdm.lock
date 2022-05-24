@@ -517,14 +517,14 @@ summary = "A flake8 extension that helps to make more readable variables names"
 
 [[package]]
 name = "flakeheaven"
-version = "0.11.1"
+version = "1.0.0"
 requires_python = ">=3.6.2,<4.0.0"
 summary = "FlakeHeaven is a [Flake8](https://gitlab.com/pycqa/flake8) wrapper to make it cool."
 dependencies = [
     "colorama",
     "entrypoints",
     "flake8<5.0.0,>=4.0.1",
-    "importlib-metadata<2.0,>=1.0; python_version < \"3.8\"",
+    "importlib-metadata>=1.0; python_version < \"3.8\"",
     "pygments",
     "toml",
     "urllib3",
@@ -1162,7 +1162,7 @@ summary = "Validating URI References per RFC 3986"
 
 [[package]]
 name = "rich"
-version = "12.4.1"
+version = "12.4.4"
 requires_python = ">=3.6.3,<4.0.0"
 summary = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 dependencies = [
@@ -1267,7 +1267,7 @@ summary = "A lil' TOML parser"
 
 [[package]]
 name = "tomlkit"
-version = "0.10.2"
+version = "0.11.0"
 requires_python = ">=3.6,<4.0"
 summary = "Style preserving TOML library"
 
@@ -1752,9 +1752,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "flake8_variables_names-0.0.5-py3-none-any.whl", hash = "sha256:e3277031696bbe10b5132b49938cde1d70fcae9561533b7bd7ab8e69cb27addb"},
     {file = "flake8_variables_names-0.0.5.tar.gz", hash = "sha256:30133e14ee2300e13a60393a00f74d98110c76070ac67d1ab91606f02824a7e1"},
 ]
-"flakeheaven 0.11.1" = [
-    {file = "flakeheaven-0.11.1-py3-none-any.whl", hash = "sha256:5614165d95bf26c46af22db4e0ccc90e475c286f902c473de16730fad4735e5d"},
-    {file = "flakeheaven-0.11.1.tar.gz", hash = "sha256:20f5a573b8e85be5a73fed2e3967f7ab8b5e77714a5898d8b634dd31a0b75f9b"},
+"flakeheaven 1.0.0" = [
+    {file = "flakeheaven-1.0.0-py3-none-any.whl", hash = "sha256:41e726290a5c34d67b708b9331a684258e9f84261ee49ab05c3d5fd7846bb1ac"},
+    {file = "flakeheaven-1.0.0.tar.gz", hash = "sha256:a738673d91e04c2697108200489ec5a710ca72166b8dc6538396d58f83a2f729"},
 ]
 "freezegun 1.2.1" = [
     {file = "freezegun-1.2.1-py3-none-any.whl", hash = "sha256:15103a67dfa868ad809a8f508146e396be2995172d25f927e48ce51c0bf5cb09"},
@@ -2262,9 +2262,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "rfc3986-2.0.0-py2.py3-none-any.whl", hash = "sha256:50b1502b60e289cb37883f3dfd34532b8873c7de9f49bb546641ce9cbd256ebd"},
     {file = "rfc3986-2.0.0.tar.gz", hash = "sha256:97aacf9dbd4bfd829baad6e6309fa6573aaf1be3f6fa735c8ab05e46cecb261c"},
 ]
-"rich 12.4.1" = [
-    {file = "rich-12.4.1-py3-none-any.whl", hash = "sha256:d13c6c90c42e24eb7ce660db397e8c398edd58acb7f92a2a88a95572b838aaa4"},
-    {file = "rich-12.4.1.tar.gz", hash = "sha256:d239001c0fb7de985e21ec9a4bb542b5150350330bbc1849f835b9cbc8923b91"},
+"rich 12.4.4" = [
+    {file = "rich-12.4.4-py3-none-any.whl", hash = "sha256:d2bbd99c320a2532ac71ff6a3164867884357da3e3301f0240090c5d2fdac7ec"},
+    {file = "rich-12.4.4.tar.gz", hash = "sha256:4c586de507202505346f3e32d1363eb9ed6932f0c2f63184dea88983ff4971e2"},
 ]
 "ruyaml 0.91.0" = [
     {file = "ruyaml-0.91.0-py3-none-any.whl", hash = "sha256:50e0ee3389c77ad340e209472e0effd41ae0275246df00cdad0a067532171755"},
@@ -2317,9 +2317,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
-"tomlkit 0.10.2" = [
-    {file = "tomlkit-0.10.2-py3-none-any.whl", hash = "sha256:905cf92c2111ef80d355708f47ac24ad1b6fc2adc5107455940088c9bbecaedb"},
-    {file = "tomlkit-0.10.2.tar.gz", hash = "sha256:30d54c0b914e595f3d10a87888599eab5321a2a69abc773bbefff51599b72db6"},
+"tomlkit 0.11.0" = [
+    {file = "tomlkit-0.11.0-py3-none-any.whl", hash = "sha256:0f4050db66fd445b885778900ce4dd9aea8c90c4721141fde0d6ade893820ef1"},
+    {file = "tomlkit-0.11.0.tar.gz", hash = "sha256:71ceb10c0eefd8b8f11fe34e8a51ad07812cb1dc3de23247425fbc9ddc47b9dd"},
 ]
 "twine 4.0.0" = [
     {file = "twine-4.0.0-py3-none-any.whl", hash = "sha256:6f7496cf14a3a8903474552d5271c79c71916519edb42554f23f42a8563498a9"},
