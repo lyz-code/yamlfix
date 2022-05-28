@@ -945,7 +945,7 @@ dependencies = [
 
 [[package]]
 name = "pydantic-factories"
-version = "1.2.9"
+version = "1.3.0"
 requires_python = ">=3.7,<4.0"
 summary = "Mock data generation for pydantic based models"
 dependencies = [
@@ -2135,9 +2135,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "pydantic-1.9.1-py3-none-any.whl", hash = "sha256:4988c0f13c42bfa9ddd2fe2f569c9d54646ce84adc5de84228cfe83396f3bd58"},
     {file = "pydantic-1.9.1.tar.gz", hash = "sha256:1ed987c3ff29fff7fd8c3ea3a3ea877ad310aae2ef9889a119e22d3f2db0691a"},
 ]
-"pydantic-factories 1.2.9" = [
-    {file = "pydantic_factories-1.2.9-py3-none-any.whl", hash = "sha256:6fa3130bca2e484c5492163bfb0ebe0766e520ab4360c48cfbc4c8fb70f53215"},
-    {file = "pydantic-factories-1.2.9.tar.gz", hash = "sha256:8f2be46059aac1420fde12045ba2289c4770402d3d11359dfc13852f21ff1176"},
+"pydantic-factories 1.3.0" = [
+    {file = "pydantic_factories-1.3.0-py3-none-any.whl", hash = "sha256:5ed01fa60658fa00bef6bd3a85217870c693c04f9b2cb968bd7b3d7d36247415"},
+    {file = "pydantic-factories-1.3.0.tar.gz", hash = "sha256:28c92e97bb3b27e79e4c6e1da23551fad68cbc5819c5c321993924abd51c11d3"},
 ]
 "pydocstyle 6.1.1" = [
     {file = "pydocstyle-6.1.1-py3-none-any.whl", hash = "sha256:6987826d6775056839940041beef5c08cc7e3d71d63149b48e36727f70144dc4"},
