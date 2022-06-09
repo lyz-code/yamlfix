@@ -14,7 +14,7 @@ summary = "Read/rewrite/write Python ASTs"
 
 [[package]]
 name = "astpretty"
-version = "2.1.0"
+version = "2.0.0"
 requires_python = ">=3.6.1"
 summary = "Pretty print the output of python stdlib `ast.parse`."
 
@@ -609,7 +609,7 @@ requires_python = ">=3.7"
 summary = "Store and access your passwords safely."
 dependencies = [
     "SecretStorage>=3.2; sys_platform == \"linux\"",
-    "importlib-metadata>=3.6",
+    "importlib-metadata>=3.6; python_version < \"3.10\"",
     "jeepney>=0.4.2; sys_platform == \"linux\"",
     "pywin32-ctypes!=0.1.0,!=0.1.1; sys_platform == \"win32\"",
 ]
@@ -841,6 +841,7 @@ dependencies = [
 [[package]]
 name = "pkginfo"
 version = "1.8.2"
+requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 summary = "Query metadatdata from sdists / bdists / installed packages."
 
 [[package]]
@@ -1342,9 +1343,9 @@ content_hash = "sha256:626383fb94675a4910e600e5d594f29d779570880eab1d2080a7057f0
     {file = "astor-0.8.1-py2.py3-none-any.whl", hash = "sha256:070a54e890cefb5b3739d19f30f5a5ec840ffc9c50ffa7d23cc9fc1a38ebbfc5"},
     {file = "astor-0.8.1.tar.gz", hash = "sha256:6a6effda93f4e1ce9f618779b2dd1d9d84f1e32812c23a29b3fff6fd7f63fa5e"},
 ]
-"astpretty 2.1.0" = [
-    {file = "astpretty-2.1.0-py2.py3-none-any.whl", hash = "sha256:f81f14b5636f7af81fadb1e3c09ca7702ce4615500d9cc6d6829befb2dec2e3c"},
-    {file = "astpretty-2.1.0.tar.gz", hash = "sha256:8a801fcda604ec741f010bb36d7cbadc3ec8a182ea6fb83e20ab663463e75ff6"},
+"astpretty 2.0.0" = [
+    {file = "astpretty-2.0.0-py2.py3-none-any.whl", hash = "sha256:7f27633ed885033da8b58666e7079ffff7e8e01869ec1aa66484cb5185ea3aa4"},
+    {file = "astpretty-2.0.0.tar.gz", hash = "sha256:e4724bfd753636ba4a84384702e9796e5356969f40af2596d846ce64addde086"},
 ]
 "astroid 2.11.5" = [
     {file = "astroid-2.11.5-py3-none-any.whl", hash = "sha256:14ffbb4f6aa2cf474a0834014005487f7ecd8924996083ab411e7fa0b508ce0b"},
