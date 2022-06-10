@@ -30,16 +30,3 @@ jobs:
         run: make update-production
       - name: Run tests
         run: make all
-      - name: Commit files
-        run: |
-          rm -r .git/hooks
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add pdm.lock
-          git diff-index --quiet HEAD \
-            || git commit -m "chore: update dependency requirements"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
