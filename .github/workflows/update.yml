@@ -27,7 +27,7 @@ jobs:
           source .venv/bin/activate
           pdm config use_venv True
       - name: Update requirements
-        run: make update
+        run: make update-production
       - name: Run tests
         run: make all
       - name: Commit files
@@ -42,4 +42,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: main

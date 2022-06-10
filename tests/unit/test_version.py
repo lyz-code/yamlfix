@@ -14,6 +14,6 @@ def test_version() -> None:
     """
     result = version_info()
 
-    assert sys.version.replace("\n", " ") in result
+    assert sys.version.split(" ", maxsplit=1)[0] in result
     assert platform.platform() in result
     assert __version__ in result
