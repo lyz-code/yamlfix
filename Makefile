@@ -18,6 +18,27 @@ update:
 
 	@echo ""
 
+.PHONY: update-production
+update-production:
+	@echo "------------------------------------"
+	@echo "- Updating production dependencies -"
+	@echo "------------------------------------"
+
+	pdm update --production --no-sync
+	pdm sync --clean
+
+	@echo ""
+
+.PHONY: outdated
+outdated:
+	@echo "-------------------------"
+	@echo "- Outdated dependencies -"
+	@echo "-------------------------"
+
+	pdm update --dry-run --unconstrained
+
+	@echo ""
+
 .PHONY: format
 format:
 	@echo "----------------------"
@@ -78,7 +99,7 @@ test-examples:
 	@echo ""
 
 .PHONY: all
-all: lint mypy test security
+all: lint mypy test security build-docs
 
 .PHONY: clean
 clean:
@@ -120,15 +141,15 @@ docs: test-examples
 	@echo ""
 
 .PHONY: bump
-bump: pull-master bump-version build-package upload-pypi clean
+bump: pull-main bump-version build-package upload-pypi clean
 
-.PHONY: pull-master
-pull-master:
+.PHONY: pull-main
+pull-main:
 	@echo "------------------------"
 	@echo "- Updating repository  -"
 	@echo "------------------------"
 
-	git checkout master
+	git checkout main
 	git pull
 
 	@echo ""
@@ -144,7 +165,7 @@ build-package: clean
 	@echo ""
 
 .PHONY: build-docs
-build-docs: test-examples
+build-docs:
 	@echo "--------------------------"
 	@echo "- Building documentation -"
 	@echo "--------------------------"

@@ -1,6 +1,6 @@
 [![Actions Status](https://github.com/lyz-code/yamlfix/workflows/Tests/badge.svg)](https://github.com/lyz-code/yamlfix/actions)
 [![Actions Status](https://github.com/lyz-code/yamlfix/workflows/Build/badge.svg)](https://github.com/lyz-code/yamlfix/actions)
-[![Coverage Status](https://coveralls.io/repos/github/lyz-code/yamlfix/badge.svg?branch=master)](https://coveralls.io/github/lyz-code/yamlfix?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/lyz-code/yamlfix/badge.svg?branch=main)](https://coveralls.io/github/lyz-code/yamlfix?branch=main)
 
 A simple opinionated yaml formatter that keeps your comments!
 
@@ -105,13 +105,13 @@ giants, namely:
 [Black](https://black.readthedocs.io/en/stable/)
 : Python formatter to keep a nice style without effort.
 
-[Autoimport](https://github.com/lyz-code/autoimport)
+[Autoimport](https://lyz-code.github.io/autoimport)
 : Python formatter to automatically fix wrong import statements.
 
 [isort](https://github.com/timothycrosley/isort)
 : Python formatter to order the import statements.
 
-[Pip-tools](https://github.com/jazzband/pip-tools)
+[PDM](https://pdm.fming.dev/)
 : Command line tool to manage the dependencies.
 
 [Mkdocs](https://www.mkdocs.org/)
