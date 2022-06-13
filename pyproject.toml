@@ -9,6 +9,11 @@ version_files = [
     "src/yamlfix/version.py",
 ]
 
+# --------- Autoimport -------------
+
+[tool.autoimport.common_statements]
+"factories" = "from tests import factories"
+
 # --------- PDM -------------
 
 [project]
@@ -62,9 +67,7 @@ editable-backend = "path"
 [tool.pdm.overrides]
 
 # To be removed once https://github.com/flakeheaven/flakeheaven/issues/55 is solved
-# To update to ">=3.10" once a version of pdm greater than 1.12.8 exists
-# "importlib-metadata" = ">=3.10"
-importlib-metadata = "4.11.1"
+"importlib-metadata" = ">=3.10"
 
 [tool.pdm.dev-dependencies]
 lint = [
@@ -107,7 +110,7 @@ doc = [
     "mkdocs-minify-plugin>=0.5.0",
     "mkdocs-autolinks-plugin>=0.4.0",
     "mkdocs-material>=8.0.5",
-    "mkdocstrings>=0.16.2",
+    "mkdocstrings[python]>=0.18",
     "markdown-include>=0.6.0",
     "mkdocs-section-index>=0.3.2",
 ]
@@ -123,6 +126,7 @@ fixers = [
 ]
 typing = [
     "mypy>=0.910",
+"types-click>=7.1.8",
 ]
 dev = [
     "pre-commit>=2.16.0",
@@ -222,7 +226,10 @@ flake8-annotations-complexity = ["+*"]
 flake8-bugbear = ["+*"]
 flake8-comprehensions = ["+*"]
 flake8-debugger = ["+*"]
-flake8-docstrings = ["+*"]
+flake8-docstrings = [
+  "+*",
+  "-D101", # Missing docstring, already covered by C0115 of pylint
+]
 flake8-eradicate = ["+*"]
 flake8-expression-complexity = ["+*"]
 flake8-fixme = ["+*"]
@@ -239,6 +246,7 @@ flake8-typing-imports = [
   "+*",
   "-TYP001", # guard import by `if False:  # TYPE_CHECKING`: TYPE_CHECKING (not in
              #   3.5.0, 3.5.1). We don't support Python < 3.7
+  "-TYP002", # @overload is broken in <3.5.2, but we don't support Python 3.5
 ]
 flake8-variables-names = ["+*"]
 dlint = ["+*"]
@@ -262,7 +270,11 @@ pycodestyle = [
            # see https://github.com/PyCQA/pycodestyle/issues/197
            # and https://github.com/psf/black/issues/113
 ]
-pyflakes = ["+*"]
+pyflakes = [
+  "+*",
+  "-F841", # Unused variable, already covered by W0612 of pylint
+  "-F821", # Undefined variable, already covered by E0602 of pylint
+]
 
 [tool.flakeheaven.exceptions."tests/"]
 flake8-docstrings = [
@@ -270,7 +282,8 @@ flake8-docstrings = [
   "-D205"  # 1 blank line required between summary line and description
 ]
 flake8-annotations = [
-  "-ANN001"
+  "-ANN001",
+  "-ANN401", # Dynamically typed expressions (typing.Any) are disallowed
 ]
 pylint = [
   "-R0201", # Method could be a function. Raised because the methods of a test class
@@ -317,6 +330,15 @@ disallow_incomplete_defs = true
 disallow_untyped_decorators = true
 disallow_untyped_calls = true
 disallow_untyped_defs = true
+plugins = [
+  "pydantic.mypy"
+]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+warn_untyped_fields = true
 
 [[tool.mypy.overrides]]
 module = "tests.*"

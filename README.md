@@ -2,7 +2,7 @@
 
 [![Actions Status](https://github.com/lyz-code/yamlfix/workflows/Tests/badge.svg)](https://github.com/lyz-code/yamlfix/actions)
 [![Actions Status](https://github.com/lyz-code/yamlfix/workflows/Build/badge.svg)](https://github.com/lyz-code/yamlfix/actions)
-[![Coverage Status](https://coveralls.io/repos/github/lyz-code/yamlfix/badge.svg?branch=master)](https://coveralls.io/github/lyz-code/yamlfix?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/lyz-code/yamlfix/badge.svg?branch=main)](https://coveralls.io/github/lyz-code/yamlfix?branch=main)
 
 A simple opinionated yaml formatter that keeps your comments!
 
