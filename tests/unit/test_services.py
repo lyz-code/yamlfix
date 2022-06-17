@@ -165,6 +165,19 @@ class TestFixCode:
 
         assert result == source
 
+    def test_fix_code_preserves_comment_only_file(self) -> None:
+        """Don't delete comments even if the file is only comments."""
+        source = dedent(
+            """\
+            ---
+            # Keep comments!
+            """
+        )
+
+        result = fix_code(source)
+
+        assert result == source
+        
     def test_fix_code_respects_parent_lists_with_comments(self) -> None:
         """Do not indent lists at the first level even if there is a comment."""
         source = dedent(
