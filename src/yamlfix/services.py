@@ -89,9 +89,11 @@ def fix_code(source_code: str) -> str:
     fixers = [
         _fix_truthy_strings,
         _fix_comments,
+        _fix_jinja_variables,
         _ruamel_yaml_fixer,
         _restore_truthy_strings,
         _restore_double_exclamations,
+        _restore_jinja_variables,
         _fix_top_level_lists,
         _add_newline_at_end_of_file,
     ]
@@ -118,6 +120,7 @@ def _ruamel_yaml_fixer(source_code: str) -> str:
     # Start the document with ---
     # ignore: variable has type None, what can we do, it doesn't have type hints...
     yaml.explicit_start = True  # type: ignore
+    yaml.width = 80  # type: ignore
     source_dicts = yaml.load_all(source_code)
 
     # Return the output to a string
@@ -307,3 +310,71 @@ def _restore_double_exclamations(source_code: str) -> str:
 
 def _add_newline_at_end_of_file(source_code: str) -> str:
     return source_code + "\n"
+
+
+def _fix_jinja_variables(source_code: str) -> str:
+    """Remove spaces between jinja variables.
+
+    So that they are not split in many lines by ruyaml
+
+    Args:
+        source_code: Source code to be corrected.
+
+    Returns:
+        Corrected source code.
+    """
+    log.debug("Fixing jinja2 variables...")
+    source_lines = source_code.splitlines()
+    fixed_source_lines: List[str] = []
+
+    for line in source_lines:
+        line_contains_jinja2_variable = re.search(r"{{.*}}", line)
+
+        if line_contains_jinja2_variable:
+            line = _encode_jinja2_line(line)
+
+        fixed_source_lines.append(line)
+
+    return "\n".join(fixed_source_lines)
+
+
+def _encode_jinja2_line(line: str) -> str:
+    """Encode jinja variables so that they are not split.
+
+    Using a special character to join the elements inside the {{ }}, so that they are
+    all taken as the same word, and ruyamel doesn't split them.
+    """
+    new_line = []
+    variable_terms: List[str] = []
+
+    for word in line.split(" "):
+        if word == "}}":
+            variable_terms.append(word)
+            new_line.append("★".join(variable_terms))
+            variable_terms = []
+        elif word == "{{" or len(variable_terms) > 0:
+            variable_terms.append(word)
+        else:
+            new_line.append(word)
+
+    return " ".join(new_line)
+
+
+def _restore_jinja_variables(source_code: str) -> str:
+    """Restore the jinja2 variables to their original state.
+
+    Remove the encoding introduced by _fix_jinja_variables to prevent ruyaml to split
+    the variables.
+    """
+    log.debug("Restoring jinja2 variables...")
+    fixed_source_lines = []
+
+    for line in source_code.splitlines():
+        line_contains_jinja2_variable = re.search(r"{{.*}}", line)
+
+        if line_contains_jinja2_variable:
+            line = line.replace("★", " ")
+
+        fixed_source_lines.append(line)
+
+    return "\n".join(fixed_source_lines)

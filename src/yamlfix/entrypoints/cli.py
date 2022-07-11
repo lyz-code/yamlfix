@@ -1,4 +1,5 @@
 """Command line interface definition."""
+
 import logging
 from typing import Tuple
 
