@@ -1,3 +1,10 @@
+## 0.10.0 (2022-07-11)
+
+### Feat
+
+- add support to jinja2 variables
+- add support to line cropping
+
 ## 0.9.0 (2022-03-11)
 
 ### Fix
