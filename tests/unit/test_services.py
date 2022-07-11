@@ -437,9 +437,11 @@ class TestFixCode:
         expected_logs = [
             "Fixing truthy strings...",
             "Fixing comments...",
+            "Fixing jinja2 variables...",
             "Running ruamel yaml fixer...",
             "Restoring truthy strings...",
             "Restoring double exclamations...",
+            "Restoring jinja2 variables...",
             "Fixing top level lists...",
         ]
         assert caplog.messages == expected_logs
@@ -559,6 +561,78 @@ class TestFixCode:
             ---
             project: 'Here # is not a comment marker'
             """
+        )
+
+        result = fix_code(source)
+
+        assert result == desired_source
+
+    def test_fix_code_respects_jinja_variables(
+        self,
+    ) -> None:
+        """
+        Given: Code with a long string that contains a jinja variable
+        When: fix_code is run
+        Then: The jinja string is not broken
+        """
+        source = (
+            "---\n"
+            "project: This is a long long long long line that should not be split on "
+            "the jinja {{ variable }}"
+        )
+        desired_source = (
+            "---\n"
+            "project: This is a long long long long line that should not be split on "
+            "the jinja\n"
+            "  {{ variable }}\n"
+        )
+
+        result = fix_code(source)
+
+        assert result == desired_source
+
+    def test_fix_code_respects_many_jinja_variables(
+        self,
+    ) -> None:
+        """
+        Given: Code with a long string that contains two jinja variables
+        When: fix_code is run
+        Then: The jinja string is not broken
+        """
+        source = (
+            "---\n"
+            "project: This is a long long {{ variable_1 }} line that should not be "
+            "split on the jinja {{ variable_2 }}"
+        )
+        desired_source = (
+            "---\n"
+            "project: This is a long long {{ variable_1 }} line that should not be "
+            "split on the\n"
+            "  jinja {{ variable_2 }}\n"
+        )
+
+        result = fix_code(source)
+
+        assert result == desired_source
+
+    def test_fix_code_respects_jinja_variables_with_operations(
+        self,
+    ) -> None:
+        """
+        Given: Code with a long string that contains a jinja variable with operations
+        When: fix_code is run
+        Then: The jinja string is not broken
+        """
+        source = (
+            "---\n"
+            "project: This is a long long long long line that should not be split on "
+            "the jinja {{ variable that contains different words }}"
+        )
+        desired_source = (
+            "---\n"
+            "project: This is a long long long long line that should not be split on "
+            "the jinja\n"
+            "  {{ variable that contains different words }}\n"
         )
 
         result = fix_code(source)
