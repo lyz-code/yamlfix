@@ -17,7 +17,6 @@ jobs:
         name: Setup Python and PDM
         with:
           python-version: 3.9
-          # Until https://github.com/pdm-project/pdm/issues/1288 is fixed
           version: 2.0.1
       - name: Build package
         run: make build-package
