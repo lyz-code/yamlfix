@@ -1,3 +1,9 @@
+## 0.10.1 (2022-08-01)
+
+### Fix
+
+- don't break jinja2 expansion on variables assignment
+
 ## 0.10.0 (2022-07-11)
 
 ### Feat
