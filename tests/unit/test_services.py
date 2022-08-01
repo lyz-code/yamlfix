@@ -567,29 +567,24 @@ class TestFixCode:
 
         assert result == desired_source
 
-    def test_fix_code_respects_jinja_variables(
+    def test_fix_code_respects_jinja_variables_with_equals(
         self,
     ) -> None:
         """
-        Given: Code with a long string that contains a jinja variable
+        Given: Code with a long string that contains a jinja variable after an equal
         When: fix_code is run
         Then: The jinja string is not broken
         """
         source = (
             "---\n"
-            "project: This is a long long long long line that should not be split on "
-            "the jinja {{ variable }}"
-        )
-        desired_source = (
-            "---\n"
-            "project: This is a long long long long line that should not be split on "
-            "the jinja\n"
-            "  {{ variable }}\n"
+            "environment:\n"
+            "  - SUPER_LONG_VARIABLE={{ this_is_a_super_long_long_long_long_long"
+            "_variable_name }}\n"
         )
 
         result = fix_code(source)
 
-        assert result == desired_source
+        assert result == source
 
     def test_fix_code_respects_many_jinja_variables(
         self,

@@ -352,7 +352,7 @@ def _encode_jinja2_line(line: str) -> str:
             variable_terms.append(word)
             new_line.append("★".join(variable_terms))
             variable_terms = []
-        elif word == "{{" or len(variable_terms) > 0:
+        elif re.search("{{", word) or len(variable_terms) > 0:
             variable_terms.append(word)
         else:
             new_line.append(word)
