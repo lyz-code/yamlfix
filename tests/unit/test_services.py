@@ -633,3 +633,17 @@ class TestFixCode:
         result = fix_code(source)
 
         assert result == desired_source
+
+    def test_fix_code_doesnt_remove_variable(
+        self,
+    ) -> None:
+        """
+        Given: Code with a short jinja variable
+        When: fix_code is run
+        Then: The jinja string is not removed
+        """
+        source = "---\npath: '{{ item }}'\n"
+
+        result = fix_code(source)
+
+        assert result == source
