@@ -1,3 +1,9 @@
+## 1.0.1 (2022-08-01)
+
+### Fix
+
+- don't erase strings that are a jinja2 variable expansion
+
 ## 1.0.0 (2022-08-01)
 
 ### Feat
