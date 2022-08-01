@@ -170,7 +170,7 @@ build-docs:
 	@echo "- Building documentation -"
 	@echo "--------------------------"
 
-	pdm run mkdocs build
+	pdm run mkdocs build --strict
 
 	@echo ""
 

@@ -69,9 +69,6 @@ editable-backend = "path"
 # To be removed once https://github.com/flakeheaven/flakeheaven/issues/55 is solved
 "importlib-metadata" = ">=3.10"
 
-# To be removed once https://github.com/mkdocs/mkdocs/issues/2892 is solved
-markdown = "<3.4"
-
 [tool.pdm.dev-dependencies]
 lint = [
     "yamllint>=1.26.3",
@@ -282,8 +279,10 @@ pyflakes = [
 
 [tool.flakeheaven.exceptions."tests/"]
 flake8-docstrings = [
+  "-D205", # 1 blank line required between summary line and description
+  "-D212", # Multi-line docstring summary should start at the first line
   "-D400", # First line should end with a period
-  "-D205"  # 1 blank line required between summary line and description
+  "-D415", # First line should end with a period, question mark, or exclamation point
 ]
 flake8-annotations = [
   "-ANN001",

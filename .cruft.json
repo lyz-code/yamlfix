@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/lyz-code/cookiecutter-python-project",
-  "commit": "c505523e4dbc5d52dccd56bfc30c86f3e8782bcc",
+  "commit": "b4ee022e63368b00d8dcd877ace8d3760eb706ba",
   "context": {
     "cookiecutter": {
       "project_name": "yamlfix",

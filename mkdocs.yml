@@ -30,8 +30,6 @@ markdown_extensions:
   - abbr
   - def_list
   - admonition
-  - markdown_include.include:
-      base_path: docs
   - meta
   - toc:
       permalink: true
