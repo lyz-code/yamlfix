@@ -22,10 +22,12 @@ jobs:
           # All these steps are required so that mypy behaves equally than the
           # local environment, once mypy supports __pypackages__ try to use the
           # github action
-          pip install virtualenv pdm
+          pip install virtualenv pdm==2.0.1
+          # Until https://github.com/pdm-project/pdm/issues/1288 is fixed we need to fix
+          # the version of pdm to 2.0.1
           virtualenv .venv
           source .venv/bin/activate
-          pdm config use_venv True
+          pdm config python.use_venv True
       - name: Update requirements
         run: make update-production
       - name: Run tests

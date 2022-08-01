@@ -348,7 +348,7 @@ def _encode_jinja2_line(line: str) -> str:
     variable_terms: List[str] = []
 
     for word in line.split(" "):
-        if word == "}}":
+        if re.search("}}", word):
             variable_terms.append(word)
             new_line.append("★".join(variable_terms))
             variable_terms = []
