@@ -122,7 +122,6 @@ fixers = [
     "autoimport>=0.9.1",
     "black>=21.12b0",
     "isort>=5.10.1",
-    "yamlfix>=0.8.0",
 ]
 typing = [
     "mypy>=0.910",
