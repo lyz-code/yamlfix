@@ -40,26 +40,26 @@ book_library:
 
 `yamlfix` can be used both as command line tool and as a library.
 
-* As a command line tool:
+As a command line tool:
 
-    ```bash
-    $: yamlfix file.yaml
-    ```
+```bash
+$: yamlfix file.yaml
+```
 
-* As a library:
+As a library:
 
-    ```python
-    from yamlfix import fix_files
+```python
+from yamlfix import fix_files
 
-    fix_files(['file.py'])
-    ```
+fix_files(['file.py'])
+```
 
-    If instead of reading from a file you want to fix the code saved into
-    a variable, use `fix_code`:
+If instead of reading from a file you want to fix the code saved into
+a variable, use `fix_code`:
 
-    ```python
-    {! examples/fix_code.py !}
-    ```
+```python
+{! examples/fix_code.py !}
+```
 
 # Features
 
@@ -72,6 +72,9 @@ yamlfix will do the following changes in your code:
 * Remove unnecessary apostrophes: `title: 'Why we sleep'` -> `title: Why we sleep`.
 * [Correct comments](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments)
 * Ensure that there is exactly one newline at the end of each file, to comply with the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_206).
+* Split long lines.
+* Respect Jinja2 syntax.
+* Ensure a `\n` exists at the end of the file.
 
 # References
 
