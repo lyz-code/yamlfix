@@ -72,6 +72,9 @@ yamlfix will do the following changes in your code:
 * Remove unnecessary apostrophes: `title: 'Why we sleep'` -> `title: Why we sleep`.
 * [Correct comments](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments)
 * Ensure that there is exactly one newline at the end of each file, to comply with the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_206).
+* Split long lines.
+* Respect Jinja2 syntax.
+* Ensure a `\n` exists at the end of the file.
 
 # References
 
