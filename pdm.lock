@@ -154,12 +154,6 @@ requires_python = ">=3.6.1"
 summary = "Validate configuration and produce human readable error messages."
 
 [[package]]
-name = "chardet"
-version = "5.0.0"
-requires_python = ">=3.6"
-summary = "Universal encoding detector for Python 3"
-
-[[package]]
 name = "charset-normalizer"
 version = "2.1.0"
 requires_python = ">=3.6.0"
@@ -183,12 +177,12 @@ summary = "Cross-platform colored terminal text."
 
 [[package]]
 name = "commitizen"
-version = "2.29.2"
+version = "2.29.5"
 requires_python = ">=3.6.2,<4.0.0"
 summary = "Python commitizen client tool"
 dependencies = [
     "argcomplete<2.0.0,>=1.12.1",
-    "chardet<6.0.0,>=5.0.0",
+    "charset-normalizer<3.0.0,>=2.1.0",
     "colorama<0.5.0,>=0.4.1",
     "decli<0.6.0,>=0.5.2",
     "jinja2>=2.10.3",
@@ -340,11 +334,11 @@ dependencies = [
 
 [[package]]
 name = "flake8-annotations"
-version = "2.9.0"
+version = "2.9.1"
 requires_python = ">=3.7,<4.0"
 summary = "Flake8 Type Annotation Checks"
 dependencies = [
-    "attrs<22.0,>=21.4",
+    "attrs>=21.4",
     "flake8>=3.7",
     "typed-ast<2.0,>=1.4; python_version < \"3.8\"",
 ]
@@ -502,7 +496,7 @@ summary = "A flake8 extension that helps to make more readable variables names"
 
 [[package]]
 name = "flakeheaven"
-version = "2.1.3"
+version = "3.0.0"
 requires_python = ">=3.7,<4.0"
 summary = "FlakeHeaven is a [Flake8](https://gitlab.com/pycqa/flake8) wrapper to make it cool."
 dependencies = [
@@ -1544,10 +1538,6 @@ content_hash = "sha256:e3b1b6452267c8b51c7b8b74abeb8adf42ecbc1ce858873fc9e2810f9
     {url = "https://files.pythonhosted.org/packages/6d/82/0a0ebd35bae9981dea55c06f8e6aaf44a49171ad798795c72c6f64cba4c2/cfgv-3.3.1-py2.py3-none-any.whl", hash = "sha256:c6a0883f3917a037485059700b9e75da2464e6c27051014ad85ba6aaa5884426"},
     {url = "https://files.pythonhosted.org/packages/c4/bf/d0d622b660d414a47dc7f0d303791a627663f554345b21250e39e7acb48b/cfgv-3.3.1.tar.gz", hash = "sha256:f5a830efb9ce7a445376bb66ec94c638a9787422f96264c98edc6bdeed8ab736"},
 ]
-"chardet 5.0.0" = [
-    {url = "https://files.pythonhosted.org/packages/31/a2/12c090713b3d0e141f367236d3a8bdc3e5fca0d83ff3647af4892c16c205/chardet-5.0.0.tar.gz", hash = "sha256:0368df2bfd78b5fc20572bb4e9bb7fb53e2c094f60ae9993339e8671d0afb8aa"},
-    {url = "https://files.pythonhosted.org/packages/4c/d1/1b96dd69fa42f20b70701b5cd42a75dd5f0c7a24dc0abfef35cc146210dc/chardet-5.0.0-py3-none-any.whl", hash = "sha256:d3e64f022d254183001eccc5db4040520c0f23b1a3f33d6413e099eb7f126557"},
-]
 "charset-normalizer 2.1.0" = [
     {url = "https://files.pythonhosted.org/packages/93/1d/d9392056df6670ae2a29fcb04cfa5cee9f6fbde7311a1bb511d4115e9b7a/charset-normalizer-2.1.0.tar.gz", hash = "sha256:575e708016ff3a5e3681541cb9d79312c416835686d054a23accb873b254f413"},
     {url = "https://files.pythonhosted.org/packages/94/69/64b11e8c2fb21f08634468caef885112e682b0ebe2908e74d3616eb1c113/charset_normalizer-2.1.0-py3-none-any.whl", hash = "sha256:5189b6f22b01957427f35b6a08d9a0bc45b46d3788ef5a92e978433c7a35f8a5"},
@@ -1560,9 +1550,9 @@ content_hash = "sha256:e3b1b6452267c8b51c7b8b74abeb8adf42ecbc1ce858873fc9e2810f9
     {url = "https://files.pythonhosted.org/packages/2b/65/24d033a9325ce42ccbfa3ca2d0866c7e89cc68e5b9d92ecaba9feef631df/colorama-0.4.5.tar.gz", hash = "sha256:e6c6b4334fc50988a639d9b98aa429a0b57da6e17b9a44f0451f930b6967b7a4"},
     {url = "https://files.pythonhosted.org/packages/77/8b/7550e87b2d308a1b711725dfaddc19c695f8c5fa413c640b2be01662f4e6/colorama-0.4.5-py2.py3-none-any.whl", hash = "sha256:854bf444933e37f5824ae7bfc1e98d5bce2ebe4160d46b5edf346a89358e99da"},
 ]
-"commitizen 2.29.2" = [
-    {url = "https://files.pythonhosted.org/packages/39/ae/ad110461542baafc4b0a5cb3b37e68e58dac9914b0cfca879fe1e57fccf2/commitizen-2.29.2-py3-none-any.whl", hash = "sha256:73606a90a3d272884a6f3cce94427b80b76a08e901cdf2b96664f97332916bab"},
-    {url = "https://files.pythonhosted.org/packages/b3/b3/55713976aefdb0c3371dc5146b6f2c76fa4963824303b965a971c52a5c09/commitizen-2.29.2.tar.gz", hash = "sha256:676094c2aa485630ca8bff16be356a43043fa5dc3310f85a4f2764cf14c40f3d"},
+"commitizen 2.29.5" = [
+    {url = "https://files.pythonhosted.org/packages/6e/24/1c9bee395034644dd846c6f010a52c0dd01690d03e4559247c740cd906dd/commitizen-2.29.5.tar.gz", hash = "sha256:a6ab0b9f6cffbc49b2a4d2b940cbcc1715a9373f04604653a64677ef20a6ba7f"},
+    {url = "https://files.pythonhosted.org/packages/9c/ba/4b3ba7310d589c4a2ca843fac4de0c8be7ee6cf48d995c4b0f8a94f2bae7/commitizen-2.29.5-py3-none-any.whl", hash = "sha256:07f1708232dd14a839af82df62fcd53e0adb5b807cc55f4faab6c86b9a63ef12"},
 ]
 "commonmark 0.9.1" = [
     {url = "https://files.pythonhosted.org/packages/60/48/a60f593447e8f0894ebb7f6e6c1f25dafc5e89c5879fdc9360ae93ff83f0/commonmark-0.9.1.tar.gz", hash = "sha256:452f9dc859be7f06631ddcb328b6919c67984aca654e5fefb3914d54691aed60"},
@@ -1693,9 +1683,9 @@ content_hash = "sha256:e3b1b6452267c8b51c7b8b74abeb8adf42ecbc1ce858873fc9e2810f9
     {url = "https://files.pythonhosted.org/packages/3a/e6/da412eb9dc4c566f58acaaca16aa320d6ccad392515643790c7e99b650b6/flake8-aaa-0.12.2.tar.gz", hash = "sha256:38b5009248d8bc1e9568c8cc6f00870582f0e6b1be168d2f880a404796029e83"},
     {url = "https://files.pythonhosted.org/packages/83/49/4d89d04e8e887584b64cb7b82240b293e46dc8751bfd7843a01b2f3bd113/flake8_aaa-0.12.2-py3-none-any.whl", hash = "sha256:80840d34885506128a94e4912281bbab315591c414befd496dd041da640a1546"},
 ]
-"flake8-annotations 2.9.0" = [
-    {url = "https://files.pythonhosted.org/packages/72/ac/15eb0053ac0f39861f78dabb872c66c136f8828f3b0da8f12de36acb81d2/flake8-annotations-2.9.0.tar.gz", hash = "sha256:63fb3f538970b6a8dfd84125cf5af16f7b22e52d5032acb3b7eb23645ecbda9b"},
-    {url = "https://files.pythonhosted.org/packages/c6/cb/3857733e2ea309cdc0851b55e1b006955538bf4e7266e4fbe53dba9eb40b/flake8_annotations-2.9.0-py3-none-any.whl", hash = "sha256:84f46de2964cb18fccea968d9eafce7cf857e34d913d515120795b9af6498d56"},
+"flake8-annotations 2.9.1" = [
+    {url = "https://files.pythonhosted.org/packages/5f/d4/ed8d8e72c784dcb61df1dab7cbce61fcb3b6cd1191f60e006053e6f52925/flake8-annotations-2.9.1.tar.gz", hash = "sha256:11f09efb99ae63c8f9d6b492b75fe147fbc323179fddfe00b2e56eefeca42f57"},
+    {url = "https://files.pythonhosted.org/packages/f6/dc/ee0cfd300f22f169d42fd951c4a44840041f777987de8c56f861be5faefd/flake8_annotations-2.9.1-py3-none-any.whl", hash = "sha256:a4385158a7a9fc8af1d8820a2f4c8d03387997006a83f5f8bfe5bc6085bdf88a"},
 ]
 "flake8-annotations-complexity 0.0.7" = [
     {url = "https://files.pythonhosted.org/packages/44/a9/a45f07e1090976bf8c5c2966df63050ba51e87a16d3e43969fc1b8ae22db/flake8_annotations_complexity-0.0.7.tar.gz", hash = "sha256:2ecd93375e3dee0d4e11e476087a52fa985c47bc049015ff04a9de38fc0c4dfd"},
@@ -1764,9 +1754,9 @@ content_hash = "sha256:e3b1b6452267c8b51c7b8b74abeb8adf42ecbc1ce858873fc9e2810f9
     {url = "https://files.pythonhosted.org/packages/10/85/407cf43cfb06fc4045a384d1778675e7cf5be53c4fa93286572c311baeb9/flake8_variables_names-0.0.5-py3-none-any.whl", hash = "sha256:e3277031696bbe10b5132b49938cde1d70fcae9561533b7bd7ab8e69cb27addb"},
     {url = "https://files.pythonhosted.org/packages/80/a0/6c0a2fc99440a758b06a5c2b4af3931d521b9d2afba940e7a7adc8db9a47/flake8_variables_names-0.0.5.tar.gz", hash = "sha256:30133e14ee2300e13a60393a00f74d98110c76070ac67d1ab91606f02824a7e1"},
 ]
-"flakeheaven 2.1.3" = [
-    {url = "https://files.pythonhosted.org/packages/0e/4c/a0f489404da3c1e03a644e4fa567ea559542d21bad3d969e7610a626d38c/flakeheaven-2.1.3-py3-none-any.whl", hash = "sha256:ccff80ef4eadd5f04b462fc07fa84036863461ebb037e86edd2a6ce84aa25d58"},
-    {url = "https://files.pythonhosted.org/packages/a6/ea/c6314e9b25f3967dca11115aefa834ef49297722331bd5deb3071f5d8b0e/flakeheaven-2.1.3.tar.gz", hash = "sha256:737acc42081988e1306e84607015143c37a8ce6c9ebae7e30541d795355f0c63"},
+"flakeheaven 3.0.0" = [
+    {url = "https://files.pythonhosted.org/packages/72/37/67a1fd838020056f43190e9024377c99b91b1399c41afcaa8650202849ba/flakeheaven-3.0.0.tar.gz", hash = "sha256:81771740b2de3151d9cf6a38b63bc0f30b1070a15ddd2acf1c1706271d9dc0dd"},
+    {url = "https://files.pythonhosted.org/packages/a7/e3/070b1f89e4172e1518532f7ffd1c3260e004999b3fcc15705c05ec97211a/flakeheaven-3.0.0-py3-none-any.whl", hash = "sha256:c3e8acbbb3ca29402132cc160857c4f9ed6051a37f9d4d4f424ea6d14616ea33"},
 ]
 "freezegun 1.2.1" = [
     {url = "https://files.pythonhosted.org/packages/89/a9/ebf3d233893752ca282d91c88103facf6d7d05ce22978829e4e0cbc4113d/freezegun-1.2.1.tar.gz", hash = "sha256:b4c64efb275e6bc68dc6e771b17ffe0ff0f90b81a2a5189043550b6519926ba4"},

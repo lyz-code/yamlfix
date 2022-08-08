@@ -40,26 +40,26 @@ book_library:
 
 `yamlfix` can be used both as command line tool and as a library.
 
-* As a command line tool:
+As a command line tool:
 
-    ```bash
-    $: yamlfix file.yaml
-    ```
+```bash
+$: yamlfix file.yaml
+```
 
-* As a library:
+As a library:
 
-    ```python
-    from yamlfix import fix_files
+```python
+from yamlfix import fix_files
 
-    fix_files(['file.py'])
-    ```
+fix_files(['file.py'])
+```
 
-    If instead of reading from a file you want to fix the code saved into
-    a variable, use `fix_code`:
+If instead of reading from a file you want to fix the code saved into
+a variable, use `fix_code`:
 
-    ```python
-    {! examples/fix_code.py !}
-    ```
+```python
+{! examples/fix_code.py !}
+```
 
 # Features
 
