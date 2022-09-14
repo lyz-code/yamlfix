@@ -52,9 +52,21 @@ class TestFixFiles:
             """
         )
 
-        fix_files([str(test_file)])  # act
+        fix_files([str(test_file)], False)  # act
 
         assert test_file.read() == fixed_source
+
+    def test_fix_files_issues_warning(self, tmpdir: LocalPath) -> None:
+        """
+        Given: A file to fix
+        When: Using the old signature
+        Then: A warning is issued
+        """
+        test_file = tmpdir.join("source.yaml")  # type: ignore
+        test_file.write("program: yamlfix")
+        with pytest.warns(UserWarning, match="yamlfix/pull/182"):
+
+            fix_files([str(test_file)])  # act
 
 
 class TestFixCode:

@@ -6,8 +6,9 @@ and handlers to achieve the program's purpose.
 
 import logging
 import re
+import warnings
 from io import StringIO
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union, overload
 
 import ruyaml
 from _io import TextIOWrapper
@@ -17,17 +18,47 @@ log = logging.getLogger(__name__)
 Files = Union[Tuple[TextIOWrapper], List[str]]
 
 
+@overload
 def fix_files(files: Files) -> Optional[str]:
+    ...
+
+
+@overload
+def fix_files(files: Files, dry_run: Optional[bool]) -> Tuple[Optional[str], bool]:
+    ...
+
+
+def fix_files(  # pylint: disable=too-many-branches
+    files: Files, dry_run: Optional[bool] = None
+) -> Union[Optional[str], Tuple[Optional[str], bool]]:  # noqa: TAE002
     """Fix the yaml source code of a list of files.
 
     If the input is taken from stdin, it will return the fixed value.
 
     Args:
         files: List of files to fix.
+        dry_run: Whether to write changes or not.
 
     Returns:
-        Fixed code retrieved from stdin or None.
+        A tuple with the following items:
+        * Fixed code or None.
+        * A bool to indicate whether at least one file has been changed.
     """
+    changed = False
+
+    if dry_run is None:
+        warnings.warn(
+            """
+            From 2023-01-12 fix_files will change the return type from
+            `Optional[str]` to Tuple[Optional[str], bool], where the first
+            element of the Tuple is the fixed source and the second a bool that
+            returns whether the source has changed.
+
+            For more information check https://github.com/lyz-code/yamlfix/pull/182
+            """,
+            UserWarning,
+        )
+
     for file_ in files:
         if isinstance(file_, str):
             with open(file_, "r", encoding="utf-8") as file_descriptor:
@@ -40,10 +71,18 @@ def fix_files(files: Files) -> Optional[str]:
         log.debug("Fixing file %s...", file_name)
         fixed_source = fix_code(source)
 
+        if fixed_source != source:
+            changed = True
+
         if file_name == "<stdin>":
-            return fixed_source
+            if dry_run is None:
+                return fixed_source
+            return (fixed_source, changed)
 
         if fixed_source != source:
+            if dry_run:
+                log.debug("Need to fix file %s.", file_name)
+                continue
             if isinstance(file_, str):
                 with open(file_, "w", encoding="utf-8") as file_descriptor:
                     file_descriptor.write(fixed_source)
@@ -55,7 +94,10 @@ def fix_files(files: Files) -> Optional[str]:
         else:
             log.debug("Left file %s unmodified.", file_name)
 
-    return None
+    if dry_run is None:
+        return None
+
+    return (None, changed)
 
 
 def fix_code(source_code: str) -> str:
