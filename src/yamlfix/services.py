@@ -17,13 +17,14 @@ log = logging.getLogger(__name__)
 Files = Union[Tuple[TextIOWrapper], List[str]]
 
 
-def fix_files(files: Files) -> Optional[str]:
+def fix_files(files: Files, dry_run: bool = False) -> Optional[str]:
     """Fix the yaml source code of a list of files.
 
     If the input is taken from stdin, it will return the fixed value.
 
     Args:
         files: List of files to fix.
+        dry_run: Whether to write changes or not.
 
     Returns:
         Fixed code retrieved from stdin or None.
@@ -44,6 +45,9 @@ def fix_files(files: Files) -> Optional[str]:
             return fixed_source
 
         if fixed_source != source:
+            if dry_run:
+                log.debug("Need to fix file %s.", file_name)
+                continue
             if isinstance(file_, str):
                 with open(file_, "w", encoding="utf-8") as file_descriptor:
                     file_descriptor.write(fixed_source)

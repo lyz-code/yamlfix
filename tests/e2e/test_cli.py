@@ -124,3 +124,16 @@ def test_ignores_correct_files(
         logging.DEBUG,
         f"Left file {test_file} unmodified.",
     ) in caplog.record_tuples
+
+
+def test_check_one_file(runner: CliRunner, tmpdir: LocalPath) -> None:
+    """The --check flag is working."""
+    # ignore: call to untyped join method, they don't have type hints
+    test_file_source = "program: yamlfix"
+    test_file = tmpdir.join("source.yaml")  # type: ignore
+    test_file.write(test_file_source)
+
+    result = runner.invoke(cli, [str(test_file), "--check"])
+
+    assert result.exit_code == 0
+    assert test_file.read() == test_file_source
