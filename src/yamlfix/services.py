@@ -6,8 +6,9 @@ and handlers to achieve the program's purpose.
 
 import logging
 import re
+import warnings
 from io import StringIO
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Tuple, Union, overload
 
 import ruyaml
 from _io import TextIOWrapper
@@ -17,7 +18,19 @@ log = logging.getLogger(__name__)
 Files = Union[Tuple[TextIOWrapper], List[str]]
 
 
-def fix_files(files: Files, dry_run: bool = False) -> Tuple[Optional[str], bool]:
+@overload
+def fix_files(files: Files) -> Optional[str]:
+    ...
+
+
+@overload
+def fix_files(files: Files, dry_run: Optional[bool]) -> Tuple[Optional[str], bool]:
+    ...
+
+
+def fix_files(  # pylint: disable=too-many-branches
+    files: Files, dry_run: Optional[bool] = None
+) -> Union[Optional[str], Tuple[Optional[str], bool]]:  # noqa: TAE002
     """Fix the yaml source code of a list of files.
 
     If the input is taken from stdin, it will return the fixed value.
@@ -32,6 +45,19 @@ def fix_files(files: Files, dry_run: bool = False) -> Tuple[Optional[str], bool]
         * A bool to indicate whether at least one file has been changed.
     """
     changed = False
+
+    if dry_run is None:
+        warnings.warn(
+            """
+            From 2023-01-12 fix_files will change the return type from
+            `Optional[str]` to Tuple[Optional[str], bool], where the first
+            element of the Tuple is the fixed source and the second a bool that
+            returns whether the source has changed.
+
+            For more information check https://github.com/lyz-code/yamlfix/pull/182
+            """,
+            UserWarning,
+        )
 
     for file_ in files:
         if isinstance(file_, str):
@@ -49,6 +75,8 @@ def fix_files(files: Files, dry_run: bool = False) -> Tuple[Optional[str], bool]
             changed = True
 
         if file_name == "<stdin>":
+            if dry_run is None:
+                return fixed_source
             return (fixed_source, changed)
 
         if fixed_source != source:
@@ -65,6 +93,9 @@ def fix_files(files: Files, dry_run: bool = False) -> Tuple[Optional[str], bool]
             log.debug("Fixed file %s.", file_name)
         else:
             log.debug("Left file %s unmodified.", file_name)
+
+    if dry_run is None:
+        return None
 
     return (None, changed)
 
