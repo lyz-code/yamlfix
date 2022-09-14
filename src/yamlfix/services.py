@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 Files = Union[Tuple[TextIOWrapper], List[str]]
 
 
-def fix_files(files: Files, dry_run: bool = False) -> Optional[str]:
+def fix_files(files: Files, dry_run: bool = False) -> Tuple[Optional[str], bool]:
     """Fix the yaml source code of a list of files.
 
     If the input is taken from stdin, it will return the fixed value.
@@ -27,8 +27,12 @@ def fix_files(files: Files, dry_run: bool = False) -> Optional[str]:
         dry_run: Whether to write changes or not.
 
     Returns:
-        Fixed code retrieved from stdin or None.
+        A tuple with the following items:
+        * Fixed code or None.
+        * A bool to indicate whether at least one file has been changed.
     """
+    changed = False
+
     for file_ in files:
         if isinstance(file_, str):
             with open(file_, "r", encoding="utf-8") as file_descriptor:
@@ -41,8 +45,11 @@ def fix_files(files: Files, dry_run: bool = False) -> Optional[str]:
         log.debug("Fixing file %s...", file_name)
         fixed_source = fix_code(source)
 
+        if fixed_source != source:
+            changed = True
+
         if file_name == "<stdin>":
-            return fixed_source
+            return (fixed_source, changed)
 
         if fixed_source != source:
             if dry_run:
@@ -59,7 +66,7 @@ def fix_files(files: Files, dry_run: bool = False) -> Optional[str]:
         else:
             log.debug("Left file %s unmodified.", file_name)
 
-    return None
+    return (None, changed)
 
 
 def fix_code(source_code: str) -> str:
