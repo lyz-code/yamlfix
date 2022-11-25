@@ -1,3 +1,10 @@
+## 1.1.1 (2022-11-25)
+
+### Fix
+
+- remove dependency with py
+- restore the comment identation management
+
 ## 1.1.0 (2022-09-14)
 
 ## 1.0.1 (2022-08-01)
