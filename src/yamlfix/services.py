@@ -229,7 +229,11 @@ def _fix_top_level_lists(source_code: str) -> str:
             # Remove the indentation from the line
             fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
         elif is_top_level_list:
-            fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
+            # ruyaml doesn't change the indentation of comments
+            if re.match(r"\s*#.*", line):
+                fixed_source_lines.append(line)
+            else:
+                fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
         else:
             return source_code
 

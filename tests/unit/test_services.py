@@ -1,10 +1,10 @@
 """Tests the service layer."""
 
 import logging
+from pathlib import Path
 from textwrap import dedent
 
 import pytest
-from py._path.local import LocalPath
 
 from yamlfix import fix_files
 from yamlfix.services import fix_code
@@ -37,14 +37,14 @@ false_strings = [
 class TestFixFiles:
     """Test the fix_files function."""
 
-    def test_fix_files_can_process_string_arguments(self, tmpdir: LocalPath) -> None:
+    def test_fix_files_can_process_string_arguments(self, tmp_path: Path) -> None:
         """
         Given: A file to fix
         When: Passing the string with the path to the file to fix_files
         Then: The file is fixed
         """
-        test_file = tmpdir.join("source.yaml")  # type: ignore
-        test_file.write("program: yamlfix")
+        test_file = tmp_path / "source.yaml"
+        test_file.write_text("program: yamlfix")
         fixed_source = dedent(
             """\
             ---
@@ -54,16 +54,16 @@ class TestFixFiles:
 
         fix_files([str(test_file)], False)  # act
 
-        assert test_file.read() == fixed_source
+        assert test_file.read_text() == fixed_source
 
-    def test_fix_files_issues_warning(self, tmpdir: LocalPath) -> None:
+    def test_fix_files_issues_warning(self, tmp_path: Path) -> None:
         """
         Given: A file to fix
         When: Using the old signature
         Then: A warning is issued
         """
-        test_file = tmpdir.join("source.yaml")  # type: ignore
-        test_file.write("program: yamlfix")
+        test_file = tmp_path / "source.yaml"
+        test_file.write_text("program: yamlfix")
         with pytest.warns(UserWarning, match="yamlfix/pull/182"):
 
             fix_files([str(test_file)])  # act
@@ -192,19 +192,40 @@ class TestFixCode:
 
         assert result == source
 
-    def test_fix_code_preserves_indented_comments(self) -> None:
-        """Don't remove indentation from comments in the code."""
-        source = dedent(
-            """\
-            ---
-            - program:
-            # Keep comments!
+    @pytest.mark.parametrize(
+        "code",
+        [
+            dedent(
+                """\
+                ---
+                - program:
+                  # Keep comments!
+                """
+            ),
+            dedent(
+                """\
+                ---
+                - name: Setup SONiC Build Servers
+                  hosts: sonic_build_server
+                  vars:
+                    # Keep comments!
+                    build_user: build
+                """
+            ),
+            dedent(
+                """\
+                ---
+                tasks:
+                  - name: Make sure repository is cloned  # noqa latest[git]
             """
-        )
+            ),
+        ],
+    )
+    def test_fix_code_preserves_indented_comments(self, code: str) -> None:
+        """Don't remove indentation from comments in the code."""
+        result = fix_code(code)
 
-        result = fix_code(source)
-
-        assert result == source
+        assert result == code
 
     def test_fix_code_removes_extra_apostrophes(self) -> None:
         """Remove not needed apostrophes."""
