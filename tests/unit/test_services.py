@@ -192,19 +192,40 @@ class TestFixCode:
 
         assert result == source
 
-    def test_fix_code_preserves_indented_comments(self) -> None:
-        """Don't remove indentation from comments in the code."""
-        source = dedent(
-            """\
-            ---
-            - program:
-            # Keep comments!
+    @pytest.mark.parametrize(
+        "code",
+        [
+            dedent(
+                """\
+                ---
+                - program:
+                  # Keep comments!
+                """
+            ),
+            dedent(
+                """\
+                ---
+                - name: Setup SONiC Build Servers
+                  hosts: sonic_build_server
+                  vars:
+                    # Keep comments!
+                    build_user: build
+                """
+            ),
+            dedent(
+                """\
+                ---
+                tasks:
+                  - name: Make sure repository is cloned  # noqa latest[git]
             """
-        )
+            ),
+        ],
+    )
+    def test_fix_code_preserves_indented_comments(self, code: str) -> None:
+        """Don't remove indentation from comments in the code."""
+        result = fix_code(code)
 
-        result = fix_code(source)
-
-        assert result == source
+        assert result == code
 
     def test_fix_code_removes_extra_apostrophes(self) -> None:
         """Remove not needed apostrophes."""
