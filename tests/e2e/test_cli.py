@@ -2,12 +2,12 @@
 
 import logging
 import re
+from pathlib import Path
 from textwrap import dedent
 
 import pytest
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
-from py._path.local import LocalPath
 
 from yamlfix.entrypoints.cli import cli
 from yamlfix.version import __version__
@@ -30,11 +30,10 @@ def test_version(runner: CliRunner) -> None:
     )
 
 
-def test_corrects_one_file(runner: CliRunner, tmpdir: LocalPath) -> None:
+def test_corrects_one_file(runner: CliRunner, tmp_path: Path) -> None:
     """Correct the source code of a file."""
-    # ignore: call to untyped join method, they don't have type hints
-    test_file = tmpdir.join("source.yaml")  # type: ignore
-    test_file.write("program: yamlfix")
+    test_file = tmp_path / "source.yaml"
+    test_file.write_text("program: yamlfix")
     fixed_source = dedent(
         """\
         ---
@@ -45,17 +44,16 @@ def test_corrects_one_file(runner: CliRunner, tmpdir: LocalPath) -> None:
     result = runner.invoke(cli, [str(test_file)])
 
     assert result.exit_code == 0
-    assert test_file.read() == fixed_source
+    assert test_file.read_text() == fixed_source
 
 
 @pytest.mark.secondary()
-def test_corrects_three_files(runner: CliRunner, tmpdir: LocalPath) -> None:
+def test_corrects_three_files(runner: CliRunner, tmp_path: Path) -> None:
     """Correct the source code of multiple files."""
     test_files = []
     for file_number in range(3):
-        # ignore: call to untyped join method, they don't have type hints
-        test_file = tmpdir.join(f"source_{file_number}.yaml")  # type: ignore
-        test_file.write("program: yamlfix")
+        test_file = tmp_path / f"source_{file_number}.yaml"
+        test_file.write_text("program: yamlfix")
         test_files.append(test_file)
     fixed_source = dedent(
         """\
@@ -68,7 +66,7 @@ def test_corrects_three_files(runner: CliRunner, tmpdir: LocalPath) -> None:
 
     assert result.exit_code == 0
     for test_file in test_files:
-        assert test_file.read() == fixed_source
+        assert test_file.read_text() == fixed_source
 
 
 def test_corrects_code_from_stdin(runner: CliRunner) -> None:
@@ -107,18 +105,18 @@ def test_verbose_option(runner: CliRunner, verbose: bool) -> None:
 
 
 def test_ignores_correct_files(
-    runner: CliRunner, tmpdir: LocalPath, caplog: LogCaptureFixture
+    runner: CliRunner, tmp_path: Path, caplog: LogCaptureFixture
 ) -> None:
     """Correct the source code of an already correct file."""
     # ignore: call to untyped join method, they don't have type hints
     caplog.set_level(logging.DEBUG)
-    test_file = tmpdir.join("source.yaml")  # type: ignore
-    test_file.write("---\na: 1\n")
+    test_file = tmp_path / "source.yaml"
+    test_file.write_text("---\na: 1\n")
 
     result = runner.invoke(cli, [str(test_file)])
 
     assert result.exit_code == 0
-    assert test_file.read() == "---\na: 1\n"
+    assert test_file.read_text() == "---\na: 1\n"
     assert (
         "yamlfix.services",
         logging.DEBUG,
@@ -126,20 +124,20 @@ def test_ignores_correct_files(
     ) in caplog.record_tuples
 
 
-def test_check_one_file_changes(runner: CliRunner, tmpdir: LocalPath) -> None:
+def test_check_one_file_changes(runner: CliRunner, tmp_path: Path) -> None:
     """The --check flag is working with fixes to do."""
     # ignore: call to untyped join method, they don't have type hints
     test_file_source = "program: yamlfix"
-    test_file = tmpdir.join("source.yaml")  # type: ignore
-    test_file.write(test_file_source)
+    test_file = tmp_path / "source.yaml"
+    test_file.write_text(test_file_source)
 
     result = runner.invoke(cli, [str(test_file), "--check"])
 
     assert result.exit_code == 1
-    assert test_file.read() == test_file_source
+    assert test_file.read_text() == test_file_source
 
 
-def test_check_one_file_no_changes(runner: CliRunner, tmpdir: LocalPath) -> None:
+def test_check_one_file_no_changes(runner: CliRunner, tmp_path: Path) -> None:
     """The --check flag is working with pending changes."""
     # ignore: call to untyped join method, they don't have type hints
     test_file_source = dedent(
@@ -148,10 +146,10 @@ def test_check_one_file_no_changes(runner: CliRunner, tmpdir: LocalPath) -> None
         program: yamlfix
         """
     )
-    test_file = tmpdir.join("source.yaml")  # type: ignore
-    test_file.write(test_file_source)
+    test_file = tmp_path / "source.yaml"
+    test_file.write_text(test_file_source)
 
     result = runner.invoke(cli, [str(test_file), "--check"])
 
     assert result.exit_code == 0
-    assert test_file.read() == test_file_source
+    assert test_file.read_text() == test_file_source

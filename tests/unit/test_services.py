@@ -1,10 +1,10 @@
 """Tests the service layer."""
 
 import logging
+from pathlib import Path
 from textwrap import dedent
 
 import pytest
-from py._path.local import LocalPath
 
 from yamlfix import fix_files
 from yamlfix.services import fix_code
@@ -37,14 +37,14 @@ false_strings = [
 class TestFixFiles:
     """Test the fix_files function."""
 
-    def test_fix_files_can_process_string_arguments(self, tmpdir: LocalPath) -> None:
+    def test_fix_files_can_process_string_arguments(self, tmp_path: Path) -> None:
         """
         Given: A file to fix
         When: Passing the string with the path to the file to fix_files
         Then: The file is fixed
         """
-        test_file = tmpdir.join("source.yaml")  # type: ignore
-        test_file.write("program: yamlfix")
+        test_file = tmp_path / "source.yaml"
+        test_file.write_text("program: yamlfix")
         fixed_source = dedent(
             """\
             ---
@@ -54,16 +54,16 @@ class TestFixFiles:
 
         fix_files([str(test_file)], False)  # act
 
-        assert test_file.read() == fixed_source
+        assert test_file.read_text() == fixed_source
 
-    def test_fix_files_issues_warning(self, tmpdir: LocalPath) -> None:
+    def test_fix_files_issues_warning(self, tmp_path: Path) -> None:
         """
         Given: A file to fix
         When: Using the old signature
         Then: A warning is issued
         """
-        test_file = tmpdir.join("source.yaml")  # type: ignore
-        test_file.write("program: yamlfix")
+        test_file = tmp_path / "source.yaml"
+        test_file.write_text("program: yamlfix")
         with pytest.warns(UserWarning, match="yamlfix/pull/182"):
 
             fix_files([str(test_file)])  # act
