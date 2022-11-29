@@ -16,21 +16,20 @@ Imagine we've got the following source code:
 
 ```yaml
 book_library:
-- title: Why we sleep
-  author: Matthew Walker
-- title: Harry Potter and the Methods of Rationality
-  author: Eliezer Yudkowsky
+  - title: Why we sleep
+    author: Matthew Walker
+  - title: Harry Potter and the Methods of Rationality
+    author: Eliezer Yudkowsky
 ```
 
 It has the following errors:
 
-* There is no `---` at the top.
-* The indentation is all wrong.
+- There is no `---` at the top.
+- The indentation is all wrong.
 
 After running `yamlfix` the resulting source code will be:
 
 ```yaml
----
 book_library:
   - title: Why we sleep
     author: Matthew Walker
@@ -51,11 +50,11 @@ As a library:
 ```python
 from yamlfix import fix_files
 
-fix_files(['file.py'])
+fix_files(["file.py"])
 ```
 
-If instead of reading from a file you want to fix the code saved into
-a variable, use `fix_code`:
+If instead of reading from a file you want to fix the code saved into a
+variable, use `fix_code`:
 
 ```python
 {! examples/fix_code.py !}
@@ -65,70 +64,86 @@ a variable, use `fix_code`:
 
 yamlfix will do the following changes in your code:
 
-* Add the header `---` to your file.
-* [Correct truthy
-    strings](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.truthy):
-    'True' -> true, 'no' -> 'false'
-* Remove unnecessary apostrophes: `title: 'Why we sleep'` -> `title: Why we sleep`.
-* [Correct comments](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments)
-* Ensure that there is exactly one newline at the end of each file, to comply with the [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_206).
-* Split long lines.
-* Respect Jinja2 syntax.
-* Ensure a `\n` exists at the end of the file.
+- Add the header `---` to your file.
+- [Correct truthy strings](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.truthy):
+  'True' -> true, 'no' -> 'false'
+- Remove unnecessary apostrophes: `title: 'Why we sleep'` ->
+  `title: Why we sleep`.
+- [Correct comments](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments)
+- Ensure that there is exactly one newline at the end of each file, to comply
+  with the
+  [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_206).
+- Split long lines.
+- Respect Jinja2 syntax.
+- Ensure a `\n` exists at the end of the file.
 
 # References
 
-As most open sourced programs, `yamlfix` is standing on the shoulders of
-giants, namely:
+As most open sourced programs, `yamlfix` is standing on the shoulders of giants,
+namely:
 
-[yamlfmt](https://github.com/mmlb/yamlfmt)
-: Inspiration and alternative of this program. I created a new one because the
-    pace of their pull requests is really slow, they don't have tests, CI pipelines
-    or documentation.
+[yamlfmt](https://github.com/mmlb/yamlfmt) : Inspiration and alternative of this
+program. I created a new one because the pace of their pull requests is really
+slow, they don't have tests, CI pipelines or documentation.
 
-[ruyaml](https://github.com/pycontribs/ruyaml)
-: A git based community maintained for of
-[ruamel](https://yaml.readthedocs.io/en/latest/) yaml parser.
+[ruyaml](https://github.com/pycontribs/ruyaml) : A git based community
+maintained for of [ruamel](https://yaml.readthedocs.io/en/latest/) yaml parser.
 
-[Click](https://click.palletsprojects.com/)
-: Used to create the command line interface.
+[Click](https://click.palletsprojects.com/) : Used to create the command line
+interface.
 
-[Pytest](https://docs.pytest.org/en/latest)
-: Testing framework, enhanced by the awesome
-    [pytest-cases](https://smarie.github.io/python-pytest-cases/) library that made
-    the parametrization of the tests a lovely experience.
+[Pytest](https://docs.pytest.org/en/latest) : Testing framework, enhanced by the
+awesome [pytest-cases](https://smarie.github.io/python-pytest-cases/) library
+that made the parametrization of the tests a lovely experience.
 
-[Mypy](https://mypy.readthedocs.io/en/stable/)
-: Python static type checker.
+[Mypy](https://mypy.readthedocs.io/en/stable/) : Python static type checker.
 
-[Flakeheaven](https://github.com/flakeheaven/flakeheaven)
-: Python linter with [lots of
-    checks](https://lyz-code.github.io/blue-book/devops/flakeheaven#plugins).
+[Flakeheaven](https://github.com/flakeheaven/flakeheaven) : Python linter with
+[lots of checks](https://lyz-code.github.io/blue-book/devops/flakeheaven#plugins).
 
-[Black](https://black.readthedocs.io/en/stable/)
-: Python formatter to keep a nice style without effort.
+[Black](https://black.readthedocs.io/en/stable/) : Python formatter to keep a
+nice style without effort.
 
-[Autoimport](https://lyz-code.github.io/autoimport)
-: Python formatter to automatically fix wrong import statements.
+[Autoimport](https://lyz-code.github.io/autoimport) : Python formatter to
+automatically fix wrong import statements.
 
-[isort](https://github.com/timothycrosley/isort)
-: Python formatter to order the import statements.
+[isort](https://github.com/timothycrosley/isort) : Python formatter to order the
+import statements.
 
-[PDM](https://pdm.fming.dev/)
-: Command line tool to manage the dependencies.
+[PDM](https://pdm.fming.dev/) : Command line tool to manage the dependencies.
 
-[Mkdocs](https://www.mkdocs.org/)
-: To build this documentation site, with the
+[Mkdocs](https://www.mkdocs.org/) : To build this documentation site, with the
 [Material theme](https://squidfunk.github.io/mkdocs-material).
 
-[Safety](https://github.com/pyupio/safety)
-: To check the installed dependencies for known security vulnerabilities.
+[Safety](https://github.com/pyupio/safety) : To check the installed dependencies
+for known security vulnerabilities.
 
-[Bandit](https://bandit.readthedocs.io/en/latest/)
-: To finds common security issues in Python code.
+[Bandit](https://bandit.readthedocs.io/en/latest/) : To finds common security
+issues in Python code.
 
 # Contributing
 
-For guidance on setting up a development environment, and how to make
-a contribution to *yamlfix*, see [Contributing to
-yamlfix](https://lyz-code.github.io/yamlfix/contributing).
+For guidance on setting up a development environment, and how to make a
+contribution to *yamlfix*, see
+[Contributing to yamlfix](https://lyz-code.github.io/yamlfix/contributing).
+
+# Donations
+
+<a href="https://liberapay.com/Lyz/donate"><img alt="Donate using
+Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
+or
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/T6T3GP0V8)
+
+If you are using some of my open-source tools, have enjoyed them, and want to
+say "thanks", this is a very strong way to do it.
+
+If your product/company depends on these tools, you can sponsor me to ensure I
+keep happily maintaining them.
+
+If these tools are helping you save money, time, effort, or frustrations; or
+they are helping you make money, be more productive, efficient, secure, enjoy a
+bit more your work, or get your product ready faster, this is a great way to
+show your appreciation. Thanks for that!
+
+And by sponsoring me, you are helping make these tools, that already help you,
+sustainable and healthy.
