@@ -468,6 +468,10 @@ class TestFixCode:
         fix_code("")  # act
 
         expected_logs = [
+            "Setting up ruamel yaml 'quote everything' configuration...",
+            "Setting up ruamel yaml 'sequence flow style' configuration...",
+            "Running ruamel yaml base configuration...",
+            "Running source code fixers...",
             "Fixing truthy strings...",
             "Fixing comments...",
             "Fixing jinja2 variables...",
@@ -476,6 +480,7 @@ class TestFixCode:
             "Restoring double exclamations...",
             "Restoring jinja2 variables...",
             "Fixing top level lists...",
+            "Fixing flow-style lists...",
         ]
         assert caplog.messages == expected_logs
         for record in caplog.records:

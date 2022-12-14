@@ -1,0 +1,667 @@
+"""Define adapter / helper classes to hide unrelated functionality in."""
+
+import logging
+import re
+from io import StringIO
+from typing import Any, Callable, List, Optional, Tuple
+
+from ruyaml.main import YAML
+from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
+from ruyaml.representer import RoundTripRepresenter
+from ruyaml.tokens import CommentToken
+
+from yamlfix.model import YamlfixConfig
+
+log = logging.getLogger(__name__)
+
+
+class Yaml:
+    """Adapter that holds the configured ruaml yaml fixer."""
+
+    def __init__(self, config: Optional[YamlfixConfig]) -> None:
+        """Initialize the yaml adapter with an optional yamlfix config.
+
+        Args:
+            config: Small set of user provided configuration options for yamlfix.
+        """
+        self.yaml = YAML()
+        self.config = config or YamlfixConfig()
+
+        # we have to call setattr with the string value, because the internal ruyaml
+        # implementation does the same thing and does not expose the attribute itself
+        setattr(  # noqa: B010
+            self.yaml,
+            "_representer",
+            YamlfixRepresenter(
+                self.config,
+                self.yaml.default_style,
+                self.yaml.default_flow_style,
+                self.yaml,
+            ),
+        )
+
+        self._base_configuration()
+
+    def _base_configuration(self) -> None:
+        """Configure base settings for Ruamel's yaml."""
+        log.debug("Running ruamel yaml base configuration...")
+        config = self.config
+
+        # Configure YAML formatter
+        self.yaml.indent(
+            mapping=config.indent_mapping,
+            sequence=config.indent_sequence,
+            offset=config.indent_offset,
+        )
+        self.yaml.allow_duplicate_keys = config.allow_duplicate_keys
+
+        # Start the document with ---
+        # ignore: variable has type None, what can we do, it doesn't have type hints...
+        self.yaml.explicit_start = config.explicit_start  # type: ignore
+        self.yaml.width = config.line_length  # type: ignore
+
+
+class YamlfixRepresenter(RoundTripRepresenter):
+    """Yamlfix's custom implementation of the ruyaml.RoundTripRepresenter\
+        that can be configured with YamlfixConfig."""
+
+    def __init__(
+        self,
+        config: YamlfixConfig,
+        default_style: Optional[str] = None,
+        default_flow_style: Optional[bool] = None,
+        dumper: Optional[YAML] = None,
+    ) -> None:
+        """Initialize the YamlfixRepresenter and its parent RoundTripRepresenter."""
+        RoundTripRepresenter.__init__(
+            self,
+            default_style=default_style,
+            default_flow_style=default_flow_style,
+            dumper=dumper,
+        )
+
+        self.config: YamlfixConfig = config
+        self.patch_functions: List[Callable[[Node, Node], None]] = []
+
+        configure_patch_functions = [
+            self._configure_quotation_for_basic_values,
+            self._configure_flow_style_for_sequences,
+        ]
+
+        for patch_configurer in configure_patch_functions:
+            patch_configurer()
+
+    def represent_none(self, data: Any) -> ScalarNode:  # noqa: ANN401
+        """Configure how Ruamel's yaml represents None values.
+
+        Default is an empty representation, could be overridden by canonical values
+        like "~", "null", "NULL"
+        """
+        if (
+            self.config.none_representation is None
+            or self.config.none_representation == ""
+        ):
+            return super().represent_none(data)
+
+        return self.represent_scalar(
+            "tag:yaml.org,2002:null", self.config.none_representation
+        )
+
+    def represent_str(self, data: Any) -> ScalarNode:  # noqa: ANN401
+        """Configure Ruamel's yaml fixer to quote all yaml keys and simple* string values.
+
+        Simple string values meaning: No multi line strings, as they are represented
+        by LiteralScalarStrings instead.
+        """
+        if (
+            not self.config.quote_keys_and_basic_values
+            or self.config.quote_representation is None
+        ):
+            return super().represent_str(data)
+
+        return self.represent_scalar(
+            "tag:yaml.org,2002:str", data, self.config.quote_representation
+        )
+
+    def represent_mapping(
+        self, tag: Any, mapping: Any, flow_style: Optional[Any] = None  # noqa: ANN401
+    ) -> MappingNode:
+        """Modify / Patch the original ruyaml representer represent_mapping value and\
+            call the provided patch_function on its mapping_values."""
+        mapping_node: MappingNode = super().represent_mapping(tag, mapping, flow_style)
+        mapping_values: List[Tuple[ScalarNode, Node]] = mapping_node.value
+
+        if isinstance(mapping_values, list):
+            for mapping_value in mapping_values:
+                if isinstance(mapping_value, tuple):
+                    key_node: Node = mapping_value[0]
+                    value_node: Node = mapping_value[1]
+                    for patch_function in self.patch_functions:
+                        patch_function(key_node, value_node)
+
+        return mapping_node
+
+    def _configure_quotation_for_basic_values(self) -> None:
+        """Configure Ruamel's yaml fixer to quote only simple* yaml string values.
+
+        Simple string values meaning: Any string that does not already have an
+        explicit 'style' applied already -> multi line strings have a style value
+        of "|" per default.
+        """
+        config = self.config
+        log.debug("Setting up ruamel yaml 'quote everything' configuration...")
+
+        def patch_quotations(key_node: Node, value_node: Node) -> None:  # noqa: W0613
+            if not config.quote_basic_values or config.quote_representation is None:
+                return
+
+            if (
+                isinstance(value_node, ScalarNode)
+                and value_node.tag == "tag:yaml.org,2002:str"
+                and value_node.style is None
+            ):
+                value_node.style = config.quote_representation
+
+        self.patch_functions.append(patch_quotations)
+
+    def _configure_flow_style_for_sequences(self) -> None:
+        """Configure Ruamel's yaml fixer to represent lists as either block-style \
+            or flow-style.
+
+        Also make sure, that lists containing non-scalar values (other maps, \
+            lists), lists that contain comments and lists that would breach the
+            line-length are forced to block-style, regardless of configuration.
+
+        Lists in block-style look like this:
+        ```
+        list:
+          # Comment for item
+          - item
+          - item
+          - complex_item:
+              # Comment for key
+              key: value
+        ```
+
+        Lists in flow-style look like this, we do not convert lists with complex
+        values or lists with comments to that style, it is meant for simple lists,
+        that contain only scalar values (string, int, bool, etc.) not other complex
+        values (lists, dicts, comments, etc.)
+        ```
+        list: [item, item, item]
+        ```
+        """
+        config = self.config
+        log.debug("Setting up ruamel yaml 'sequence flow style' configuration...")
+
+        def seq_contains_non_scalar_nodes(seq_node: Node) -> bool:
+            return any(not isinstance(node, ScalarNode) for node in seq_node.value)
+
+        def seq_contains_non_empty_comments(seq_node: Node) -> bool:
+            comment_tokens: List[CommentToken] = []
+
+            if isinstance(seq_node.comment, list):
+                for comment in seq_node.comment:
+                    if isinstance(comment, list):
+                        comment_tokens.extend(comment)
+                    elif isinstance(comment, CommentToken):
+                        comment_tokens.append(comment)
+
+            for node in seq_node.value:
+                if isinstance(node, ScalarNode) and isinstance(node.comment, list):
+                    comment_tokens.extend(node.comment)
+
+            return any(
+                isinstance(comment_token, CommentToken)
+                and comment_token.value.strip() != ""
+                for comment_token in comment_tokens
+            )
+
+        def seq_length_longer_than_line_length(key_node: Node, seq_node: Node) -> bool:
+            # This could be made configurable, or rather we could calculate if we need
+            # the quotation spaces for the configured settings, but if we err on the
+            # side of caution we can always force block-mode even for values that could
+            # technically, without quotes, fit into the line-length
+
+            # quotation marks around scalar value
+            quote_length: int = 2
+
+            # comma and space between scalar values or colon and space
+            # between key + values
+            separator_length: int = 2
+
+            # opening and closing brackets that should fit on the same line
+            bracket_length: int = 2
+
+            key_length: int = len(str(key_node.value)) + quote_length + separator_length
+
+            if not config.flow_style_sequence_multiline:
+                scalar_length: int = 0
+
+                for node in seq_node.value:
+                    if isinstance(node, ScalarNode):
+                        scalar_length += (
+                            len(str(node.value)) + quote_length + separator_length
+                        )
+
+                if key_length + scalar_length + bracket_length > config.line_length:
+                    return True
+
+            return False
+
+        def patch_sequence_style(key_node: Node, value_node: Node) -> None:
+            if isinstance(key_node, ScalarNode) and isinstance(
+                value_node, SequenceNode
+            ):
+                if (
+                    config.flow_style_sequence is None
+                ):  # explicitly check for None as this can be `False` as well
+                    return
+
+                force_block_style: bool = False
+                sequence_node: SequenceNode = value_node
+                if sequence_node.value is None:
+                    return
+
+                # if this sequence contains non-scalar nodes (i.e. dicts, lists, etc.),
+                # force block-style
+                force_block_style = force_block_style or seq_contains_non_scalar_nodes(
+                    sequence_node
+                )
+
+                # if this sequence contains non-empty comments, force block-style
+                force_block_style = (
+                    force_block_style or seq_contains_non_empty_comments(sequence_node)
+                )
+
+                # if this sequence, rendered in flow-style would breach the line-width,
+                # force block-style roughly calculate the consumed width, in any case
+                # ruyaml will fold flow-style lists if they breach the limit only
+                # consider scalars, as non-scalar nodes should force block-style already
+                force_block_style = (
+                    force_block_style
+                    or seq_length_longer_than_line_length(key_node, sequence_node)
+                )
+
+                sequence_node.flow_style = config.flow_style_sequence
+                if force_block_style:
+                    sequence_node.flow_style = False
+
+        self.patch_functions.append(patch_sequence_style)
+
+
+YamlfixRepresenter.add_representer(type(None), YamlfixRepresenter.represent_none)
+YamlfixRepresenter.add_representer(str, YamlfixRepresenter.represent_str)
+
+
+class SourceCodeFixer:
+    """Adapter that holds all source code yaml fixers."""
+
+    def __init__(self, yaml: Yaml, config: Optional[YamlfixConfig]) -> None:
+        """Initialize the source code fixer adapter with a configured yaml fixer \
+            instance and optional yamlfix config.
+
+        Args:
+            yaml: Initialized Ruamel formatter to use for source code correction.
+            config: Small set of user provided configuration options for yamlfix.
+        """
+        self.yaml = yaml.yaml
+        self.config = config or YamlfixConfig()
+
+    def fix(self, source_code: str) -> str:
+        """Run all yaml source code fixers.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        log.debug("Running source code fixers...")
+
+        fixers = [
+            self._fix_truthy_strings,
+            self._fix_comments,
+            self._fix_jinja_variables,
+            self._ruamel_yaml_fixer,
+            self._restore_truthy_strings,
+            self._restore_double_exclamations,
+            self._restore_jinja_variables,
+            self._fix_top_level_lists,
+            self._fix_flow_style_lists,
+            self._add_newline_at_end_of_file,
+        ]
+
+        for fixer in fixers:
+            source_code = fixer(source_code)
+
+        return source_code
+
+    def _ruamel_yaml_fixer(self, source_code: str) -> str:
+        """Run Ruamel's yaml fixer.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        log.debug("Running ruamel yaml fixer...")
+        source_dicts = self.yaml.load_all(source_code)
+
+        # Return the output to a string
+        string_stream = StringIO()
+        for source_dict in source_dicts:
+            self.yaml.dump(source_dict, string_stream)
+            source_code = string_stream.getvalue()
+        string_stream.close()
+
+        return source_code.strip()
+
+    @staticmethod
+    def _fix_top_level_lists(source_code: str) -> str:
+        """Deindent the source with a top level list.
+
+        Documents like the following:
+
+        ```yaml
+        ---
+        # Comment
+        - item 1
+        - item 2
+        ```
+
+        Are wrongly indented by the ruyaml parser:
+
+        ```yaml
+        ---
+        # Comment
+        - item 1
+        - item 2
+        ```
+
+        This function restores the indentation back to the original.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        log.debug("Fixing top level lists...")
+        source_lines = source_code.splitlines()
+        fixed_source_lines: List[str] = []
+        is_top_level_list: Optional[bool] = None
+
+        for line in source_lines:
+
+            # Skip the heading and first empty lines
+            if re.match(r"^(---|#.*|)$", line):
+                fixed_source_lines.append(line)
+                continue
+
+            # Check if the first valid line is an indented list item
+            if re.match(r"\s*- +.*", line) and is_top_level_list is None:
+                is_top_level_list = True
+
+                # Extract the indentation level
+                serialized_line = re.match(r"(?P<indent>\s*)- +(?P<content>.*)", line)
+                if serialized_line is None:  # pragma: no cover
+                    raise ValueError(
+                        f"Error extracting the indentation of line: {line}"
+                    )
+                indent = serialized_line.groupdict()["indent"]
+
+                # Remove the indentation from the line
+                fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
+            elif is_top_level_list:
+                # ruyaml doesn't change the indentation of comments
+                if re.match(r"\s*#.*", line):
+                    fixed_source_lines.append(line)
+                else:
+                    fixed_source_lines.append(re.sub(rf"^{indent}(.*)", r"\1", line))
+            else:
+                return source_code
+
+        return "\n".join(fixed_source_lines)
+
+    @staticmethod
+    def _fix_flow_style_lists(source_code: str) -> str:
+        """Fix trailing newlines within flow-style lists.
+
+        Documents like the following:
+
+        ```yaml
+        ---
+        list: ["a", b, 'c']
+
+
+        next-element: "d"
+        ```
+
+        Are wrongly formatted by the ruyaml parser:
+
+        ```yaml
+        ---
+        list: ["a", b, 'c'
+
+
+        ]
+        next-element: "d"
+        ```
+
+        This function moves the closing bracket to the end of the flow-style
+        list definition.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        log.debug("Fixing flow-style lists...")
+        source_lines = source_code.splitlines()
+        reversed_fixed_source_lines: List[str] = []
+
+        should_append_square_brackets: bool = False
+        for line in reversed(source_lines):
+            if line == "]":
+                should_append_square_brackets = True
+                continue
+
+            if line == "":
+                reversed_fixed_source_lines.append(line)
+                continue
+
+            if should_append_square_brackets:
+                should_append_square_brackets = False
+                reversed_fixed_source_lines.append(line + "]")
+            else:
+                reversed_fixed_source_lines.append(line)
+
+        return "\n".join(reversed(reversed_fixed_source_lines))
+
+    @staticmethod
+    def _fix_truthy_strings(source_code: str) -> str:
+        """Convert common strings that refer to booleans.
+
+        All caps variations of true, yes and on are transformed to true, while false,
+        no and off are transformed to false.
+
+        Ruyaml understands these strings and converts them to the lower version of
+        the word instead of converting them to true and false.
+
+        [More info](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.truthy) # noqa: E501
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        log.debug("Fixing truthy strings...")
+        source_lines = source_code.splitlines()
+        fixed_source_lines: List[str] = []
+
+        for line in source_lines:
+            line_contains_true = re.match(
+                r"(?P<pre_boolean_text>.*(:|-) )(true|yes|on)$", line, re.IGNORECASE
+            )
+            line_contains_false = re.match(
+                r"(?P<pre_boolean_text>.*(:|-) )(false|no|off)$", line, re.IGNORECASE
+            )
+
+            if line_contains_true:
+                fixed_source_lines.append(
+                    f"{line_contains_true.groupdict()['pre_boolean_text']}true"
+                )
+            elif line_contains_false:
+                fixed_source_lines.append(
+                    f"{line_contains_false.groupdict()['pre_boolean_text']}false"
+                )
+            else:
+                fixed_source_lines.append(line)
+
+        return "\n".join(fixed_source_lines)
+
+    @staticmethod
+    def _restore_truthy_strings(source_code: str) -> str:
+        """Restore truthy strings to strings.
+
+        The Ruyaml parser removes the apostrophes of all the caps variations of
+        the strings 'yes', 'on', no and 'off' as it interprets them as booleans.
+
+        As this function is run after _fix_truthy_strings, those strings are
+        meant to be strings. So we're turning them back from booleans to strings.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        log.debug("Restoring truthy strings...")
+        source_lines = source_code.splitlines()
+        fixed_source_lines: List[str] = []
+
+        for line in source_lines:
+            line_contains_valid_truthy_string = re.match(
+                r"(?P<pre_boolean_text>.*(:|-) )(?P<boolean_text>yes|on|no|off)$",
+                line,
+                re.IGNORECASE,
+            )
+            if line_contains_valid_truthy_string:
+                fixed_source_lines.append(
+                    f"{line_contains_valid_truthy_string.groupdict()['pre_boolean_text']}"  # noqa: E501
+                    f"'{line_contains_valid_truthy_string.groupdict()['boolean_text']}'"
+                )
+            else:
+                fixed_source_lines.append(line)
+
+        return "\n".join(fixed_source_lines)
+
+    @staticmethod
+    def _fix_comments(source_code: str) -> str:
+        log.debug("Fixing comments...")
+        fixed_source_lines = []
+
+        for line in source_code.splitlines():
+            # Comment at the start of the line
+            if re.search(r"(^|\s)#\w", line):
+                line = line.replace("#", "# ")
+            # Comment in the middle of the line, but it's not part of a string
+            if re.match(r".+\S\s#", line) and line[-1] not in ["'", '"']:
+                line = line.replace(" #", "  #")
+            fixed_source_lines.append(line)
+
+        return "\n".join(fixed_source_lines)
+
+    @staticmethod
+    def _restore_double_exclamations(source_code: str) -> str:
+        """Restore the double exclamation marks.
+
+        The Ruyaml parser transforms the !!python statement to !%21python which breaks
+        some programs.
+        """
+        log.debug("Restoring double exclamations...")
+        fixed_source_lines = []
+        double_exclamation = re.compile(r"!%21")
+
+        for line in source_code.splitlines():
+            if double_exclamation.search(line):
+                line = line.replace(r"!%21", "!!")
+            fixed_source_lines.append(line)
+
+        return "\n".join(fixed_source_lines)
+
+    @staticmethod
+    def _add_newline_at_end_of_file(source_code: str) -> str:
+        return source_code + "\n"
+
+    @staticmethod
+    def _fix_jinja_variables(source_code: str) -> str:
+        """Remove spaces between jinja variables.
+
+        So that they are not split in many lines by ruyaml
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        log.debug("Fixing jinja2 variables...")
+        source_lines = source_code.splitlines()
+        fixed_source_lines: List[str] = []
+
+        for line in source_lines:
+            line_contains_jinja2_variable = re.search(r"{{.*}}", line)
+
+            if line_contains_jinja2_variable:
+                line = SourceCodeFixer._encode_jinja2_line(line)
+
+            fixed_source_lines.append(line)
+
+        return "\n".join(fixed_source_lines)
+
+    @staticmethod
+    def _encode_jinja2_line(line: str) -> str:
+        """Encode jinja variables so that they are not split.
+
+        Using a special character to join the elements inside the {{ }}, so that
+        they are all taken as the same word, and ruyamel doesn't split them.
+        """
+        new_line = []
+        variable_terms: List[str] = []
+
+        for word in line.split(" "):
+            if re.search("}}", word):
+                variable_terms.append(word)
+                new_line.append("★".join(variable_terms))
+                variable_terms = []
+            elif re.search("{{", word) or len(variable_terms) > 0:
+                variable_terms.append(word)
+            else:
+                new_line.append(word)
+
+        return " ".join(new_line)
+
+    @staticmethod
+    def _restore_jinja_variables(source_code: str) -> str:
+        """Restore the jinja2 variables to their original state.
+
+        Remove the encoding introduced by _fix_jinja_variables to prevent ruyaml
+        to split the variables.
+        """
+        log.debug("Restoring jinja2 variables...")
+        fixed_source_lines = []
+
+        for line in source_code.splitlines():
+            line_contains_jinja2_variable = re.search(r"{{.*}}", line)
+
+            if line_contains_jinja2_variable:
+                line = line.replace("★", " ")
+
+            fixed_source_lines.append(line)
+
+        return "\n".join(fixed_source_lines)
