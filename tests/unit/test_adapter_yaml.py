@@ -50,6 +50,7 @@ class TestYamlAdapter:
         config.indent_offset = 4
         config.indent_mapping = 4
         config.indent_sequence = 8
+        config.flow_style_sequence = None
 
         result = fix_code(source, config)
 
@@ -226,9 +227,7 @@ class TestYamlAdapter:
               value
             {quote}complex_key{quote}:
               {quote}complex_key2{quote}: {quote}value{quote}
-              {quote}list{quote}:
-                - {quote}item1{quote}
-                - {quote}item2{quote}
+              {quote}list{quote}: [{quote}item1{quote}, {quote}item2{quote}]
               {quote}complex_list{quote}:
                 - {quote}item1{quote}
                 - {quote}complex_item{quote}:
@@ -283,9 +282,7 @@ class TestYamlAdapter:
               value
             complex_key:
               complex_key2: {quote}value{quote}
-              list:
-                - {quote}item1{quote}
-                - {quote}item2{quote}
+              list: [{quote}item1{quote}, {quote}item2{quote}]
               complex_list:
                 - item1
                 - complex_item:
@@ -429,8 +426,7 @@ class TestYamlAdapter:
         self,
     ) -> None:
         """Fall back to multi-line list style 'block-style' if list would be longer than\
-            line_length and multiline flow-style is not enabled, even if flow-style\
-                is selected."""
+            line_length, even if flow-style is selected."""
         source = dedent(
             """\
             looooooooooooooooooooooooooooooooooooongKey:
@@ -466,46 +462,6 @@ class TestYamlAdapter:
         config = YamlfixConfig()
         config.line_length = 40
         config.flow_style_sequence = True
-
-        result = fix_code(source, config)
-
-        assert result == fixed_source
-
-    def test_sequence_flow_style_multiline_config(self) -> None:
-        """Make inline list style 'flow-style' configurable even for lists, that would\
-            wrap into the next line."""
-        source = dedent(
-            """\
-            looooooooooooooooooooooooooooooooooooongKey:
-              - item
-            list:
-              - loooooooooooooooooooongItem
-              - loooooooooooooooooooongItem
-              - loooooooooooooooooooongItem
-              - loooooooooooooooooooongItem
-              - loooooooooooooooooooongItem
-              - loooooooooooooooooooongItem
-            list2:
-              - item
-              - item
-              - item
-            """
-        )
-        fixed_source = dedent(
-            """\
-            ---
-            looooooooooooooooooooooooooooooooooooongKey: [
-              item]
-            list: [loooooooooooooooooooongItem, loooooooooooooooooooongItem,
-              loooooooooooooooooooongItem, loooooooooooooooooooongItem,
-              loooooooooooooooooooongItem, loooooooooooooooooooongItem]
-            list2: [item, item, item]
-            """
-        )
-        config = YamlfixConfig()
-        config.line_length = 40
-        config.flow_style_sequence = True
-        config.flow_style_sequence_multiline = True
 
         result = fix_code(source, config)
 

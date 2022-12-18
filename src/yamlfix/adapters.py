@@ -294,17 +294,14 @@ class YamlfixRepresenter(RoundTripRepresenter):
 
         key_length: int = len(str(key_node.value)) + quote_length + separator_length
 
-        if not config.flow_style_sequence_multiline:
-            scalar_length: int = 0
+        scalar_length: int = 0
 
-            for node in seq_node.value:
-                if isinstance(node, ScalarNode):
-                    scalar_length += (
-                        len(str(node.value)) + quote_length + separator_length
-                    )
+        for node in seq_node.value:
+            if isinstance(node, ScalarNode):
+                scalar_length += len(str(node.value)) + quote_length + separator_length
 
-            if key_length + scalar_length + bracket_length > config.line_length:
-                return True
+        if key_length + scalar_length + bracket_length > config.line_length:
+            return True
 
         return False
 

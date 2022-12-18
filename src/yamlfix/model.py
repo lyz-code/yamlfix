@@ -11,8 +11,7 @@ class YamlfixConfig(ConfigSchema):
     allow_duplicate_keys: bool = True
     config_path: Optional[str] = None
     explicit_start: bool = True
-    flow_style_sequence_multiline: bool = False
-    flow_style_sequence: Optional[bool] = None
+    flow_style_sequence: Optional[bool] = True
     indent_mapping: int = 2
     indent_offset: int = 2
     indent_sequence: int = 4

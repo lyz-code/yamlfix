@@ -7,6 +7,7 @@ from textwrap import dedent
 import pytest
 
 from yamlfix import fix_files
+from yamlfix.model import YamlfixConfig
 from yamlfix.services import fix_code
 
 true_strings = [
@@ -144,8 +145,10 @@ class TestFixCode:
               - item2
             """
         )
+        config = YamlfixConfig()
+        config.flow_style_sequence = None
 
-        result = fix_code(source)
+        result = fix_code(source, config)
 
         assert result == fixed_source
 
@@ -265,8 +268,7 @@ class TestFixCode:
             """\
             ---
             True dictionary: true
-            True list:
-              - true
+            True list: [true]
             """
         )
 
@@ -295,8 +297,7 @@ class TestFixCode:
             """\
             ---
             False dictionary: false
-            False list:
-              - false
+            False list: [false]
             """
         )
 
@@ -553,7 +554,11 @@ class TestFixCode:
               cert_data:
 
             volumes:
-              <<: [*node-volumes, *vault-volumes, *mongo-volumes, *certmgr-volumes]
+              <<:
+                - *node-volumes
+                - *vault-volumes
+                - *mongo-volumes
+                - *certmgr-volumes
             """
         )
 
