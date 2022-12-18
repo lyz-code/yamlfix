@@ -8,7 +8,13 @@ from ruyaml.constructor import DuplicateKeyError
 from yamlfix.model import YamlfixConfig
 from yamlfix.services import fix_code
 
-none_representations = ["", "null", "Null", "NULL", "~"]
+none_representations = [
+    "",
+    "null",
+    "Null",
+    "NULL",
+    "~",
+]
 
 quote_representations = [
     "'",
@@ -278,8 +284,8 @@ class TestYamlAdapter:
             complex_key:
               complex_key2: {quote}value{quote}
               list:
-                - item1
-                - item2
+                - {quote}item1{quote}
+                - {quote}item2{quote}
               complex_list:
                 - item1
                 - complex_item:

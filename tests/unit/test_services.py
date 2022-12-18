@@ -468,7 +468,7 @@ class TestFixCode:
         fix_code("")  # act
 
         expected_logs = [
-            "Setting up ruamel yaml 'quote everything' configuration...",
+            "Setting up ruamel yaml 'quote simple values' configuration...",
             "Setting up ruamel yaml 'sequence flow style' configuration...",
             "Running ruamel yaml base configuration...",
             "Running source code fixers...",

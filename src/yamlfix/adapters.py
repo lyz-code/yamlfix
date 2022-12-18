@@ -149,18 +149,29 @@ class YamlfixRepresenter(RoundTripRepresenter):
         of "|" per default.
         """
         config = self.config
-        log.debug("Setting up ruamel yaml 'quote everything' configuration...")
+        log.debug("Setting up ruamel yaml 'quote simple values' configuration...")
 
         def patch_quotations(key_node: Node, value_node: Node) -> None:  # noqa: W0613
             if not config.quote_basic_values or config.quote_representation is None:
                 return
 
-            if (
-                isinstance(value_node, ScalarNode)
-                and value_node.tag == "tag:yaml.org,2002:str"
-                and value_node.style is None
-            ):
-                value_node.style = config.quote_representation
+            # if this is a scalar value node itself, apply the quotations now
+            self._apply_simple_value_quotations(value_node)
+
+            # if this is a sequence value node, check for value presence, complex
+            # sequences and apply quotations to its values
+            if not isinstance(value_node, SequenceNode) or value_node.value is None:
+                return
+
+            sequence_node: SequenceNode = value_node
+
+            if self._seq_contains_non_scalar_nodes(
+                sequence_node
+            ) or self._seq_contains_non_empty_comments(sequence_node):
+                return
+
+            for seq_value in sequence_node.value:
+                self._apply_simple_value_quotations(seq_value)
 
         self.patch_functions.append(patch_quotations)
 
@@ -194,61 +205,6 @@ class YamlfixRepresenter(RoundTripRepresenter):
         config = self.config
         log.debug("Setting up ruamel yaml 'sequence flow style' configuration...")
 
-        def seq_contains_non_scalar_nodes(seq_node: Node) -> bool:
-            return any(not isinstance(node, ScalarNode) for node in seq_node.value)
-
-        def seq_contains_non_empty_comments(seq_node: Node) -> bool:
-            comment_tokens: List[CommentToken] = []
-
-            if isinstance(seq_node.comment, list):
-                for comment in seq_node.comment:
-                    if isinstance(comment, list):
-                        comment_tokens.extend(comment)
-                    elif isinstance(comment, CommentToken):
-                        comment_tokens.append(comment)
-
-            for node in seq_node.value:
-                if isinstance(node, ScalarNode) and isinstance(node.comment, list):
-                    comment_tokens.extend(node.comment)
-
-            return any(
-                isinstance(comment_token, CommentToken)
-                and comment_token.value.strip() != ""
-                for comment_token in comment_tokens
-            )
-
-        def seq_length_longer_than_line_length(key_node: Node, seq_node: Node) -> bool:
-            # This could be made configurable, or rather we could calculate if we need
-            # the quotation spaces for the configured settings, but if we err on the
-            # side of caution we can always force block-mode even for values that could
-            # technically, without quotes, fit into the line-length
-
-            # quotation marks around scalar value
-            quote_length: int = 2
-
-            # comma and space between scalar values or colon and space
-            # between key + values
-            separator_length: int = 2
-
-            # opening and closing brackets that should fit on the same line
-            bracket_length: int = 2
-
-            key_length: int = len(str(key_node.value)) + quote_length + separator_length
-
-            if not config.flow_style_sequence_multiline:
-                scalar_length: int = 0
-
-                for node in seq_node.value:
-                    if isinstance(node, ScalarNode):
-                        scalar_length += (
-                            len(str(node.value)) + quote_length + separator_length
-                        )
-
-                if key_length + scalar_length + bracket_length > config.line_length:
-                    return True
-
-            return False
-
         def patch_sequence_style(key_node: Node, value_node: Node) -> None:
             if isinstance(key_node, ScalarNode) and isinstance(
                 value_node, SequenceNode
@@ -265,13 +221,15 @@ class YamlfixRepresenter(RoundTripRepresenter):
 
                 # if this sequence contains non-scalar nodes (i.e. dicts, lists, etc.),
                 # force block-style
-                force_block_style = force_block_style or seq_contains_non_scalar_nodes(
-                    sequence_node
+                force_block_style = (
+                    force_block_style
+                    or self._seq_contains_non_scalar_nodes(sequence_node)
                 )
 
                 # if this sequence contains non-empty comments, force block-style
                 force_block_style = (
-                    force_block_style or seq_contains_non_empty_comments(sequence_node)
+                    force_block_style
+                    or self._seq_contains_non_empty_comments(sequence_node)
                 )
 
                 # if this sequence, rendered in flow-style would breach the line-width,
@@ -280,7 +238,7 @@ class YamlfixRepresenter(RoundTripRepresenter):
                 # consider scalars, as non-scalar nodes should force block-style already
                 force_block_style = (
                     force_block_style
-                    or seq_length_longer_than_line_length(key_node, sequence_node)
+                    or self._seq_length_longer_than_line_length(key_node, sequence_node)
                 )
 
                 sequence_node.flow_style = config.flow_style_sequence
@@ -288,6 +246,75 @@ class YamlfixRepresenter(RoundTripRepresenter):
                     sequence_node.flow_style = False
 
         self.patch_functions.append(patch_sequence_style)
+
+    @staticmethod
+    def _seq_contains_non_scalar_nodes(seq_node: Node) -> bool:
+        return any(not isinstance(node, ScalarNode) for node in seq_node.value)
+
+    @staticmethod
+    def _seq_contains_non_empty_comments(seq_node: Node) -> bool:
+        comment_tokens: List[CommentToken] = []
+
+        if isinstance(seq_node.comment, list):
+            for comment in seq_node.comment:
+                if isinstance(comment, list):
+                    comment_tokens.extend(comment)
+                elif isinstance(comment, CommentToken):
+                    comment_tokens.append(comment)
+
+        for node in seq_node.value:
+            if isinstance(node, ScalarNode) and isinstance(node.comment, list):
+                comment_tokens.extend(node.comment)
+
+        return any(
+            isinstance(comment_token, CommentToken)
+            and comment_token.value.strip() != ""
+            for comment_token in comment_tokens
+        )
+
+    def _seq_length_longer_than_line_length(
+        self, key_node: Node, seq_node: Node
+    ) -> bool:
+        config = self.config
+
+        # This could be made configurable, or rather we could calculate if we need
+        # the quotation spaces for the configured settings, but if we err on the
+        # side of caution we can always force block-mode even for values that could
+        # technically, without quotes, fit into the line-length
+
+        # quotation marks around scalar value
+        quote_length: int = 2
+
+        # comma and space between scalar values or colon and space
+        # between key + values
+        separator_length: int = 2
+
+        # opening and closing brackets that should fit on the same line
+        bracket_length: int = 2
+
+        key_length: int = len(str(key_node.value)) + quote_length + separator_length
+
+        if not config.flow_style_sequence_multiline:
+            scalar_length: int = 0
+
+            for node in seq_node.value:
+                if isinstance(node, ScalarNode):
+                    scalar_length += (
+                        len(str(node.value)) + quote_length + separator_length
+                    )
+
+            if key_length + scalar_length + bracket_length > config.line_length:
+                return True
+
+        return False
+
+    def _apply_simple_value_quotations(self, value_node: Node) -> None:
+        if (
+            isinstance(value_node, ScalarNode)
+            and value_node.tag == "tag:yaml.org,2002:str"
+            and value_node.style is None
+        ):
+            value_node.style = self.config.quote_representation
 
 
 YamlfixRepresenter.add_representer(type(None), YamlfixRepresenter.represent_none)
