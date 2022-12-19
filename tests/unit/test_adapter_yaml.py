@@ -264,7 +264,7 @@ class TestYamlAdapter:
               complex_list:
                 - item1
                 - complex_item:
-                    key: value
+                    key: 'value?'
             """
         )
         quote = quote_representation
@@ -286,7 +286,7 @@ class TestYamlAdapter:
               complex_list:
                 - item1
                 - complex_item:
-                    key: {quote}value{quote}
+                    key: {quote}value?{quote}
             """
         )
         config = YamlfixConfig()
