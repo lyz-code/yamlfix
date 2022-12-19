@@ -561,8 +561,10 @@ class TestFixCode:
                 - *certmgr-volumes
             """
         )
+        config = YamlfixConfig()
+        config.allow_duplicate_keys = True
 
-        result = fix_code(source)
+        result = fix_code(source, config)
 
         assert result == desired_source
 

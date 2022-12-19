@@ -8,7 +8,7 @@ from maison.schema import ConfigSchema
 class YamlfixConfig(ConfigSchema):
     """Configuration entity for yamlfix."""
 
-    allow_duplicate_keys: bool = True
+    allow_duplicate_keys: bool = False
     config_path: Optional[str] = None
     explicit_start: bool = True
     flow_style_sequence: Optional[bool] = True

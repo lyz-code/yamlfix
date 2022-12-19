@@ -162,13 +162,13 @@ All fields configured in the [YamlfixConfig class](./reference/#yamlfix.model.Ya
 
 ### Allow Duplicate Keys
 
-Default: `allow_duplicate_keys: bool = True`<br>
+Default: `allow_duplicate_keys: bool = False`<br>
 Environment variable override:
 ```bash
 export YAMLFIX_ALLOW_DUPLICATE_KEYS="true"
 ```
 
-This option enables the [ruyaml duplicate keys check](https://ruyaml.readthedocs.io/en/latest/api.html#duplicate-keys). With this check enabled `yamlfix` will throw an error if the same key is defined more than once in a dict. Before enabling this option, you should be aware, that multiple yaml-anchor merge keys are considered duplicate keys and should be provided as a list instead: https://github.com/pycontribs/ruyaml/issues/43
+This option toggles the [ruyaml duplicate keys check](https://ruyaml.readthedocs.io/en/latest/api.html#duplicate-keys). With this setting set to `False`, `yamlfix` will throw an error if the same key is defined more than once in a mapping / dictionary. To allow using the same key, set this value to `True`. You might want to enable this option, if you want to use multiple yaml-anchor merge keys, instead of providing them as sequence / list elements - see: https://github.com/pycontribs/ruyaml/issues/43
 
 ### Config Path
 
