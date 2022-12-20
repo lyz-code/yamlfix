@@ -1,3 +1,17 @@
+## 1.2.0 (2022-12-20)
+
+### Feat
+
+- add use-case / check workaround for issue #188
+- add quotations to simple list values as well
+- make yamlfix configurable with sane default values
+
+### Fix
+
+- correct wrong wording in 'allow_duplicate_keys' docs and set default value to 'False'
+- apply pull request suggestions by setting default values, and removing flow-style multi-line support
+- update pre-commit hook versions, align mypy config with pyproject.toml, remove flakehell and add flakeheaven
+
 ## 1.1.1 (2022-11-25)
 
 ### Fix
