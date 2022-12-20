@@ -16,10 +16,10 @@ Imagine we've got the following source code:
 
 ```yaml
 book_library:
-  - title: Why we sleep
-    author: Matthew Walker
-  - title: Harry Potter and the Methods of Rationality
-    author: Eliezer Yudkowsky
+- title: Why we sleep
+  author: Matthew Walker
+- title: Harry Potter and the Methods of Rationality
+  author: Eliezer Yudkowsky
 ```
 
 It has the following errors:
@@ -62,7 +62,7 @@ variable, use `fix_code`:
 
 # Features
 
-yamlfix will do the following changes in your code:
+`yamlfix` will do the following changes in your yaml source code per default:
 
 - Add the header `---` to your file.
 - [Correct truthy strings](https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.truthy):
@@ -76,6 +76,287 @@ yamlfix will do the following changes in your code:
 - Split long lines.
 - Respect Jinja2 syntax.
 - Ensure a `\n` exists at the end of the file.
+- Convert short lists to flow-style `list: [item, item]`
+- Convert lists longer than line-width to block-style:
+  ```yaml
+  list:
+    - item
+    - item
+  ```
+
+# Configuration
+
+`yamlfix` uses the `maison` library to find and parse configuration from standard locations, and can additionally be configured through environment variables.
+
+Any configuration found in the [YamlfixConfig class](./reference/#yamlfix.model.YamlfixConfig) can be set through your projects `pyproject.toml`, a custom `toml`-file or through the environment by providing an environment variable like `{yamlfix_env_prefix}_{yamlfix_config_key}`.
+
+Configuration options that are provided through environment variables have higher priority than options provided through configuration files and will override those keys.
+
+All provided [configuration options](#configuration-options), be it through `pyproject.toml`, config-files or env-vars, will be parsed by `pydantic`, so the target value type (str, bool, int, etc.) will be enforced, even if the provided value has the wrong type (for example all env vars in linux systems are strings, but pydantic will parse them to bools/numbers where necessary).
+
+## Auto-Configure through `pyproject.toml`
+
+The `maison` library will automatically pick up your `yamlfix` configuration through your projects `pyproject.toml`. It will look in the section named `tool.yamlfix` and apply the provided [configuration options](#configuration-options). For example:
+
+```toml
+# pyproject.toml
+
+[tool.yamlfix]
+allow_duplicate_keys = true
+line_length = 80
+none_representation = "null"
+```
+
+## Provide config-files
+
+When running `yamlfix` as a standalone cli application it might be desireable to provide a config file containing just the configuration related to `yamlfix`. A cli-argument `-c` (`--config-file`) can be provided multiple times to read configuration values from `toml` formatted files. The rightmost value-files override the value-files preceding them, only trumped by environment variables. No section headers are necessary for these configuration files, as the expected behaviour is, that those files contain only configuration related to `yamlfix`. For example:
+
+```bash
+# run yamlfix with two config files
+yamlfix -c base.toml --config-file environment.toml file.yaml
+```
+
+```toml
+# base.toml
+allow_duplicate_keys = false
+line_length = 100
+```
+
+```toml
+# environment.toml
+allow_duplicate_keys = true
+```
+
+These provided configuration files would result in a merged runtime-configuration of:
+```toml
+# merged configuration
+allow_duplicate_keys = true
+line_length = 100
+```
+
+## Configure environment prefix
+
+Per default `yamlfix`, when run through cli, will read any environment variable that starts with `YAMLFIX_` and apply it to the merged runtime-configuration object. This default value can be overridden with the cli-parameter `--env-prefix`. For example:
+
+```bash
+# set a configuration value with the default prefix
+export YAMLFIX_LINE_LENGTH="300"
+
+# set a configuration value with the custom prefix
+export MY_PREFIX_NONE_REPRESENTATION="~"
+
+# run yamlfix with a custom environment prefix
+yamlfix --env-prefix "MY_PREFIX" file.yaml
+```
+
+These provided arguments and environment variables would result in a merged runtime-configuration of:
+```toml
+# merged configuration
+# default value for line_length stays at: 80
+none_representation = "~"
+```
+
+## Configuration Options
+
+All fields configured in the [YamlfixConfig class](./reference/#yamlfix.model.YamlfixConfig) can be provided through the means mentioned in [Configuration](#configuration). Here are the currently available configuration options with short examples on their impact to provided `yaml`-files.
+
+### Allow Duplicate Keys
+
+Default: `allow_duplicate_keys: bool = False`<br>
+Environment variable override:
+```bash
+export YAMLFIX_ALLOW_DUPLICATE_KEYS="true"
+```
+
+This option toggles the [ruyaml duplicate keys check](https://ruyaml.readthedocs.io/en/latest/api.html#duplicate-keys). With this setting set to `False`, `yamlfix` will throw an error if the same key is defined more than once in a mapping / dictionary. To allow using the same key, set this value to `True`. You might want to enable this option, if you want to use multiple yaml-anchor merge keys, instead of providing them as sequence / list elements - see: https://github.com/pycontribs/ruyaml/issues/43
+
+### Config Path
+
+Default: `config_path: Optional[str] = None`<br>
+Environment variable override:
+```bash
+export YAMLFIX_CONFIG_PATH="/etc/yamlfix/"
+```
+
+Configure the base config-path that `maison` will look for a `pyproject.toml` configuration file. This path is traversed upwards until such a file is found.
+
+### Explicit Document Start
+
+Default: `explicit_start: bool = True`<br>
+Environment variable override:
+```bash
+export YAMLFIX_EXPLICIT_START="true"
+```
+
+Add or remove the explicit document start (`---`) for `yaml`-files. For example:
+
+Set to `true`:
+```yaml
+---
+project_name: yamlfix
+```
+
+Set to `false`:
+```yaml
+project_name: yamlfix
+```
+
+### Flow-Style Sequence (Lists)
+
+Default: `flow_style_sequence: Optional[bool] = True`<br>
+Environment variable override:
+```bash
+export YAMLFIX_FLOW_STYLE_SEQUENCE="true"
+```
+
+Transform sequences (lists) to either flow-style, block-style or leave them as-is. If enabled `yamlfix` will also ensure, that flow-style lists are automatically converted to block-style if the resulting key+list elements would breach the line-length. For example:
+
+Set to `true` (flow-style):
+```yaml
+---
+list: [item, item, item]
+```
+
+Set to `false` (block-style):
+```yaml
+---
+list:
+  - item
+  - item
+  - item
+```
+
+### Indentation
+
+Default:
+`indent_mapping: int = 2`
+`indent_offset: int = 2`
+`indent_sequence: int = 4`
+Environment variable override:
+```bash
+export YAMLFIX_INDENT_MAPPING="2"
+export YAMLFIX_INDENT_OFFSET="2"
+export YAMLFIX_INDENT_SEQUENCE="4"
+```
+
+Provide the `ruyaml` configuration for indentation of mappings (dicts) and sequences (lists) and the indentation offset for elements. See the `ruyaml` configuration documentation: https://ruyaml.readthedocs.io/en/latest/detail.html#indentation-of-block-sequences
+
+### Line Length (Width)
+
+Default: `line_length: int = 80`<br>
+Environment variable override:
+```bash
+export YAMLFIX_LINE_LENGTH="80"
+```
+
+Configure the line-length / width configuration for `ruyaml`. With this configuration long multiline-strings will be wrapped at that point and flow-style lists will be converted to block-style if they are longer than the provided value.
+
+### `None` Representation
+
+Default: `none_representation: str = ""`<br>
+Environment variable override:
+```bash
+export YAMLFIX_LINE_LENGTH=""
+```
+
+In `yaml`-files an absence of a value can be described in multiple canonical ways. This configuration enforces a user-defined representation for `None` values. For example:
+
+Valid `None` representation values are `(empty string)`, `null`, `Null`, `NULL`, `~`.
+
+Provided the source yaml file looks like this:
+```yaml
+none_value1:
+none_value2: null
+none_value3: Null
+none_value4: NULL
+none_value5: ~
+```
+
+The default behaviour (empty string) representation would look like this:
+```yaml
+none_value1:
+none_value2:
+none_value3:
+none_value4:
+none_value5:
+```
+
+With this option set to `none_representation="null"` it would look like this:
+```yaml
+none_value1: null
+none_value2: null
+none_value3: null
+none_value4: null
+none_value5: null
+```
+
+### Quote Basic Values
+
+Default: `quote_basic_values: bool = False`<br>
+Environment variable override:
+```bash
+export YAMLFIX_quote_basic_values="false"
+```
+
+Per default `ruyaml` will quote only values where it is necessary to explicitly define the type of a value. This is the case for numbers and boolean values for example. If your `yaml`-file contains a value of type string that would look like a number, then this value needs to be quoted.
+
+This option allows for quoting of all simple values in mappings (dicts) and sequences (lists) to enable a homogeneous look and feel for string lists / simple key/value mappings. For example:
+
+```yaml
+# option set to false
+stringKey1: abc
+stringKey2: "123"
+stringList: [abc, "123"]
+```
+
+```yaml
+# option set to true
+stringKey1: "abc"
+stringKey2: "123"
+stringList: ["abc", "123"]
+```
+
+### Quote Keys and Basic Values
+
+Default: `quote_keys_and_basic_values: bool = False`<br>
+Environment variable override:
+```bash
+export YAMLFIX_quote_keys_and_basic_values="false"
+```
+
+Similar to the [quote basic values](#quote-basic-values) configuration option, this option, in addition to the values themselves, quotes the keys as well. For example:
+
+```yaml
+# option set to false
+key: value
+list: [item, item]
+```
+
+```yaml
+# option set to true
+"key": "value"
+"list": ["item", "item"]
+```
+
+### Quote Representation
+
+Default: `quote_representation: str = "'"`<br>
+Environment variable override:
+```bash
+export YAMLFIX_quote_representation="'"
+```
+
+Configure which quotation string is used for quoting values. For example:
+
+```yaml
+# Option set to: '
+key: 'value'
+```
+
+```yaml
+# Option set to: "
+key: "value"
+```
 
 # References
 
@@ -91,6 +372,8 @@ maintained for of [ruamel](https://yaml.readthedocs.io/en/latest/) yaml parser.
 
 [Click](https://click.palletsprojects.com/) : Used to create the command line
 interface.
+
+[maison](https://github.com/dbatten5/maison) : Used for finding, reading and parsing the configuration options.
 
 [Pytest](https://docs.pytest.org/en/latest) : Testing framework, enhanced by the
 awesome [pytest-cases](https://smarie.github.io/python-pytest-cases/) library
@@ -124,7 +407,7 @@ issues in Python code.
 # Contributing
 
 For guidance on setting up a development environment, and how to make a
-contribution to *yamlfix*, see
+contribution to `yamlfix`, see
 [Contributing to yamlfix](https://lyz-code.github.io/yamlfix/contributing).
 
 # Donations

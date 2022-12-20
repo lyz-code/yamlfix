@@ -28,6 +28,7 @@ requires-python = ">=3.7"
 dependencies = [
     "click>=8.0.3",
     "ruyaml>=0.91.0",
+    "maison>=1.4.0",
 ]
 name = "yamlfix"
 description = "A simple opionated yaml formatter that keeps your comments!"
@@ -125,7 +126,6 @@ fixers = [
 ]
 typing = [
     "mypy>=0.910",
-
     "types-click>=7.1.8",
 ]
 dev = [

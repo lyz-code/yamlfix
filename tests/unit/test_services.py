@@ -7,6 +7,7 @@ from textwrap import dedent
 import pytest
 
 from yamlfix import fix_files
+from yamlfix.model import YamlfixConfig
 from yamlfix.services import fix_code
 
 true_strings = [
@@ -144,8 +145,10 @@ class TestFixCode:
               - item2
             """
         )
+        config = YamlfixConfig()
+        config.flow_style_sequence = None
 
-        result = fix_code(source)
+        result = fix_code(source, config)
 
         assert result == fixed_source
 
@@ -265,8 +268,7 @@ class TestFixCode:
             """\
             ---
             True dictionary: true
-            True list:
-              - true
+            True list: [true]
             """
         )
 
@@ -295,8 +297,7 @@ class TestFixCode:
             """\
             ---
             False dictionary: false
-            False list:
-              - false
+            False list: [false]
             """
         )
 
@@ -468,6 +469,10 @@ class TestFixCode:
         fix_code("")  # act
 
         expected_logs = [
+            "Setting up ruamel yaml 'quote simple values' configuration...",
+            "Setting up ruamel yaml 'sequence flow style' configuration...",
+            "Running ruamel yaml base configuration...",
+            "Running source code fixers...",
             "Fixing truthy strings...",
             "Fixing comments...",
             "Fixing jinja2 variables...",
@@ -476,6 +481,7 @@ class TestFixCode:
             "Restoring double exclamations...",
             "Restoring jinja2 variables...",
             "Fixing top level lists...",
+            "Fixing flow-style lists...",
         ]
         assert caplog.messages == expected_logs
         for record in caplog.records:
@@ -548,11 +554,17 @@ class TestFixCode:
               cert_data:
 
             volumes:
-              <<: [*node-volumes, *vault-volumes, *mongo-volumes, *certmgr-volumes]
+              <<:
+                - *node-volumes
+                - *vault-volumes
+                - *mongo-volumes
+                - *certmgr-volumes
             """
         )
+        config = YamlfixConfig()
+        config.allow_duplicate_keys = True
 
-        result = fix_code(source)
+        result = fix_code(source, config)
 
         assert result == desired_source
 
