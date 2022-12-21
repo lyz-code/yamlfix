@@ -1,8 +1,16 @@
 """Define program entities like configuration value entities."""
-
+from enum import Enum
 from typing import Optional
 
 from maison.schema import ConfigSchema
+
+
+class YamlNodeStyle(Enum):
+    """Represent the desired YAML node style for sequences and mappings."""
+
+    FLOW_STYLE = 1
+    BLOCK_STYLE = 2
+    KEEP_STYLE = 3
 
 
 class YamlfixConfig(ConfigSchema):
@@ -13,7 +21,7 @@ class YamlfixConfig(ConfigSchema):
     comments_require_starting_space: bool = True
     config_path: Optional[str] = None
     explicit_start: bool = True
-    flow_style_sequence: Optional[bool] = True
+    style_sequence: YamlNodeStyle = YamlNodeStyle.FLOW_STYLE
     indent_mapping: int = 2
     indent_offset: int = 2
     indent_sequence: int = 4

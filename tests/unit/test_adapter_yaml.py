@@ -5,7 +5,7 @@ from textwrap import dedent
 import pytest
 from ruyaml.constructor import DuplicateKeyError
 
-from yamlfix.model import YamlfixConfig
+from yamlfix.model import YamlfixConfig, YamlNodeStyle
 from yamlfix.services import fix_code
 
 none_representations = [
@@ -50,7 +50,7 @@ class TestYamlAdapter:
         config.indent_offset = 4
         config.indent_mapping = 4
         config.indent_sequence = 8
-        config.flow_style_sequence = None
+        config.style_sequence = YamlNodeStyle.KEEP_STYLE
 
         result = fix_code(source, config)
 
@@ -339,7 +339,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.flow_style_sequence = True
+        config.style_sequence = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -367,7 +367,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.flow_style_sequence = False
+        config.style_sequence = YamlNodeStyle.BLOCK_STYLE
 
         result = fix_code(source, config)
 
@@ -410,7 +410,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.flow_style_sequence = True
+        config.style_sequence = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -450,7 +450,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.flow_style_sequence = True
+        config.style_sequence = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -495,7 +495,7 @@ class TestYamlAdapter:
         )
         config = YamlfixConfig()
         config.line_length = 40
-        config.flow_style_sequence = True
+        config.style_sequence = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -556,7 +556,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.flow_style_sequence = True
+        config.style_sequence = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -577,7 +577,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.flow_style_sequence = True
+        config.style_sequence = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
