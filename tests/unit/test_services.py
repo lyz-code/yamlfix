@@ -184,6 +184,21 @@ class TestFixCode:
 
         assert result == source
 
+    def test_fix_code_preserves_comments_without_start_indication(self) -> None:
+        """Don't delete comments without yaml explicit start indictor."""
+        source = dedent(
+            """\
+            # Keep comments!
+            program: yamlfix
+            """
+        )
+        config = YamlfixConfig()
+        config.explicit_start = False
+
+        result = fix_code(source, config)
+
+        assert result == source
+
     def test_fix_code_preserves_comment_only_file(self) -> None:
         """Don't delete comments even if the file is only comments."""
         source = dedent(
@@ -196,7 +211,24 @@ class TestFixCode:
         result = fix_code(source)
 
         assert result == source
-        
+
+    def test_fix_code_preserves_comment_only_files_without_start_indication(
+        self,
+    ) -> None:
+        """Don't delete comments even if the file is only comments, without\
+            start indication."""
+        source = dedent(
+            """\
+            # Keep comments!
+            """
+        )
+        config = YamlfixConfig()
+        config.explicit_start = False
+
+        result = fix_code(source, config)
+
+        assert result == source
+
     def test_fix_code_respects_parent_lists_with_comments(self) -> None:
         """Do not indent lists at the first level even if there is a comment."""
         source = dedent(

@@ -224,6 +224,13 @@ class YamlfixRepresenter(RoundTripRepresenter):
                 if not sequence_node.value:
                     return
 
+                # if this key_node is the `yamlfix_document_fix_id` node,
+                # the sequence_node is the top-level list, which has to be forced
+                # into block-mode, so the key_node can be removed afterwards
+                force_block_style = force_block_style or self._seq_is_in_top_level_node(
+                    key_node
+                )
+
                 # if this sequence contains non-scalar nodes (i.e. dicts, lists, etc.),
                 # force block-style
                 force_block_style = (
@@ -251,6 +258,9 @@ class YamlfixRepresenter(RoundTripRepresenter):
                     sequence_node.flow_style = False
 
         self.patch_functions.append(patch_sequence_style)
+
+    def _seq_is_in_top_level_node(self, key_node: Node) -> bool:
+        return str(key_node.value) == f"yamlfix_{self.config.document_fix_id}"
 
     @staticmethod
     def _seq_contains_non_scalar_nodes(seq_node: Node) -> bool:
@@ -342,9 +352,11 @@ class SourceCodeFixer:
         log.debug("Running source code fixers...")
 
         fixers = [
+            self._fix_comment_only_files,
             self._fix_truthy_strings,
             self._fix_jinja_variables,
             self._ruamel_yaml_fixer,
+            self._restore_comment_only_files,
             self._restore_truthy_strings,
             self._restore_jinja_variables,
             self._restore_double_exclamations,
@@ -691,5 +703,35 @@ class SourceCodeFixer:
                 line = line.replace("★", " ")
 
             fixed_source_lines.append(line)
+
+        return "\n".join(fixed_source_lines)
+
+    def _fix_comment_only_files(self, source_code: str) -> str:
+        """Add a mapping key with an id to the start of the document\
+            to preserve comments."""
+        fixed_source_lines = []
+        yamlfix_document_id_line = f"yamlfix_{self.config.document_fix_id}:"
+
+        # Add the document id line after each document start
+        has_start_indicator = False
+        for line in source_code.splitlines():
+            fixed_source_lines.append(line)
+            if line.startswith("---"):
+                has_start_indicator = True
+                fixed_source_lines.append(yamlfix_document_id_line)
+
+        # if the document has no start indicator, the document id as the first line
+        if not has_start_indicator:
+            fixed_source_lines.insert(0, yamlfix_document_id_line)
+
+        return "\n".join(fixed_source_lines)
+
+    def _restore_comment_only_files(self, source_code: str) -> str:
+        """Remove the document start id from the document again."""
+        fixed_source_lines = []
+
+        for line in source_code.splitlines():
+            if self.config.document_fix_id not in line:
+                fixed_source_lines.append(line)
 
         return "\n".join(fixed_source_lines)

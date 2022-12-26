@@ -1,5 +1,6 @@
 """Define program entities like configuration value entities."""
 
+import uuid
 from typing import Optional
 
 from maison.schema import ConfigSchema
@@ -12,6 +13,7 @@ class YamlfixConfig(ConfigSchema):
     comments_min_spaces_from_content: int = 2
     comments_require_starting_space: bool = True
     config_path: Optional[str] = None
+    document_fix_id: str = uuid.uuid4().hex
     explicit_start: bool = True
     flow_style_sequence: Optional[bool] = True
     indent_mapping: int = 2
