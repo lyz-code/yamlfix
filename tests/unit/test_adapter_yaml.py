@@ -527,3 +527,22 @@ class TestYamlAdapter:
         result = fix_code(source, config)
 
         assert result == fixed_source
+
+    def test_empty_list_inline_comment_indentation(self) -> None:
+        source = dedent(
+            """\
+            ---
+            indented:
+              key: value
+              list1: [value]  # comment with value
+              list2: []
+              list3: []  # comment on the same line as empty list
+              map:
+                anotherKey: anotherValue
+            """
+        )
+        config = YamlfixConfig()
+        config.flow_style_sequence = True
+        result = fix_code(source, config)
+
+        assert result == source

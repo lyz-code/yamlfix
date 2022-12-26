@@ -201,6 +201,9 @@ class YamlfixRepresenter(RoundTripRepresenter):
         ```
         list: [item, item, item]
         ```
+
+        Empty lists are not handled well in either style, so they are skipped as well,
+        as you can only represent empty lists in flow-style either way.
         """
         config = self.config
         log.debug("Setting up ruamel yaml 'sequence flow style' configuration...")
@@ -216,7 +219,9 @@ class YamlfixRepresenter(RoundTripRepresenter):
 
                 force_block_style: bool = False
                 sequence_node: SequenceNode = value_node
-                if sequence_node.value is None:
+
+                # check if the sequence node value is present and if it is not empty
+                if not sequence_node.value:
                     return
 
                 # if this sequence contains non-scalar nodes (i.e. dicts, lists, etc.),
@@ -254,13 +259,6 @@ class YamlfixRepresenter(RoundTripRepresenter):
     @staticmethod
     def _seq_contains_non_empty_comments(seq_node: Node) -> bool:
         comment_tokens: List[CommentToken] = []
-
-        if isinstance(seq_node.comment, list):
-            for comment in seq_node.comment:
-                if isinstance(comment, list):
-                    comment_tokens.extend(comment)
-                elif isinstance(comment, CommentToken):
-                    comment_tokens.append(comment)
 
         for node in seq_node.value:
             if isinstance(node, ScalarNode) and isinstance(node.comment, list):
