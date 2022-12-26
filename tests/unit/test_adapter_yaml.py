@@ -73,6 +73,30 @@ class TestYamlAdapter:
         ):
             fix_code(source, config)
 
+    def test_comment_spacing_config(self) -> None:
+        """Test if spaces are added to comment start if configured."""
+        source = dedent(
+            """\
+            ---
+            # comment
+            project_name: yamlfix #comment
+            """
+        )
+        fixed_source = dedent(
+            """\
+            ---
+            # comment
+            project_name: yamlfix  # comment
+            """
+        )
+        config = YamlfixConfig()
+        config.comments_min_spaces_from_content = 2
+        config.comments_require_starting_space = True
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source
+
     def test_dont_generate_explicit_start(self) -> None:
         """Test if the explicit yaml document start indicator is removed\
             when configured."""
@@ -354,25 +378,35 @@ class TestYamlAdapter:
             even if flow-style is selected."""
         source = dedent(
             """\
-            list:
+            list: # List comment
               # Comment 1
               - item
               # Comment 2
               - item
-            list2:
+            list2: # List 2 Comment
               - item
               - item
+            list3: # List 3 Comment
+              - item with long description
+              - item with long description
+              - item with long description
+              - item with long description
             """
         )
         fixed_source = dedent(
             """\
             ---
-            list:
+            list:  # List comment
               # Comment 1
               - item
               # Comment 2
               - item
-            list2: [item, item]
+            list2: [item, item]  # List 2 Comment
+            list3:  # List 3 Comment
+              - item with long description
+              - item with long description
+              - item with long description
+              - item with long description
             """
         )
         config = YamlfixConfig()
@@ -529,6 +563,7 @@ class TestYamlAdapter:
         assert result == fixed_source
 
     def test_empty_list_inline_comment_indentation(self) -> None:
+        """Check if inline comment is preserved for empty lists with comments."""
         source = dedent(
             """\
             ---
@@ -543,6 +578,7 @@ class TestYamlAdapter:
         )
         config = YamlfixConfig()
         config.flow_style_sequence = True
+
         result = fix_code(source, config)
 
         assert result == source
