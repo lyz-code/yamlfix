@@ -582,18 +582,24 @@ class SourceCodeFixer:
 
         return "\n".join(fixed_source_lines)
 
-    @staticmethod
-    def _fix_comments(source_code: str) -> str:
+    def _fix_comments(self, source_code: str) -> str:
         log.debug("Fixing comments...")
+        config = self.config
+        comment_start = " " * config.comments_min_spaces_from_content + "#"
+
         fixed_source_lines = []
 
         for line in source_code.splitlines():
             # Comment at the start of the line
-            if re.search(r"(^|\s)#\w", line):
+            if config.comments_require_starting_space and re.search(r"(^|\s)#\w", line):
                 line = line.replace("#", "# ")
             # Comment in the middle of the line, but it's not part of a string
-            if re.match(r".+\S\s#", line) and line[-1] not in ["'", '"']:
-                line = line.replace(" #", "  #")
+            if (
+                config.comments_min_spaces_from_content > 1
+                and " #" in line
+                and line[-1] not in ["'", '"']
+            ):
+                line = re.sub(r"(.+\S)(\s+?)#", rf"\1{comment_start}", line)
             fixed_source_lines.append(line)
 
         return "\n".join(fixed_source_lines)
