@@ -343,12 +343,12 @@ class SourceCodeFixer:
 
         fixers = [
             self._fix_truthy_strings,
-            self._fix_comments,
             self._fix_jinja_variables,
             self._ruamel_yaml_fixer,
             self._restore_truthy_strings,
-            self._restore_double_exclamations,
             self._restore_jinja_variables,
+            self._restore_double_exclamations,
+            self._fix_comments,
             self._fix_top_level_lists,
             self._fix_flow_style_lists,
             self._add_newline_at_end_of_file,
@@ -415,6 +415,7 @@ class SourceCodeFixer:
         fixed_source_lines: List[str] = []
         is_top_level_list: Optional[bool] = None
 
+        indent: str = ""
         for line in source_lines:
 
             # Skip the heading and first empty lines
