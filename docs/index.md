@@ -170,6 +170,26 @@ export YAMLFIX_ALLOW_DUPLICATE_KEYS="true"
 
 This option toggles the [ruyaml duplicate keys check](https://ruyaml.readthedocs.io/en/latest/api.html#duplicate-keys). With this setting set to `False`, `yamlfix` will throw an error if the same key is defined more than once in a mapping / dictionary. To allow using the same key, set this value to `True`. You might want to enable this option, if you want to use multiple yaml-anchor merge keys, instead of providing them as sequence / list elements - see: https://github.com/pycontribs/ruyaml/issues/43
 
+### Comments Min Spaces From Content
+
+Default: `comments_min_spaces_from_content: int = 2`<br>
+Environment variable override:
+```bash
+export YAMLFIX_COMMENTS_MIN_SPACES_FROM_CONTENT="2"
+```
+
+This option enforces minimum spacing between the content of a line and the start of an inline-comment. It is the enforcement implementation to the yamllint rule `rules.comments.min-spaces-from-content` - see: https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments
+
+### Comments Require Starting Space
+
+Default: `comments_require_starting_space: bool = True`<br>
+Environment variable override:
+```bash
+export YAMLFIX_COMMENTS_REQUIRE_STARTING_SPACE="true"
+```
+
+This option enforces a space between the comment indicator (`#`) and the first character in the comment. It implements the enforcement of the yamllint rule `rules.comments.require-starting-space` - see: https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments
+
 ### Config Path
 
 Default: `config_path: Optional[str] = None`<br>

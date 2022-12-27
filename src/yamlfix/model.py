@@ -9,6 +9,8 @@ class YamlfixConfig(ConfigSchema):
     """Configuration entity for yamlfix."""
 
     allow_duplicate_keys: bool = False
+    comments_min_spaces_from_content: int = 2
+    comments_require_starting_space: bool = True
     config_path: Optional[str] = None
     explicit_start: bool = True
     flow_style_sequence: Optional[bool] = True

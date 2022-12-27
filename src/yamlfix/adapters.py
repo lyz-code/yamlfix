@@ -201,6 +201,9 @@ class YamlfixRepresenter(RoundTripRepresenter):
         ```
         list: [item, item, item]
         ```
+
+        Empty lists are not handled well in either style, so they are skipped as well,
+        as you can only represent empty lists in flow-style either way.
         """
         config = self.config
         log.debug("Setting up ruamel yaml 'sequence flow style' configuration...")
@@ -216,7 +219,9 @@ class YamlfixRepresenter(RoundTripRepresenter):
 
                 force_block_style: bool = False
                 sequence_node: SequenceNode = value_node
-                if sequence_node.value is None:
+
+                # check if the sequence node value is present and if it is not empty
+                if not sequence_node.value:
                     return
 
                 # if this sequence contains non-scalar nodes (i.e. dicts, lists, etc.),
@@ -254,13 +259,6 @@ class YamlfixRepresenter(RoundTripRepresenter):
     @staticmethod
     def _seq_contains_non_empty_comments(seq_node: Node) -> bool:
         comment_tokens: List[CommentToken] = []
-
-        if isinstance(seq_node.comment, list):
-            for comment in seq_node.comment:
-                if isinstance(comment, list):
-                    comment_tokens.extend(comment)
-                elif isinstance(comment, CommentToken):
-                    comment_tokens.append(comment)
 
         for node in seq_node.value:
             if isinstance(node, ScalarNode) and isinstance(node.comment, list):
@@ -345,12 +343,12 @@ class SourceCodeFixer:
 
         fixers = [
             self._fix_truthy_strings,
-            self._fix_comments,
             self._fix_jinja_variables,
             self._ruamel_yaml_fixer,
             self._restore_truthy_strings,
-            self._restore_double_exclamations,
             self._restore_jinja_variables,
+            self._restore_double_exclamations,
+            self._fix_comments,
             self._fix_top_level_lists,
             self._fix_flow_style_lists,
             self._add_newline_at_end_of_file,
@@ -417,6 +415,7 @@ class SourceCodeFixer:
         fixed_source_lines: List[str] = []
         is_top_level_list: Optional[bool] = None
 
+        indent: str = ""
         for line in source_lines:
 
             # Skip the heading and first empty lines
@@ -584,18 +583,24 @@ class SourceCodeFixer:
 
         return "\n".join(fixed_source_lines)
 
-    @staticmethod
-    def _fix_comments(source_code: str) -> str:
+    def _fix_comments(self, source_code: str) -> str:
         log.debug("Fixing comments...")
+        config = self.config
+        comment_start = " " * config.comments_min_spaces_from_content + "#"
+
         fixed_source_lines = []
 
         for line in source_code.splitlines():
             # Comment at the start of the line
-            if re.search(r"(^|\s)#\w", line):
+            if config.comments_require_starting_space and re.search(r"(^|\s)#\w", line):
                 line = line.replace("#", "# ")
             # Comment in the middle of the line, but it's not part of a string
-            if re.match(r".+\S\s#", line) and line[-1] not in ["'", '"']:
-                line = line.replace(" #", "  #")
+            if (
+                config.comments_min_spaces_from_content > 1
+                and " #" in line
+                and line[-1] not in ["'", '"']
+            ):
+                line = re.sub(r"(.+\S)(\s+?)#", rf"\1{comment_start}", line)
             fixed_source_lines.append(line)
 
         return "\n".join(fixed_source_lines)
