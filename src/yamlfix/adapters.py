@@ -418,7 +418,6 @@ class SourceCodeFixer:
         is_top_level_list: Optional[bool] = None
 
         for line in source_lines:
-
             # Skip the heading and first empty lines
             if re.match(r"^(---|#.*|)$", line):
                 fixed_source_lines.append(line)

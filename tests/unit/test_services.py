@@ -65,9 +65,13 @@ class TestFixFiles:
         """
         test_file = tmp_path / "source.yaml"
         test_file.write_text("program: yamlfix")
+        # fmt off until https://github.com/jamescooke/flake8-aaa/issues/196 is solved
+        # fmt: off
         with pytest.warns(UserWarning, match="yamlfix/pull/182"):
 
             fix_files([str(test_file)])  # act
+
+        # fmt: on
 
 
 class TestFixCode:
