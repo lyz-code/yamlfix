@@ -1,3 +1,14 @@
+## 1.3.0 (2022-12-27)
+
+### Feat
+
+- make space after comment start and spaces before inline-comment configurable
+
+### Fix
+
+- comment fix was only applied to yaml source before ruyaml ran, not after, which missed some comment fixes after block/flow style conversions
+- issues with flow-style inline-comments
+
 ## 1.2.0 (2022-12-20)
 
 ### Feat
