@@ -24,7 +24,7 @@ authors = [
     {name = "Lyz", email = "lyz-code-security-advisories@riseup.net"},
 ]
 license = {text = "GPL-3.0-only"}
-requires-python = ">=3.7"
+requires-python = ">=3.7.2"
 dependencies = [
     "click>=8.1.3",
     "ruyaml>=0.91.0",
@@ -63,7 +63,8 @@ yamlfix = "yamlfix.entrypoints.cli:cli"
 version = {from = "src/yamlfix/version.py"}
 package-dir = "src"
 source-includes = ["tests/"]
-allow_prereleases = true
+# Until https://github.com/pycontribs/ruyaml/issues/97 is solved
+# allow_prereleases = true
 
 [tool.pdm.build]
 editable-backend = "path"
