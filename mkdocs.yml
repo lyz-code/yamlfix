@@ -16,8 +16,7 @@ plugins:
           rendering:
             show_root_heading: true
             heading_level: 1
-      watch:
-        - src
+      watch: [src]
   - autolinks
   - git-revision-date-localized:
       type: timeago
@@ -66,6 +65,7 @@ theme:
   # logo: 'images/logo.bmp'
   features:
     - navigation.instant
+    - navigation.footer
     - navigation.top
     - content.code.annotate
 
@@ -73,9 +73,7 @@ theme:
     primary: blue grey
     accent: light blue
 
-extra_css:
-  - stylesheets/extra.css
-  - stylesheets/links.css
+extra_css: [stylesheets/extra.css, stylesheets/links.css]
 
 repo_name: lyz-code/yamlfix
 repo_url: https://github.com/lyz-code/yamlfix

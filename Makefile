@@ -13,7 +13,7 @@ update:
 	@echo "- Updating dependencies -"
 	@echo "-------------------------"
 
-	pdm update --no-sync
+	pdm update --no-sync --update-eager
 	pdm sync --clean
 
 	@echo "\a"
@@ -24,7 +24,7 @@ update-production:
 	@echo "- Updating production dependencies -"
 	@echo "------------------------------------"
 
-	pdm update --production --no-sync
+	pdm update --production --no-sync --update-eager
 	pdm sync --clean
 
 	@echo "\a"
@@ -115,6 +115,7 @@ clean:
 	rm -f `find . -type f -name '*.py[co]' `
 	rm -f `find . -type f -name '*.rej' `
 	rm -rf `find . -type d -name '*.egg-info' `
+	rm -rf `find . -type d -name '.mypy_cache' `
 	rm -f `find . -type f -name '*~' `
 	rm -f `find . -type f -name '.*~' `
 	rm -rf .cache

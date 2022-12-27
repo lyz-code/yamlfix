@@ -417,7 +417,6 @@ class SourceCodeFixer:
 
         indent: str = ""
         for line in source_lines:
-
             # Skip the heading and first empty lines
             if re.match(r"^(---|#.*|)$", line):
                 fixed_source_lines.append(line)

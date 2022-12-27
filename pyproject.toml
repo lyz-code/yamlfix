@@ -24,9 +24,9 @@ authors = [
     {name = "Lyz", email = "lyz-code-security-advisories@riseup.net"},
 ]
 license = {text = "GPL-3.0-only"}
-requires-python = ">=3.7"
+requires-python = ">=3.7.2"
 dependencies = [
-    "click>=8.0.3",
+    "click>=8.1.3",
     "ruyaml>=0.91.0",
     "maison>=1.4.0",
 ]
@@ -63,75 +63,86 @@ yamlfix = "yamlfix.entrypoints.cli:cli"
 version = {from = "src/yamlfix/version.py"}
 package-dir = "src"
 source-includes = ["tests/"]
+# Until https://github.com/pycontribs/ruyaml/issues/97 is solved
+# allow_prereleases = true
+
+[tool.pdm.build]
 editable-backend = "path"
 
 [tool.pdm.overrides]
 
-# To be removed once https://github.com/flakeheaven/flakeheaven/issues/55 is solved
+# To be removed once https://github.com/flakeheaven/flakeheaven/issues/132 is solved
 "importlib-metadata" = ">=3.10"
 
 [tool.pdm.dev-dependencies]
 lint = [
-    "yamllint>=1.26.3",
-    "flake8-aaa>=0.12.0",
-    "flake8-annotations>=2.7.0",
-    "flake8-annotations-complexity>=0.0.6",
-    "flake8-typing-imports>=1.11.0",
-    "flake8-bugbear>=21.11.29",
-    "flake8-debugger>=4.0.0",
+    "yamllint>=1.27.1",
+    "flake8-aaa>=0.12.2",
+    "flake8-annotations>=2.9.1",
+    "flake8-annotations-complexity>=0.0.7",
+    "flake8-typing-imports>=1.12.0,!=1.13.0",
+    "flake8-bugbear>=22.8.23",
+    "flake8-debugger>=4.1.2",
     "flake8-fixme>=1.1.1",
     "flake8-markdown>=0.3.0",
     "flake8-mutable>=1.2.0",
-    "flake8-pytest>=1.3",
-    "flake8-pytest-style>=1.5.1",
-    "flake8-simplify>=0.14.2",
-    "flake8-variables-names>=0.0.4",
-    "flake8-comprehensions>=3.7.0",
-    "flake8-expression-complexity>=0.0.9",
-    "flake8-use-fstring>=1.3",
-    "flake8-eradicate>=1.2.0",
+    "flake8-pytest>=1.4",
+    "flake8-pytest-style>=1.6.0",
+    "flake8-simplify>=0.19.3",
+    "flake8-variables-names>=0.0.5",
+    "flake8-comprehensions>=3.10.0",
+    "flake8-expression-complexity>=0.0.11",
+    "flake8-use-fstring>=1.4",
+    "flake8-eradicate>=1.3.0",
     "flake8-docstrings>=1.6.0",
-    "pep8-naming>=0.12.1",
-    "dlint>=0.12.0",
-    "pylint>=2.12.2",
-    "flake8>=3.9.2",
-    "flakeheaven>=0.11.1",
+    "pep8-naming>=0.13.2",
+    "dlint>=0.13.0",
+    "pylint>=2.15.2",
+    "flakeheaven>=3.0.0",
 ]
 test = [
-    "pytest>=6.2.5",
+    "pytest>=7.1.3",
     "pytest-cov>=3.0.0",
-    "pytest-xdist>=2.4.0",
+    "pytest-xdist>=3.0.2",
     "pytest-freezegun>=0.4.2",
-    "pydantic-factories>=0.5.0",
+    "pydantic-factories>=1.6.1",
 ]
 doc = [
-    "mkdocs>=1.2.3",
-    "mkdocs-git-revision-date-localized-plugin>=0.11",
-    "mkdocs-htmlproofer-plugin>=0.7.0",
+    "mkdocs>=1.3.1",
+    "mkdocs-git-revision-date-localized-plugin>=1.1.0",
+    "mkdocs-htmlproofer-plugin>=0.8.0",
     "mkdocs-minify-plugin>=0.5.0",
-    "mkdocs-autolinks-plugin>=0.4.0",
-    "mkdocs-material>=8.0.5",
+    "mkdocs-autolinks-plugin>=0.6.0",
+    "mkdocs-material>=8.4.2",
     "mkdocstrings[python]>=0.18",
-    "markdown-include>=0.6.0",
-    "mkdocs-section-index>=0.3.2",
+    "markdown-include>=0.7.0",
+    "mkdocs-section-index>=0.3.4",
 ]
 security = [
-    "safety>=1.10.3",
-    "bandit>=1.7.1",
+    "safety>=2.3.1",
+    "bandit>=1.7.3",
 ]
 fixers = [
-    "autoimport>=0.9.1",
-    "black>=21.12b0",
+    "autoimport>=1.2.2",
+    "black>=22.8.0",
     "isort>=5.10.1",
+    "yamlfix>=1.0.1",
 ]
 typing = [
-    "mypy>=0.910",
+    "mypy>=0.971",
     "types-click>=7.1.8",
 ]
 dev = [
-    "pre-commit>=2.16.0",
-    "twine>=3.8.0",
-    "commitizen>=2.20.4",
+    "pre-commit>=2.20.0",
+    "twine>=4.0.1",
+    "commitizen>=2.32.2",
+]
+# The next ones are required to manually solve the dependencies issues
+dependencies = [
+    # Until flakeheaven supports flake8 5.x
+    # https://github.com/flakeheaven/flakeheaven/issues/132
+    "flake8>=4.0.1,<5.0.0",
+    "pyflakes<2.5.0",
 ]
 
 [build-system]

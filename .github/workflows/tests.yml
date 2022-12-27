@@ -3,8 +3,7 @@ name: Tests
 
 on:  # yamllint disable-line rule:truthy
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
     types: [opened, synchronize]
   workflow_dispatch:
@@ -32,12 +31,20 @@ jobs:
           source .venv/bin/activate
           pdm config python.use_venv True
           make install
+        # 3.7 is giving me some issues with flake8 and importlib-metadata, until
+        # https://github.com/flakeheaven/flakeheaven/issues/132 is done, I won't spend
+        # time testing in this environment.
+        # https://github.com/lyz-code/mkdocs-newsletter/actions/runs/3548202587/jobs/5959150030
       - name: Test linters
-        run: make lint
+        run: if [[ ${{ matrix.python-version }} != '3.7' ]];then make lint; fi
       - name: Test type checkers
         run: make mypy
+        # 3.7 is giving me some issues with flake8 and importlib-metadata, until
+        # https://github.com/flakeheaven/flakeheaven/issues/132 is done, I won't spend
+        # time testing in this environment.
+        # https://github.com/lyz-code/mkdocs-newsletter/actions/runs/3548202587/jobs/5959150030
       - name: Test security
-        run: make security
+        run: if [[ ${{ matrix.python-version }} != '3.7' ]];then make security; fi
       - name: Test with pytest
         run: make test
       - name: Upload Coverage
