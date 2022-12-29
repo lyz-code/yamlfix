@@ -10,7 +10,7 @@ from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
 from ruyaml.representer import RoundTripRepresenter
 from ruyaml.tokens import CommentToken
 
-from yamlfix.model import YamlfixConfig
+from yamlfix.model import YamlfixConfig, YamlNodeStyle
 
 log = logging.getLogger(__name__)
 
@@ -213,7 +213,7 @@ class YamlfixRepresenter(RoundTripRepresenter):
                 value_node, SequenceNode
             ):
                 if (
-                    config.flow_style_sequence is None
+                    config.style_sequence == YamlNodeStyle.KEEP_STYLE
                 ):  # explicitly check for None as this can be `False` as well
                     return
 
@@ -246,9 +246,9 @@ class YamlfixRepresenter(RoundTripRepresenter):
                     or self._seq_length_longer_than_line_length(key_node, sequence_node)
                 )
 
-                sequence_node.flow_style = config.flow_style_sequence
+                sequence_node.flow_style = config.style_sequence
                 if force_block_style:
-                    sequence_node.flow_style = False
+                    sequence_node.flow_style = YamlNodeStyle.BLOCK_STYLE
 
         self.patch_functions.append(patch_sequence_style)
 

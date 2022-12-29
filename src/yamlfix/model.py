@@ -8,9 +8,9 @@ from maison.schema import ConfigSchema
 class YamlNodeStyle(Enum):
     """Represent the desired YAML node style for sequences and mappings."""
 
-    FLOW_STYLE = 1
-    BLOCK_STYLE = 2
-    KEEP_STYLE = 3
+    FLOW_STYLE = "flow_style"
+    BLOCK_STYLE = "block_style"
+    KEEP_STYLE = "keep_style"
 
 
 class YamlfixConfig(ConfigSchema):
