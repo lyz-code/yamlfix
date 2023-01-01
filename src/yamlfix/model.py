@@ -21,7 +21,6 @@ class YamlfixConfig(ConfigSchema):
     comments_require_starting_space: bool = True
     config_path: Optional[str] = None
     explicit_start: bool = True
-    style_sequence: YamlNodeStyle = YamlNodeStyle.FLOW_STYLE
     indent_mapping: int = 2
     indent_offset: int = 2
     indent_sequence: int = 4
@@ -30,3 +29,4 @@ class YamlfixConfig(ConfigSchema):
     quote_basic_values: bool = False
     quote_keys_and_basic_values: bool = False
     quote_representation: str = "'"
+    sequence_style: YamlNodeStyle = YamlNodeStyle.FLOW_STYLE

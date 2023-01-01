@@ -268,3 +268,34 @@ def test_read_prefixed_environment_variables(runner: CliRunner, tmp_path: Path) 
         none_value4: ~
         """
     )
+
+
+def test_sequence_style_env_enum_parsing(runner: CliRunner, tmp_path: Path) -> None:
+    """Make sure that the enum-value can be parsed from string through an env var."""
+    os.environ["YAMLFIX_SEQUENCE_STYLE"] = "block_style"
+    os.environ["YAMLFIX_QUOTE_BASIC_VALUES"] = "false"
+    test_source = dedent(
+        """\
+        list1: [item, item]
+        list2:
+          - item
+          - item
+        """
+    )
+    test_source_file = tmp_path / "source.yaml"
+    test_source_file.write_text(test_source)
+
+    result = runner.invoke(cli, [str(test_source_file)])
+
+    assert result.exit_code == 0
+    assert test_source_file.read_text() == dedent(
+        """\
+        ---
+        list1:
+          - item
+          - item
+        list2:
+          - item
+          - item
+        """
+    )

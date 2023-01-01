@@ -50,7 +50,7 @@ class TestYamlAdapter:
         config.indent_offset = 4
         config.indent_mapping = 4
         config.indent_sequence = 8
-        config.style_sequence = YamlNodeStyle.KEEP_STYLE
+        config.sequence_style = YamlNodeStyle.KEEP_STYLE
 
         result = fix_code(source, config)
 
@@ -339,7 +339,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.style_sequence = YamlNodeStyle.FLOW_STYLE
+        config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -367,11 +367,30 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.style_sequence = YamlNodeStyle.BLOCK_STYLE
+        config.sequence_style = YamlNodeStyle.BLOCK_STYLE
 
         result = fix_code(source, config)
 
         assert result == fixed_source
+
+    def test_sequence_keep_style_config(self) -> None:
+        """Make it configurable, that the list style is not changed and keeps\
+            the original flow- or block-style for sequences."""
+        source = dedent(
+            """\
+            ---
+            list:
+              - item
+              - item
+            list2: [item, item]
+            """
+        )
+        config = YamlfixConfig()
+        config.sequence_style = YamlNodeStyle.KEEP_STYLE
+
+        result = fix_code(source, config)
+
+        assert result == source
 
     def test_sequence_block_style_enforcement_for_lists_with_comments(self) -> None:
         """Fall back to multi-line list style 'block-style' if list contains comments,\
@@ -410,7 +429,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.style_sequence = YamlNodeStyle.FLOW_STYLE
+        config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -450,7 +469,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.style_sequence = YamlNodeStyle.FLOW_STYLE
+        config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -495,7 +514,7 @@ class TestYamlAdapter:
         )
         config = YamlfixConfig()
         config.line_length = 40
-        config.style_sequence = YamlNodeStyle.FLOW_STYLE
+        config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -556,7 +575,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.style_sequence = YamlNodeStyle.FLOW_STYLE
+        config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 
@@ -577,7 +596,7 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.style_sequence = YamlNodeStyle.FLOW_STYLE
+        config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
 

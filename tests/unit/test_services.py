@@ -150,7 +150,7 @@ class TestFixCode:
             """
         )
         config = YamlfixConfig()
-        config.style_sequence = YamlNodeStyle.KEEP_STYLE
+        config.sequence_style = YamlNodeStyle.KEEP_STYLE
 
         result = fix_code(source, config)
 
