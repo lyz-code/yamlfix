@@ -582,3 +582,25 @@ class TestYamlAdapter:
         result = fix_code(source, config)
 
         assert result == source
+
+    def test_underscore_for_decimal_integers(self) -> None:
+        """Make underscore for decimal integers configurable."""
+        source = dedent(
+            """\
+            small_ints: [1, 10, 100]
+            big_ints: [1000, 10000, 1000000, 100000000000000000000]
+            """
+        )
+        fixed_source = dedent(
+            """\
+            ---
+            small_ints: [1, 10, 100]
+            big_ints: [1_000, 10_000, 1_000_000, 100_000_000_000_000_000_000]
+            """  # noqa: E501
+        )
+        config = YamlfixConfig()
+        config.underscore_integer = True
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source

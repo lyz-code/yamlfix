@@ -22,3 +22,4 @@ class YamlfixConfig(ConfigSchema):
     quote_basic_values: bool = False
     quote_keys_and_basic_values: bool = False
     quote_representation: str = "'"
+    underscore_integer: bool = False

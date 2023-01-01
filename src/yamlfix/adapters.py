@@ -8,6 +8,7 @@ from typing import Any, Callable, List, Optional, Tuple
 from ruyaml.main import YAML
 from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
 from ruyaml.representer import RoundTripRepresenter
+from ruyaml.scalarint import ScalarInt
 from ruyaml.tokens import CommentToken
 
 from yamlfix.model import YamlfixConfig
@@ -122,6 +123,21 @@ class YamlfixRepresenter(RoundTripRepresenter):
         return self.represent_scalar(
             "tag:yaml.org,2002:str", data, self.config.quote_representation
         )
+
+    def represent_int(self, data: Any) -> Any:  # noqa: ANN401
+        """Configure the SafeRepresenter integer representation to use underscore\
+            separation for big integers."""
+        if not self.config.underscore_integer:
+            return super().represent_int(data)
+
+        return self.represent_scalar("tag:yaml.org,2002:int", f"{data:_d}")
+
+    def represent_scalar_int(self, data: Any) -> Any:  # noqa: ANN401
+        """Configure the RoundTripRepresenter integer representation to use underscore\
+            separation for big integers."""
+        # provide the internal `_underscore` flag, that is used in insert_underscore
+        data._underscore = self.config.underscore_integer  # noqa: W0212
+        return super().represent_scalar_int(data)
 
     def represent_mapping(
         self, tag: Any, mapping: Any, flow_style: Optional[Any] = None  # noqa: ANN401
@@ -314,6 +330,8 @@ class YamlfixRepresenter(RoundTripRepresenter):
 
 YamlfixRepresenter.add_representer(type(None), YamlfixRepresenter.represent_none)
 YamlfixRepresenter.add_representer(str, YamlfixRepresenter.represent_str)
+YamlfixRepresenter.add_representer(int, YamlfixRepresenter.represent_int)
+YamlfixRepresenter.add_representer(ScalarInt, YamlfixRepresenter.represent_scalar_int)
 
 
 class SourceCodeFixer:

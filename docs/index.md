@@ -315,7 +315,7 @@ none_value5: null
 Default: `quote_basic_values: bool = False`<br>
 Environment variable override:
 ```bash
-export YAMLFIX_quote_basic_values="false"
+export YAMLFIX_QUOTE_BASIC_VALUES="false"
 ```
 
 Per default `ruyaml` will quote only values where it is necessary to explicitly define the type of a value. This is the case for numbers and boolean values for example. If your `yaml`-file contains a value of type string that would look like a number, then this value needs to be quoted.
@@ -341,7 +341,7 @@ stringList: ["abc", "123"]
 Default: `quote_keys_and_basic_values: bool = False`<br>
 Environment variable override:
 ```bash
-export YAMLFIX_quote_keys_and_basic_values="false"
+export YAMLFIX_QUOTE_KEYS_AND_BASIC_VALUES="false"
 ```
 
 Similar to the [quote basic values](#quote-basic-values) configuration option, this option, in addition to the values themselves, quotes the keys as well. For example:
@@ -363,7 +363,7 @@ list: [item, item]
 Default: `quote_representation: str = "'"`<br>
 Environment variable override:
 ```bash
-export YAMLFIX_quote_representation="'"
+export YAMLFIX_QUOTE_REPRESENTATION="'"
 ```
 
 Configure which quotation string is used for quoting values. For example:
@@ -376,6 +376,30 @@ key: 'value'
 ```yaml
 # Option set to: "
 key: "value"
+```
+
+### Underscore Integer
+
+Default: `underscore_integer: bool = False`<br>
+Environment variable override:
+```bash
+export YAMLFIX_UNDERSCORE_INTEGER="true"
+```
+
+Configure whether to add underscores to big integer values or not. For example:
+
+```yaml
+---
+small_integer: 10
+big_integer: 1000
+```
+
+would be converted to
+
+```yaml
+---
+small_integer: 10
+big_integer: 1_000
 ```
 
 # References
