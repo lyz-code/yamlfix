@@ -200,6 +200,18 @@ export YAMLFIX_CONFIG_PATH="/etc/yamlfix/"
 
 Configure the base config-path that `maison` will look for a `pyproject.toml` configuration file. This path is traversed upwards until such a file is found.
 
+### Document Fix ID
+
+Default: `document_fix_id: str = uuid.uuid4().hex`<br>
+Environment variable override:
+```bash
+export YAMLFIX_DOCUMENT_FIX_ID="myid"
+```
+
+Warning: You should not modify this value, if you're not sure you need to.
+
+This generates a UUID in hex-string-representation (no delimiters), which is used internally to generate a temporary top-level mapping node, where any lists or comments can be attached, so ruyaml is not removing comments, and comment-only documents can be formatted properly.
+
 ### Explicit Document Start
 
 Default: `explicit_start: bool = True`<br>
