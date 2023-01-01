@@ -32,7 +32,8 @@ repos:
           # Class cannot subclass "ConfigSchema" (has type "Any")
           - --allow-subclassing-any
   - repo: https://github.com/flakeheaven/flakeheaven
-    rev: 0.11.1
+    rev: 3.2.1
     hooks:
       - name: Run flakeheaven static analysis tool
         id: flakeheaven
+        files: ^(src|tests)/.+?\.(ipynb|md|py|rst|yaml|yml)$
