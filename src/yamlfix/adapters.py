@@ -10,7 +10,7 @@ from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
 from ruyaml.representer import RoundTripRepresenter
 from ruyaml.tokens import CommentToken
 
-from yamlfix.model import YamlfixConfig
+from yamlfix.model import YamlfixConfig, YamlNodeStyle
 
 log = logging.getLogger(__name__)
 
@@ -85,7 +85,7 @@ class YamlfixRepresenter(RoundTripRepresenter):
 
         configure_patch_functions = [
             self._configure_quotation_for_basic_values,
-            self._configure_flow_style_for_sequences,
+            self._configure_sequence_style,
         ]
 
         for patch_configurer in configure_patch_functions:
@@ -175,7 +175,7 @@ class YamlfixRepresenter(RoundTripRepresenter):
 
         self.patch_functions.append(patch_quotations)
 
-    def _configure_flow_style_for_sequences(self) -> None:
+    def _configure_sequence_style(self) -> None:
         """Configure Ruamel's yaml fixer to represent lists as either block-style \
             or flow-style.
 
@@ -212,9 +212,9 @@ class YamlfixRepresenter(RoundTripRepresenter):
             if isinstance(key_node, ScalarNode) and isinstance(
                 value_node, SequenceNode
             ):
-                if (
-                    config.flow_style_sequence is None
-                ):  # explicitly check for None as this can be `False` as well
+                # don't modify the sequence style at all, if the config value is
+                # set to `keep_style`
+                if config.sequence_style == YamlNodeStyle.KEEP_STYLE:
                     return
 
                 force_block_style: bool = False
@@ -246,7 +246,9 @@ class YamlfixRepresenter(RoundTripRepresenter):
                     or self._seq_length_longer_than_line_length(key_node, sequence_node)
                 )
 
-                sequence_node.flow_style = config.flow_style_sequence
+                sequence_node.flow_style = (
+                    config.sequence_style == YamlNodeStyle.FLOW_STYLE
+                )
                 if force_block_style:
                     sequence_node.flow_style = False
 

@@ -7,7 +7,7 @@ from textwrap import dedent
 import pytest
 
 from yamlfix import fix_files
-from yamlfix.model import YamlfixConfig
+from yamlfix.model import YamlfixConfig, YamlNodeStyle
 from yamlfix.services import fix_code
 
 true_strings = [
@@ -150,7 +150,7 @@ class TestFixCode:
             """
         )
         config = YamlfixConfig()
-        config.flow_style_sequence = None
+        config.sequence_style = YamlNodeStyle.KEEP_STYLE
 
         result = fix_code(source, config)
 

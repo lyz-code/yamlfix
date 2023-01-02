@@ -221,13 +221,15 @@ Set to `false`:
 project_name: yamlfix
 ```
 
-### Flow-Style Sequence (Lists)
+### Sequence (List) Style
 
-Default: `flow_style_sequence: Optional[bool] = True`<br>
+Default: `sequence_style: YamlNodeStyle = YamlNodeStyle.FLOW_STYLE`<br>
 Environment variable override:
 ```bash
-export YAMLFIX_FLOW_STYLE_SEQUENCE="true"
+export YAMLFIX_SEQUENCE_STYLE="flow_style"
 ```
+
+Available values: `flow_style`, `block_style`, `keep_style`
 
 Transform sequences (lists) to either flow-style, block-style or leave them as-is. If enabled `yamlfix` will also ensure, that flow-style lists are automatically converted to block-style if the resulting key+list elements would breach the line-length. For example:
 
