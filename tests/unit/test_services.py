@@ -526,16 +526,12 @@ class TestFixCode:
             ---
             x-node-volumes: &node-volumes
               node3_data:
-
             x-vault-volumes: &vault-volumes
               vault_data:
-
             x-mongo-volumes: &mongo-volumes
               mongo_data:
-
             x-certmgr-volumes: &certmgr-volumes
               cert_data:
-
             volumes:
               <<: *node-volumes
               <<: *vault-volumes
