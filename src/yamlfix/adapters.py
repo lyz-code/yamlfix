@@ -363,10 +363,11 @@ class SourceCodeFixer:
         return source_code
 
     @staticmethod
-    def _remove_extra_whitelines(match: re.Match) -> str:
-        """
-        Method used by `SourceCodeFixer._fix_whitelines()` to remove extra
-        whitelines when whitelines are not followed by a comment.
+    def _remove_extra_whitelines(match: re.Match[str]) -> str:
+        """Removes extra whitelines.
+
+        Method used by `SourceCodeFixer._fix_whitelines()` to remove extra whitelines
+        when whitelines are not followed by a comment.
 
         Args:
             match: The matched expression by `re`
@@ -375,11 +376,10 @@ class SourceCodeFixer:
             A single new line character followed by the last character of the matched
             string
         """
+        pattern_str = match.group()
+        adjusted_pattern_str = "\n" + pattern_str[-1]
 
-        s = match.group()
-        modified_s = "\n" + s[-1]
-
-        return modified_s
+        return adjusted_pattern_str
 
     def _ruamel_yaml_fixer(self, source_code: str) -> str:
         """Run Ruamel's yaml fixer.
@@ -627,14 +627,17 @@ class SourceCodeFixer:
         return "\n".join(fixed_source_lines)
 
     def _fix_whitelines(self, source_code: str) -> str:
-        """Removes extra whitelines before a comment-only line, otherwise removes every
-        whitelines.
+        r"""Fixes number of consecutive whitelines.
 
-        The number of allowed whitelines before a comment is controlled by
-        `YamlfixConfig.comments_optional_number_whitelines_from_content`.
+        Before a comment-only line, either:
+          - 0 whitelines are allowed
+          - Exactly `self.config.comments_optional_number_whitelines_from_content`
+            whitelines are allowed
 
-        This method assumes that `source_code` had been standardized and that every new
-        lines is denoted by "\n"
+        This method removes extraneous whitelines that are not immediately followed by
+        a comment.
+
+        This method assumes that "\n" denotes a newline
 
         Args:
             self: Source code to be corrected.

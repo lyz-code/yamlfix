@@ -691,7 +691,7 @@ class TestFixCode:
         assert result == source
 
     @pytest.mark.parametrize(
-        "source,config,desired_source",
+        ("source", "config", "desired_source"),
         [
             (
                 dedent(
@@ -1021,9 +1021,6 @@ class TestFixCode:
         When: fix_code is run
         Then: The string has extra whitelines removed
         """
-        source = source
-        desired_source = desired_source
-
         result = fix_code(source_code=source, config=config)
 
         assert result == desired_source
