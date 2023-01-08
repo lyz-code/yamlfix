@@ -648,7 +648,7 @@ class SourceCodeFixer:
         )
 
         desired_whitelines_with_comments = "\n" * (n_whitelines_from_content + 1) + "#"
-        re_whitelines_with_comments = "\n" * (n_whitelines_from_content + 2) + "+#"
+        re_whitelines_with_comments = "\n\n+[#]"
         re_whitelines_with_no_comments = "\n\n+[^#\n]"
 
         source_code = re.sub(

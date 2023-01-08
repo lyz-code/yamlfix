@@ -843,6 +843,28 @@ class TestFixCode:
                 dedent(
                     """\
                     ---
+                    list: [item, item]
+
+                    # Comment: desired: 2 lines before this comment
+                    key: value
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=2),
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+                    # Comment: desired: 2 lines before this comment
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
                     list:
                       - item
                       # Comment: desired: 0 new lines before this comment
