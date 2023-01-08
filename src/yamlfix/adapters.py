@@ -3,7 +3,7 @@
 import logging
 import re
 from io import StringIO
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Callable, List, Match, Optional, Tuple
 
 from ruyaml.main import YAML
 from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
@@ -363,7 +363,7 @@ class SourceCodeFixer:
         return source_code
 
     @staticmethod
-    def _remove_extra_whitelines(match: re.Match[str]) -> str:
+    def _remove_extra_whitelines(match: Match[str]) -> str:
         """Removes extra whitelines.
 
         Method used by `SourceCodeFixer._fix_whitelines()` to remove extra whitelines
