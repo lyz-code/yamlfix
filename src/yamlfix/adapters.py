@@ -351,6 +351,7 @@ class SourceCodeFixer:
             self._restore_jinja_variables,
             self._restore_double_exclamations,
             self._fix_comments,
+            self._fix_whitelines,
             self._fix_top_level_lists,
             self._fix_flow_style_lists,
             self._add_newline_at_end_of_file,
@@ -360,6 +361,25 @@ class SourceCodeFixer:
             source_code = fixer(source_code)
 
         return source_code
+
+    @staticmethod
+    def _remove_extra_whitelines(match: re.Match) -> str:
+        """
+        Method used by `SourceCodeFixer._fix_whitelines()` to remove extra
+        whitelines when whitelines are not followed by a comment.
+
+        Args:
+            match: The matched expression by `re`
+
+        Returns:
+            A single new line character followed by the last character of the matched
+            string
+        """
+
+        s = match.group()
+        modified_s = "\n" + s[-1]
+
+        return modified_s
 
     def _ruamel_yaml_fixer(self, source_code: str) -> str:
         """Run Ruamel's yaml fixer.
@@ -605,6 +625,44 @@ class SourceCodeFixer:
             fixed_source_lines.append(line)
 
         return "\n".join(fixed_source_lines)
+
+    def _fix_whitelines(self, source_code: str) -> str:
+        """Removes extra whitelines before a comment-only line, otherwise removes every
+        whitelines.
+
+        The number of allowed whitelines before a comment is controlled by
+        `YamlfixConfig.comments_optional_number_whitelines_from_content`.
+
+        This method assumes that `source_code` had been standardized and that every new
+        lines is denoted by "\n"
+
+        Args:
+            self: Source code to be corrected.
+
+        Returns:
+            Source code with appropriate whitelines standards.
+        """
+        config = self.config
+        n_whitelines_from_content = (
+            config.comments_optional_number_whitelines_from_content
+        )
+
+        desired_whitelines_with_comments = "\n" * (n_whitelines_from_content + 1) + "#"
+        re_whitelines_with_comments = "\n" * (n_whitelines_from_content + 2) + "+#"
+        re_whitelines_with_no_comments = "\n\n+[^#\n]"
+
+        source_code = re.sub(
+            pattern=re_whitelines_with_comments,
+            repl=desired_whitelines_with_comments,
+            string=source_code,
+        )
+        source_code = re.sub(
+            pattern=re_whitelines_with_no_comments,
+            repl=self._remove_extra_whitelines,
+            string=source_code,
+        )
+
+        return source_code
 
     @staticmethod
     def _restore_double_exclamations(source_code: str) -> str:
