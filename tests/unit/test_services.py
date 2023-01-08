@@ -3,6 +3,7 @@
 import logging
 from pathlib import Path
 from textwrap import dedent
+from typing import Optional
 
 import pytest
 
@@ -696,3 +697,319 @@ class TestFixCode:
         result = fix_code(source)
 
         assert result == source
+
+    @pytest.mark.parametrize(
+        "source,config,desired_source",
+        [
+            (
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+
+                    key: value
+                    """
+                ),
+                None,
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+
+                    key: value  # Comment: desired: No lines between `list` and `key`
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=0),
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+                    key: value  # Comment: desired: No lines between `list` and `key`
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+
+                    key: value  # Comment: desired: No lines between `list` and `key`
+                    """
+                ),
+                None,
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+                    key: value  # Comment: desired: No lines between `list` and `key`
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+
+                    key: value  # Comment: desired: No lines between `list` and `key`
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=2),
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+                    key: value  # Comment: desired: No lines between `list` and `key`
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+                    # Comment: desired: 1 line (default) before this comment
+                    key: value
+                    """
+                ),
+                None,
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+                    # Comment: desired: 1 line (default) before this comment
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+                    # Comment: desired: 0 line before this comment
+                    key: value
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=0),
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+                    # Comment: desired: 0 line before this comment
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+                    # Comment: desired: 2 lines before this comment
+                    key: value
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=2),
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
+                    # Comment: desired: 2 lines before this comment
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+
+                    key: value
+                    """
+                ),
+                None,
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+
+                    key: value
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=0),
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+
+                    key: value
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=2),
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+
+                    key: value
+                    """
+                ),
+                None,
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+
+                    key: value
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=1),
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+
+                    key: value
+                    """
+                ),
+                YamlfixConfig(comments_optional_number_whitelines_from_content=2),
+                dedent(
+                    """\
+                    ---
+                    list:
+                      - item
+                      # Comment: desired: 0 new lines before this comment
+                      - item
+                    key: value
+                    """
+                ),
+            ),
+        ],
+    )
+    def test_fix_code_fix_whitelines(
+        self,
+        source: str,
+        config: Optional[YamlfixConfig],
+        desired_source: str,
+    ) -> None:
+        """
+        Given: Code with extra whitelines
+        When: fix_code is run
+        Then: The string has extra whitelines removed
+        """
+        source = source
+        desired_source = desired_source
+
+        result = fix_code(source_code=source, config=config)
+
+        assert result == desired_source
