@@ -724,7 +724,7 @@ class TestFixCode:
                     key: value  # Comment: desired: No lines between `list` and `key`
                     """
                 ),
-                YamlfixConfig(comment_whitelines=0),
+                YamlfixConfig(comments_whitelines=0),
                 dedent(
                     """\
                     ---
@@ -764,7 +764,7 @@ class TestFixCode:
                     key: value  # Comment: desired: No lines between `list` and `key`
                     """
                 ),
-                YamlfixConfig(comment_whitelines=2),
+                YamlfixConfig(comments_whitelines=2),
                 dedent(
                     """\
                     ---
@@ -806,7 +806,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                YamlfixConfig(comment_whitelines=0),
+                YamlfixConfig(comments_whitelines=0),
                 dedent(
                     """\
                     ---
@@ -827,7 +827,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                YamlfixConfig(comment_whitelines=2),
+                YamlfixConfig(comments_whitelines=2),
                 dedent(
                     """\
                     ---
@@ -849,7 +849,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                YamlfixConfig(comment_whitelines=2),
+                YamlfixConfig(comments_whitelines=2),
                 dedent(
                     """\
                     ---
@@ -897,7 +897,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                YamlfixConfig(comment_whitelines=0),
+                YamlfixConfig(comments_whitelines=0),
                 dedent(
                     """\
                     ---
@@ -921,7 +921,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                YamlfixConfig(comment_whitelines=2),
+                YamlfixConfig(comments_whitelines=2),
                 dedent(
                     """\
                     ---
@@ -971,7 +971,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                YamlfixConfig(comment_whitelines=1),
+                YamlfixConfig(comments_whitelines=1),
                 dedent(
                     """\
                     ---
@@ -996,7 +996,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                YamlfixConfig(comment_whitelines=2),
+                YamlfixConfig(comments_whitelines=2),
                 dedent(
                     """\
                     ---

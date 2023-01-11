@@ -19,7 +19,7 @@ class YamlfixConfig(ConfigSchema):
     allow_duplicate_keys: bool = False
     comments_min_spaces_from_content: int = 2
     comments_require_starting_space: bool = True
-    comment_whitelines: int = 1
+    comments_whitelines: int = 1
     config_path: Optional[str] = None
     explicit_start: bool = True
     indent_mapping: int = 2

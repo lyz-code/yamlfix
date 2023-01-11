@@ -190,12 +190,12 @@ export YAMLFIX_COMMENTS_REQUIRE_STARTING_SPACE="true"
 
 This option enforces a space between the comment indicator (`#`) and the first character in the comment. It implements the enforcement of the yamllint rule `rules.comments.require-starting-space` - see: https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments
 
-### Comment Whitelines
+### Comments Whitelines
 
-Default: `comment_whitelines: int = 1`<br>
+Default: `comments_whitelines: int = 1`<br>
 Environment variable override:
 ```bash
-export YAMLFIX_COMMENTS_OPTIONAL_NUMBER_WHITELINES_FROM_CONTENT="1"
+export YAMLFIX_COMMENTS_WHITELINES="1"
 ```
 
 This option allows to add a specific number of whitelines before a comment that starts at the beginning of a new line
