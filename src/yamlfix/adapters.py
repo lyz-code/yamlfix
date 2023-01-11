@@ -627,7 +627,7 @@ class SourceCodeFixer:
         return "\n".join(fixed_source_lines)
 
     def _fix_whitelines(self, source_code: str) -> str:
-        r"""Fixes number of consecutive whitelines.
+        """Fixes number of consecutive whitelines.
 
         Before a comment-only line, either:
           - 0 whitelines are allowed
@@ -635,8 +635,6 @@ class SourceCodeFixer:
 
         This method removes extraneous whitelines that are not immediately followed by
         a comment.
-
-        This method assumes that "\n" denotes a newline
 
         Args:
             self: Source code to be corrected.
