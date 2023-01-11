@@ -631,8 +631,7 @@ class SourceCodeFixer:
 
         Before a comment-only line, either:
           - 0 whitelines are allowed
-          - Exactly `self.config.comments_optional_number_whitelines_from_content`
-            whitelines are allowed
+          - Exactly `self.config.comment_whitelines` whitelines are allowed
 
         This method removes extraneous whitelines that are not immediately followed by
         a comment.
@@ -646,9 +645,7 @@ class SourceCodeFixer:
             Source code with appropriate whitelines standards.
         """
         config = self.config
-        n_whitelines_from_content = (
-            config.comments_optional_number_whitelines_from_content
-        )
+        n_whitelines_from_content = config.comment_whitelines
 
         desired_whitelines_with_comments = "\n" * (n_whitelines_from_content + 1) + "#"
         re_whitelines_with_comments = "\n\n+[#]"
