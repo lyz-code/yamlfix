@@ -700,6 +700,28 @@ class TestFixCode:
                     list: [item, item]
 
 
+                    # Comment: desired: 1 line (default) before this comment
+                    key: value
+                    """
+                ),
+                None,
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+                    # Comment: desired: 1 line (default) before this comment
+                    key: value
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    list: [item, item]
+
+
 
                     key: value
                     """
@@ -780,7 +802,7 @@ class TestFixCode:
                     list: [item, item]
 
 
-                    # Comment: desired: 1 line (default) before this comment
+                    # Comment: desired: 1 line before this comment
                     key: value
                     """
                 ),
@@ -790,7 +812,7 @@ class TestFixCode:
                     ---
                     list: [item, item]
 
-                    # Comment: desired: 1 line (default) before this comment
+                    # Comment: desired: 1 line before this comment
                     key: value
                     """
                 ),
