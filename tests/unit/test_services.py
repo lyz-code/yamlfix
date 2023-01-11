@@ -704,7 +704,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                None,
+                YamlfixConfig(comments_whitelines=1),
                 dedent(
                     """\
                     ---
@@ -744,7 +744,7 @@ class TestFixCode:
                     key: value  # Comment: desired: No lines between `list` and `key`
                     """
                 ),
-                None,
+                YamlfixConfig(comments_whitelines=1),
                 dedent(
                     """\
                     ---
@@ -784,7 +784,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                None,
+                YamlfixConfig(comments_whitelines=1),
                 dedent(
                     """\
                     ---
@@ -873,7 +873,7 @@ class TestFixCode:
                     key: value
                     """
                 ),
-                None,
+                YamlfixConfig(comments_whitelines=1),
                 dedent(
                     """\
                     ---
@@ -922,31 +922,6 @@ class TestFixCode:
                     """
                 ),
                 YamlfixConfig(comments_whitelines=2),
-                dedent(
-                    """\
-                    ---
-                    list:
-                      - item
-                      # Comment: desired: 0 new lines before this comment
-                      - item
-                    key: value
-                    """
-                ),
-            ),
-            (
-                dedent(
-                    """\
-                    ---
-                    list:
-                      - item
-
-                      # Comment: desired: 0 new lines before this comment
-                      - item
-
-                    key: value
-                    """
-                ),
-                None,
                 dedent(
                     """\
                     ---
