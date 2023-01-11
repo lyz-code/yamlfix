@@ -362,25 +362,6 @@ class SourceCodeFixer:
 
         return source_code
 
-    @staticmethod
-    def _remove_extra_whitelines(match: Match[str]) -> str:
-        """Removes extra whitelines.
-
-        Method used by `SourceCodeFixer._fix_whitelines()` to remove extra whitelines
-        when whitelines are not followed by a comment.
-
-        Args:
-            match: The matched expression by `re`
-
-        Returns:
-            A single new line character followed by the last character of the matched
-            string
-        """
-        pattern_str = match.group()
-        adjusted_pattern_str = "\n" + pattern_str[-1]
-
-        return adjusted_pattern_str
-
     def _ruamel_yaml_fixer(self, source_code: str) -> str:
         """Run Ruamel's yaml fixer.
 
@@ -661,6 +642,25 @@ class SourceCodeFixer:
         )
 
         return source_code
+
+    @staticmethod
+    def _remove_extra_whitelines(match: Match[str]) -> str:
+        """Removes extra whitelines.
+
+        Method used by `SourceCodeFixer._fix_whitelines()` to remove extra whitelines
+        when whitelines are not followed by a comment.
+
+        Args:
+            match: The matched expression by `re`
+
+        Returns:
+            A single new line character followed by the last character of the matched
+            string
+        """
+        pattern_str = match.group()
+        adjusted_pattern_str = "\n" + pattern_str[-1]
+
+        return adjusted_pattern_str
 
     @staticmethod
     def _restore_double_exclamations(source_code: str) -> str:
