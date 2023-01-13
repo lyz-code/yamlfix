@@ -305,6 +305,7 @@ pylint = [
             # though they are not used in the function directly, they are used to
             # configure the test.
   "-R0904", # Too many public methods (25/20) (too-many-public-methods)
+  "-C0302", # Allows module to have unlimited number of lines.
 ]
 
 [tool.flakeheaven.exceptions."tests/factories.py"]

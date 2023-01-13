@@ -568,9 +568,6 @@ class TestYamlAdapter:
             """\
             ---
             list: [item, item]
-
-
-
             key: value
             """
         )

@@ -3,7 +3,7 @@
 import logging
 import re
 from io import StringIO
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Callable, List, Match, Optional, Tuple
 
 from ruyaml.main import YAML
 from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
@@ -351,6 +351,7 @@ class SourceCodeFixer:
             self._restore_jinja_variables,
             self._restore_double_exclamations,
             self._fix_comments,
+            self._fix_whitelines,
             self._fix_top_level_lists,
             self._fix_flow_style_lists,
             self._add_newline_at_end_of_file,
@@ -605,6 +606,61 @@ class SourceCodeFixer:
             fixed_source_lines.append(line)
 
         return "\n".join(fixed_source_lines)
+
+    def _fix_whitelines(self, source_code: str) -> str:
+        """Fixes number of consecutive whitelines.
+
+        Before a comment-only line, either:
+          - 0 whiteline is allowed
+          - Exactly `self.config.comments_whitelines` whitelines are allowed
+
+        This method removes extraneous whitelines that are not immediately followed by
+        a comment.
+
+        Args:
+            self: Source code to be corrected.
+
+        Returns:
+            Source code with appropriate whitelines standards.
+        """
+        config = self.config
+        n_whitelines_from_content = config.comments_whitelines
+
+        desired_whitelines_with_comments = "\n" * (n_whitelines_from_content + 1) + "#"
+        re_whitelines_with_comments = "\n\n+[#]"
+        re_whitelines_with_no_comments = "\n\n+[^#\n]"
+
+        source_code = re.sub(
+            pattern=re_whitelines_with_comments,
+            repl=desired_whitelines_with_comments,
+            string=source_code,
+        )
+        source_code = re.sub(
+            pattern=re_whitelines_with_no_comments,
+            repl=self._remove_extra_whitelines,
+            string=source_code,
+        )
+
+        return source_code
+
+    @staticmethod
+    def _remove_extra_whitelines(match: Match[str]) -> str:
+        """Removes extra whitelines.
+
+        Method used by `SourceCodeFixer._fix_whitelines()` to remove extra whitelines
+        when whitelines are not followed by a comment.
+
+        Args:
+            match: The matched expression by `re`
+
+        Returns:
+            A single new line character followed by the last character of the matched
+            string
+        """
+        pattern_str = match.group()
+        adjusted_pattern_str = "\n" + pattern_str[-1]
+
+        return adjusted_pattern_str
 
     @staticmethod
     def _restore_double_exclamations(source_code: str) -> str:
