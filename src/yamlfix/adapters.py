@@ -611,7 +611,7 @@ class SourceCodeFixer:
         """Fixes number of consecutive whitelines.
 
         Before a comment-only line, either:
-          - 0 whitelines are allowed
+          - 0 whiteline is allowed
           - Exactly `self.config.comments_whitelines` whitelines are allowed
 
         This method removes extraneous whitelines that are not immediately followed by
