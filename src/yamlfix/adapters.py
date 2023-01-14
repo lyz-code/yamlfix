@@ -2,6 +2,7 @@
 
 import logging
 import re
+from functools import partial
 from io import StringIO
 from typing import Any, Callable, List, Match, Optional, Tuple
 
@@ -610,7 +611,7 @@ class SourceCodeFixer:
     def _fix_whitelines(self, source_code: str) -> str:
         """Fixes number of consecutive whitelines.
 
-        Before a comment-only line, either:
+        Before a line that only includes a comment, either:
           - 0 whiteline is allowed
           - Exactly `self.config.comments_whitelines` whitelines are allowed
 
@@ -626,41 +627,48 @@ class SourceCodeFixer:
         config = self.config
         n_whitelines_from_content = config.comments_whitelines
 
-        desired_whitelines_with_comments = "\n" * (n_whitelines_from_content + 1) + "#"
-        re_whitelines_with_comments = "\n\n+[#]"
-        re_whitelines_with_no_comments = "\n\n+[^#\n]"
+        re_whitelines_with_comments = "\n\n+[\t ]{0,}[#]"
+        re_whitelines_with_no_comments = "\n\n+[\t ]{0,}[^#\n\t ]"
+
+        remove_whitelines = partial(self._replace_whitelines, n_whitelines=0)
+        replace_by_n_whitelines = partial(
+            self._replace_whitelines,
+            n_whitelines=n_whitelines_from_content,
+        )
 
         source_code = re.sub(
             pattern=re_whitelines_with_comments,
-            repl=desired_whitelines_with_comments,
+            repl=replace_by_n_whitelines,
             string=source_code,
         )
         source_code = re.sub(
             pattern=re_whitelines_with_no_comments,
-            repl=self._remove_extra_whitelines,
+            repl=remove_whitelines,
             string=source_code,
         )
 
         return source_code
 
     @staticmethod
-    def _remove_extra_whitelines(match: Match[str]) -> str:
-        """Removes extra whitelines.
+    def _replace_whitelines(match: Match[str], n_whitelines: int) -> str:
+        """Replaces whitelines by a fixed number, `n_whitelines`, of whitelines.
 
-        Method used by `SourceCodeFixer._fix_whitelines()` to remove extra whitelines
-        when whitelines are not followed by a comment.
+        Method used by `SourceCodeFixer._fix_whitelines()` to replace whitelines when
+        whitelines are not followed by a comment.
 
         Args:
-            match: The matched expression by `re`
+            match: The matched expression by the regex module, `re`
+            n_whitelines: Desired number of whitelines to use to replace all leading
+            whitelines in `match`
 
         Returns:
-            A single new line character followed by the last character of the matched
-            string
+            A string corresponding to the matched string with its leading whitelines
+            replaced by `n_whitelines` whitelines.
         """
-        pattern_str = match.group()
-        adjusted_pattern_str = "\n" + pattern_str[-1]
+        matched_str = match.group()
+        adjusted_matched_str = "\n" * (n_whitelines + 1) + matched_str.lstrip("\n")
 
-        return adjusted_pattern_str
+        return adjusted_matched_str
 
     @staticmethod
     def _restore_double_exclamations(source_code: str) -> str:
