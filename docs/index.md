@@ -198,11 +198,14 @@ Environment variable override:
 export YAMLFIX_COMMENTS_WHITELINES="1"
 ```
 
-This option allows to add a specific number of consecutive whitelines before a comment.
+This option allows to add a specific number of consecutive whitelines before a comment-only line.
+
+A comment-only line is defined as a line that starts with a comment or with an indented comment.
 
 Before a comment-only line, either:
-  - 0 whiteline is allowed
-  - Exactly `comments_whitelines` whitelines are allowed
+
+- 0 whiteline is allowed
+- Exactly `comments_whitelines` whitelines are allowed
 
 ### Config Path
 

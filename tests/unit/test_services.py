@@ -889,7 +889,7 @@ class TestFixCode:
                     ---
                     list:
                       - item
-                      # Comment: desired: 0 new lines before this comment
+                      # Comment: desired: 0 new line before this comment
                       - item
 
                     key: value
@@ -901,7 +901,7 @@ class TestFixCode:
                     ---
                     list:
                       - item
-                      # Comment: desired: 0 new lines before this comment
+                      # Comment: desired: 0 new line before this comment
                       - item
                     key: value
                     """
@@ -913,7 +913,7 @@ class TestFixCode:
                     ---
                     list:
                       - item
-                      # Comment: desired: 0 new lines before this comment
+                      # Comment: desired: 0 new line before this comment
                       - item
 
                     key: value
@@ -925,7 +925,7 @@ class TestFixCode:
                     ---
                     list:
                       - item
-                      # Comment: desired: 0 new lines before this comment
+                      # Comment: desired: 0 new line before this comment
                       - item
                     key: value
                     """
@@ -937,7 +937,7 @@ class TestFixCode:
                     ---
                     list:
                       - item
-                      # Comment: desired: 0 new lines before this comment
+                      # Comment: desired: 0 new line before this comment
                       - item
 
                     key: value
@@ -949,7 +949,7 @@ class TestFixCode:
                     ---
                     list:
                       - item
-                      # Comment: desired: 0 new lines before this comment
+                      # Comment: desired: 0 new line before this comment
                       - item
                     key: value
                     """
@@ -962,7 +962,7 @@ class TestFixCode:
                     list:
                       - item
 
-                      # Comment: desired: 0 new lines before this comment
+                      # Comment: desired: 1 new line before this comment
                       - item
 
                     key: value
@@ -974,7 +974,8 @@ class TestFixCode:
                     ---
                     list:
                       - item
-                      # Comment: desired: 0 new lines before this comment
+
+                      # Comment: desired: 1 new line before this comment
                       - item
                     key: value
                     """
@@ -987,7 +988,7 @@ class TestFixCode:
                     list:
                       - item
 
-                      # Comment: desired: 0 new lines before this comment
+                      # Comment: desired: 2 new lines before this comment
                       - item
 
                     key: value
@@ -999,7 +1000,9 @@ class TestFixCode:
                     ---
                     list:
                       - item
-                      # Comment: desired: 0 new lines before this comment
+
+
+                      # Comment: desired: 2 new lines before this comment
                       - item
                     key: value
                     """
