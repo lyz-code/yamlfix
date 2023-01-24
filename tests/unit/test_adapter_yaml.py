@@ -598,6 +598,7 @@ class TestYamlAdapter:
         result = fix_code(source, config)
 
         assert result == source
+
     def test_section_whitelines(self) -> None:
         """Check if section whitelines are preserved."""
         source = dedent(

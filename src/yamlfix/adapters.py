@@ -636,7 +636,9 @@ class SourceCodeFixer:
             self._replace_whitelines,
             n_whitelines=n_whitelines_from_content,
         )
-        section_whitelines = partial(self._fix_section, n_whitelines=config.section_whitelines)
+        section_whitelines = partial(
+            self._fix_section, n_whitelines=config.section_whitelines
+        )
 
         source_code = re.sub(
             pattern=re_whitelines_with_comments,
@@ -648,7 +650,9 @@ class SourceCodeFixer:
             repl=remove_whitelines,
             string=source_code,
         )
-        source_code = re.sub(pattern=re_whitelines_section, repl=section_whitelines, string=source_code)
+        source_code = re.sub(
+            pattern=re_whitelines_section, repl=section_whitelines, string=source_code
+        )
 
         return source_code
 
