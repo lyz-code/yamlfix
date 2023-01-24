@@ -629,12 +629,14 @@ class SourceCodeFixer:
 
         re_whitelines_with_comments = "\n\n+[\t ]{0,}[#]"
         re_whitelines_with_no_comments = "\n\n+[\t ]{0,}[^#\n\t ]"
+        re_whitelines_section = "-.*\n|#.*\n|(?P<s>  .*:.*\n\n*(?![ #\n]).)"
 
         remove_whitelines = partial(self._replace_whitelines, n_whitelines=0)
         replace_by_n_whitelines = partial(
             self._replace_whitelines,
             n_whitelines=n_whitelines_from_content,
         )
+        section_whitelines = partial(self._fix_section, n_whitelines=config.section_whitelines)
 
         source_code = re.sub(
             pattern=re_whitelines_with_comments,
@@ -646,6 +648,7 @@ class SourceCodeFixer:
             repl=remove_whitelines,
             string=source_code,
         )
+        source_code = re.sub(pattern=re_whitelines_section, repl=section_whitelines, string=source_code)
 
         return source_code
 
@@ -669,6 +672,15 @@ class SourceCodeFixer:
         adjusted_matched_str = "\n" * (n_whitelines + 1) + matched_str.lstrip("\n")
 
         return adjusted_matched_str
+
+    @staticmethod
+    def _fix_section(match: Match[str], n_whitelines: int, group: str = "s") -> str:
+        if not (match.groups() and match.group(group)):
+            return match.group()
+        matched_str = match.group(group)
+        while "\n\n" in matched_str:
+            matched_str = matched_str.replace("\n\n", "\n")
+        return matched_str.replace("\n", "\n" * (n_whitelines + 1))
 
     @staticmethod
     def _restore_double_exclamations(source_code: str) -> str:
