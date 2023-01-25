@@ -5,7 +5,6 @@ black = pdm run black --target-version py37 src tests
 .PHONY: install
 install:
 	pdm install --dev
-	pdm run pre-commit install
 
 .PHONY: update
 update:

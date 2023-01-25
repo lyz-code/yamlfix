@@ -178,7 +178,7 @@ exclude = '''
 
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "-vv --tb=short -n auto"
+addopts = "-n auto"
 testpaths = "tests"
 norecursedirs = [
     ".tox",
