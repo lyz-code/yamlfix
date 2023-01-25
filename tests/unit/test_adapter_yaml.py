@@ -602,6 +602,8 @@ class TestYamlAdapter:
     def test_section_whitelines(self) -> None:
         """Check if section whitelines are preserved."""
         source = dedent(
+            # pylint: disable=C0303
+            # noqa: W291
             """\
             ---
 
