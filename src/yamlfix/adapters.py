@@ -633,7 +633,7 @@ class SourceCodeFixer:
         remove_whitelines = partial(self._replace_whitelines, n_whitelines=0)
         replace_by_n_whitelines = partial(
             self._replace_whitelines,
-            n_whitelines=n_whitelines_from_content
+            n_whitelines=n_whitelines_from_content,
         )
 
         source_code = re.sub(
