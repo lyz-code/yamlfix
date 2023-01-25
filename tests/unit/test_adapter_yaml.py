@@ -603,7 +603,6 @@ class TestYamlAdapter:
         """Check if section whitelines are preserved."""
         source = dedent(
             # pylint: disable=C0303
-            # noqa: W291
             """\
             ---
 
@@ -633,7 +632,7 @@ class TestYamlAdapter:
             key5: value
 
 
-            """
+            """  # noqa: W291
         )
         fixed_source = dedent(
             """\
