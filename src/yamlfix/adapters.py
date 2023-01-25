@@ -629,29 +629,23 @@ class SourceCodeFixer:
 
         re_whitelines_with_comments = "\n\n+[\t ]{0,}[#]"
         re_whitelines_with_no_comments = "\n\n+[\t ]{0,}[^#\n\t ]"
-        re_whitelines_section = "-.*\n|#.*\n|(?P<s>  .*:.*\n\n*(?![ #\n]).)"
 
         remove_whitelines = partial(self._replace_whitelines, n_whitelines=0)
         replace_by_n_whitelines = partial(
             self._replace_whitelines,
-            n_whitelines=n_whitelines_from_content,
-        )
-        section_whitelines = partial(
-            self._fix_section, n_whitelines=config.section_whitelines
+            n_whitelines=n_whitelines_from_content
         )
 
-        source_code = re.sub(
-            pattern=re_whitelines_with_comments,
-            repl=replace_by_n_whitelines,
-            string=source_code,
-        )
         source_code = re.sub(
             pattern=re_whitelines_with_no_comments,
             repl=remove_whitelines,
             string=source_code,
         )
+        source_code = self._fix_section_whitelines(source_code)
         source_code = re.sub(
-            pattern=re_whitelines_section, repl=section_whitelines, string=source_code
+            pattern=re_whitelines_with_comments,
+            repl=replace_by_n_whitelines,
+            string=source_code,
         )
 
         return source_code
@@ -677,14 +671,33 @@ class SourceCodeFixer:
 
         return adjusted_matched_str
 
-    @staticmethod
-    def _fix_section(match: Match[str], n_whitelines: int, group: str = "s") -> str:
-        if not (match.groups() and match.group(group)):
-            return match.group()
-        matched_str = match.group(group)
-        while "\n\n" in matched_str:
-            matched_str = matched_str.replace("\n\n", "\n")
-        return matched_str.replace("\n", "\n" * (n_whitelines + 1))
+    def _fix_section_whitelines(self, source_code: str) -> str:
+        re_section = "\n*(^#.*\n)*\n*^[^ ].*:\n(\n|(^  .*))+\n*"
+        re_beginning_section = f"(?P<b>---\n{re_section})"
+        re_normal_section = f"(?P<s>{re_section})"
+        re_full = f"{re_beginning_section}|{re_normal_section}"
+        pattern = re.compile(re_full, flags=re.MULTILINE)
+
+        def _fix_before_section(match: Match[str]) -> str:
+            section = match.group("s")
+            if not section:
+                return match.group()
+            while section[0] == "\n":
+                section = section[1:]
+            out = "\n" * (self.config.section_whitelines + 1) + section
+            return out
+
+        def _fix_after_section(match: Match[str]) -> str:
+            section = match.group("b") or match.group("s")
+            if not section:
+                return match.group()
+            while section[-1] == "\n":
+                section = section[:-1]
+            return section + "\n" * (self.config.section_whitelines + 1)
+
+        before_fixed = pattern.sub(repl=_fix_before_section, string=source_code)
+        after_fixed = pattern.sub(repl=_fix_after_section, string=before_fixed)
+        return after_fixed
 
     @staticmethod
     def _restore_double_exclamations(source_code: str) -> str:

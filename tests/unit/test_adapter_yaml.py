@@ -604,36 +604,61 @@ class TestYamlAdapter:
         source = dedent(
             """\
             ---
-            section1:
-              key: value
 
-              key2: value2
-            section2:
+            begin_section: 
               key: value
             key1: value
+
             key2: value
 
+            happy_path_section:
+              key1: value
+
+              key2: value
+
+            # Comment 1
+            # Comment 2
+            comment_section:
+                key: value
+            close_section:
+                key: value
+
             key3: value
+            key4: value
+
+            key5: value
             """
         )
-
         fixed_source = dedent(
             """\
             ---
-            section1:
-              key: value
-              key2: value2
-
-            section2:
+            begin_section:
               key: value
 
             key1: value
             key2: value
+
+            happy_path_section:
+              key1: value
+              key2: value
+
+
+            # Comment 1
+            # Comment 2
+            comment_section:
+              key: value
+
+            close_section:
+              key: value
+
             key3: value
+            key4: value
+            key5: value
             """
         )
         config = YamlfixConfig()
         config.section_whitelines = 1
+        config.comments_whitelines = 2
 
         result = fix_code(source, config)
 
