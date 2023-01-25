@@ -627,6 +627,8 @@ class TestYamlAdapter:
             key4: value
 
             key5: value
+
+
             """
         )
         fixed_source = dedent(

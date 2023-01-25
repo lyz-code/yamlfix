@@ -697,6 +697,8 @@ class SourceCodeFixer:
 
         before_fixed = pattern.sub(repl=_fix_before_section, string=source_code)
         after_fixed = pattern.sub(repl=_fix_after_section, string=before_fixed)
+        while after_fixed[-2:] == "\n\n":
+            after_fixed = after_fixed[:-1]
         return after_fixed
 
     @staticmethod
