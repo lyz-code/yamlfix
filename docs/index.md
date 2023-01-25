@@ -207,6 +207,34 @@ Before a comment-only line, either:
 - 0 whiteline is allowed
 - Exactly `comments_whitelines` whitelines are allowed
 
+### Section Whitelines
+Default `section_whitelines: int = 0`<br>
+Environment variable override:
+```bash
+export YAMLFIX_SECTION_WHITELINES="1"
+```
+
+This option sets the number of whitelines before and after a section.
+A section is defined as a key followed by at least one line with indentation.
+Section examples:
+```yaml
+section1:
+  key: value
+
+list:
+  - value
+```
+There are a few exceptions to this behaviour:
+
+* If there is a comment(s) on the line(s) preceding beginning of a section, `comments_whitelines` rules will be applied to whitelines before the section. e.g.
+```yaml
+# Comment
+section:
+  key: value
+```
+* Sections at the start and end of the document will have whitelines removed before and after respectively.
+
+
 ### Config Path
 
 Default: `config_path: Optional[str] = None`<br>
