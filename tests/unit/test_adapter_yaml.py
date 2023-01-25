@@ -615,6 +615,8 @@ class TestYamlAdapter:
               key1: value
 
               key2: value
+              nested_dict:
+                nested_key: value
 
             # Comment 1
             # Comment 2
@@ -643,6 +645,8 @@ class TestYamlAdapter:
             happy_path_section:
               key1: value
               key2: value
+              nested_dict:
+                nested_key: value
 
 
             # Comment 1

@@ -215,7 +215,7 @@ export YAMLFIX_SECTION_WHITELINES="1"
 ```
 
 This option sets the number of whitelines before and after a section.
-A section is defined as a key followed by at least one line with indentation.
+A section is defined as a top-level key followed by at least one line with indentation.
 Section examples:
 ```yaml
 section1:
