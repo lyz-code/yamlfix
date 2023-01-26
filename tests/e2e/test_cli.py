@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from textwrap import dedent
 
+import click
 import pytest
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
@@ -298,4 +299,69 @@ def test_sequence_style_env_enum_parsing(runner: CliRunner, tmp_path: Path) -> N
           - item
           - item
         """
+    )
+
+
+def test_find_files(runner: CliRunner, tmp_path: Path) -> None:
+    """Correct the source code of multiple files."""
+    test_files = []
+    (tmp_path / ".hidden").mkdir()
+    for filename in [
+        "test.yaml",
+        "test.yml",
+        ".test.yaml",
+        ".test.yml",
+        ".hidden/test.yaml",
+    ]:
+        file_path = tmp_path / filename
+        file_path.write_text("program: yamlfix")
+        test_files.append(file_path)
+    fixed_source = dedent(
+        """\
+        ---
+        program: yamlfix
+        """
+    )
+
+    result = runner.invoke(cli, [str(tmp_path)])
+
+    assert result.exit_code == 0
+    for test_file in test_files:
+        assert test_file.read_text() == fixed_source
+
+
+def test_no_yaml_files(
+    runner: CliRunner, tmp_path: Path, caplog: LogCaptureFixture
+) -> None:
+    """Correct the source code of multiple files."""
+    result = runner.invoke(cli, [str(tmp_path)])
+
+    assert result.exit_code == 0
+    assert (
+        "yamlfix.entrypoints.cli",
+        logging.WARNING,
+        "No YAML files found!",
+    ) == caplog.record_tuples[0]
+
+
+def test_no_files_provided(runner: CliRunner) -> None:
+    """Make sure that the tool exits with an error when no files are provided."""
+    result = runner.invoke(cli, [])
+
+    assert result.exit_code == 1
+    # I have no idea why mypy is complaining about this
+    with click.Context(cli) as ctx:  # type: ignore
+        assert result.stderr == cli.get_help(ctx) + "\n"
+
+
+def test_std_and_file_error(runner: CliRunner, tmp_path: Path) -> None:
+    """Correct the source code of multiple files."""
+    filepath = tmp_path / "test.yaml"
+    filepath.write_text("program: yamlfix")
+
+    result = runner.invoke(cli, ["-", str(filepath)])
+
+    assert result.exit_code == 1
+    assert (
+        str(result.exception) == "Cannot specify '-' and other files at the same time."
     )
