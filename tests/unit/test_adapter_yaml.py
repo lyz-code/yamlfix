@@ -623,13 +623,13 @@ class TestYamlAdapter:
             # Comment 2
             comment_section:
                 key: value
-            close_section:
-                key: value
-
             key3: value
             key4: value
 
             key5: value
+            close_section:
+                key: value
+
 
 
             """  # noqa: W291
@@ -655,12 +655,12 @@ class TestYamlAdapter:
             comment_section:
               key: value
 
-            close_section:
-              key: value
-
             key3: value
             key4: value
             key5: value
+
+            close_section:
+              key: value
             """
         )
         config = YamlfixConfig()

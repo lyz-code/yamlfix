@@ -689,8 +689,6 @@ class SourceCodeFixer:
 
         def _fix_after_section(match: Match[str]) -> str:
             section = match.group("b") or match.group("s")
-            if not section:
-                return match.group()
             while section[-1] == "\n":
                 section = section[:-1]
             return section + "\n" * (self.config.section_whitelines + 1)
