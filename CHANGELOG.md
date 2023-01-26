@@ -1,3 +1,13 @@
+## 1.6.0 (2023-01-26)
+
+### Feat
+
+- **adapters.py**: Add section whitelines
+
+### Fix
+
+- **adapters.py**: Fix behavior for section whitelines at the end of the document
+
 ## 1.5.0 (2023-01-16)
 
 ## 1.4.0 (2023-01-13)
