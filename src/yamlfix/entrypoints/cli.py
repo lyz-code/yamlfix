@@ -48,7 +48,7 @@ def _find_all_yaml_files(dir_: Path) -> List[Path]:
     default="YAMLFIX",
     help="Read yamlfix relevant environment variables starting with this prefix.",
 )
-@click.argument("files", type=str, nargs=-1)
+@click.argument("files", type=str, required=True, nargs=-1)
 def cli(
     files: Tuple[str],
     verbose: bool,
@@ -62,11 +62,6 @@ def cli(
 
     Use - to read from stdin. No other files can be specified in this case.
     """
-    if not files:
-        with click.Context(cli) as ctx:
-            click.echo(cli.get_help(ctx), err=True)
-            sys.exit(1)
-
     files_to_fix: List[TextIOWrapper] = []
     if "-" in files:
         if len(files) > 1:

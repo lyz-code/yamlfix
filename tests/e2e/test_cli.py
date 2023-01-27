@@ -6,7 +6,6 @@ import re
 from pathlib import Path
 from textwrap import dedent
 
-import click
 import pytest
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
@@ -342,16 +341,6 @@ def test_no_yaml_files(
         logging.WARNING,
         "No YAML files found!",
     ) == caplog.record_tuples[0]
-
-
-def test_no_files_provided(runner: CliRunner) -> None:
-    """Make sure that the tool exits with an error when no files are provided."""
-    result = runner.invoke(cli, [])
-
-    assert result.exit_code == 1
-    # I have no idea why mypy is complaining about this
-    with click.Context(cli) as ctx:  # type: ignore
-        assert result.stderr == cli.get_help(ctx) + "\n"
 
 
 def test_std_and_file_error(runner: CliRunner, tmp_path: Path) -> None:
