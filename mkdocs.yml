@@ -7,7 +7,6 @@ nav:
   - Editor Integration: editor_integration.md
   - Reference: reference.md
   - Contributing: contributing.md
-
 plugins:
   - search
   - mkdocstrings:
@@ -24,7 +23,6 @@ plugins:
   - minify:
       minify_html: true
   - section-index
-
 markdown_extensions:
   - abbr
   - def_list
@@ -58,7 +56,6 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
-
 theme:
   name: material
   custom_dir: docs/theme
@@ -68,12 +65,9 @@ theme:
     - navigation.footer
     - navigation.top
     - content.code.annotate
-
   palette:
     primary: blue grey
     accent: light blue
-
 extra_css: [stylesheets/extra.css, stylesheets/links.css]
-
 repo_name: lyz-code/yamlfix
 repo_url: https://github.com/lyz-code/yamlfix

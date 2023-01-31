@@ -4,7 +4,6 @@ on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: 21 08 * * *
   workflow_dispatch:
-
 jobs:
   Install:
     runs-on: ubuntu-latest
