@@ -1,3 +1,13 @@
+## 1.7.0 (2023-01-31)
+
+### Feat
+
+- **cli.py**: Add ability to glob on directories
+
+### Refactor
+
+- **cli.py**: Use build-in required flag in click
+
 ## 1.6.0 (2023-01-26)
 
 ### Feat
