@@ -39,10 +39,14 @@ book_library:
 
 `yamlfix` can be used both as command line tool and as a library.
 
-As a command line tool:
-
+To fix individual files:
 ```bash
-$: yamlfix file.yaml
+yamlfix file.yaml file2.yml
+```
+
+Apply recursively:
+```bash
+yamlfix .
 ```
 
 As a library:

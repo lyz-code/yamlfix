@@ -3,6 +3,7 @@
 import logging
 import os
 import sys
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import click
@@ -16,9 +17,14 @@ from yamlfix.model import YamlfixConfig
 log = logging.getLogger(__name__)
 
 
-def _format_file_list(files: Tuple[TextIOWrapper]) -> str:
+def _format_file_list(files: List[TextIOWrapper]) -> str:
     file_names = [file.name for file in files]
     return "\n  - ".join([""] + file_names)
+
+
+def _find_all_yaml_files(dir_: Path) -> List[Path]:
+    files = [dir_.rglob(f"*.{ext}") for ext in ["yml", "yaml"]]
+    return [file for list_ in files for file in list_]
 
 
 @click.command()
@@ -42,7 +48,7 @@ def _format_file_list(files: Tuple[TextIOWrapper]) -> str:
     default="YAMLFIX",
     help="Read yamlfix relevant environment variables starting with this prefix.",
 )
-@click.argument("files", type=click.File("r+"), required=True, nargs=-1)
+@click.argument("files", type=str, required=True, nargs=-1)
 def cli(
     files: Tuple[str],
     verbose: bool,
@@ -50,16 +56,45 @@ def cli(
     config_file: Optional[List[str]],
     env_prefix: str,
 ) -> None:
-    """Corrects the source code of the specified files."""
+    """Corrects the source code of the specified files.
+
+    Specify directory to recursively fix all yaml files in it.
+
+    Use - to read from stdin. No other files can be specified in this case.
+    """
+    files_to_fix: List[TextIOWrapper] = []
+    if "-" in files:
+        if len(files) > 1:
+            raise ValueError("Cannot specify '-' and other files at the same time.")
+        files_to_fix = [sys.stdin]
+    else:
+        paths = [Path(file) for file in files]
+        real_files = []
+        for provided_file in paths:
+            if provided_file.is_dir():
+                real_files.extend(_find_all_yaml_files(provided_file))
+            else:
+                real_files.append(provided_file)
+        files_to_fix = [file.open("r+") for file in real_files]
+    if not files_to_fix:
+        log.warning("No YAML files found!")
+        sys.exit(0)
+
     load_logger(verbose)
-    log.info("%s files:%s", "Checking" if check else "Fixing", _format_file_list(files))
+    log.info(
+        "%s files:%s",
+        "Checking" if check else "Fixing",
+        _format_file_list(files_to_fix),
+    )
 
     config = YamlfixConfig()
     configure_yamlfix(
         config, config_file, _parse_env_vars_as_yamlfix_config(env_prefix.lower())
     )
 
-    fixed_code, changed = services.fix_files(files, check, config)
+    fixed_code, changed = services.fix_files(files_to_fix, check, config)
+    for file_to_close in files_to_fix:
+        file_to_close.close()
 
     if fixed_code is not None:
         print(fixed_code, end="")
