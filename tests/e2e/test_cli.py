@@ -27,8 +27,7 @@ def test_version(runner: CliRunner) -> None:
 
     assert result.exit_code == 0
     assert re.search(
-        rf" *yamlfix: {__version__}\n *Python: .*\n *Platform: .*",
-        result.stdout,
+        rf" *yamlfix: {__version__}\n *Python: .*\n *Platform: .*", result.stdout
     )
 
 

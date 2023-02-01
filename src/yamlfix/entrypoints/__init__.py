@@ -6,6 +6,21 @@ Functions:
 
 import logging
 import sys
+from enum import Enum
+
+
+class ANSIFGColorCodes(Enum):
+    """ANSI escape codes for colored output."""
+
+    BLACK = 30
+    RED = 31
+    GREEN = 32
+    YELLOW = 33
+    BLUE = 34
+    MAGENTA = 35
+    CYAN = 36
+    WHITE = 37
+    RESET = 0
 
 
 class ConsoleColorFormatter(logging.Formatter):
@@ -13,17 +28,17 @@ class ConsoleColorFormatter(logging.Formatter):
 
     # ANSI escape codes for colored output
     colors = {
-        logging.DEBUG: 32,  # GREEN
-        15: 34,  # BLUE
-        logging.INFO: 36,  # CYAN
-        logging.WARNING: 33,  # YELLOW
-        logging.ERROR: 31,  # RED
+        logging.DEBUG: ANSIFGColorCodes.GREEN,
+        15: ANSIFGColorCodes.BLUE,
+        logging.INFO: ANSIFGColorCodes.CYAN,
+        logging.WARNING: ANSIFGColorCodes.YELLOW,
+        logging.ERROR: ANSIFGColorCodes.RED,
     }
 
     def format(self, record: logging.LogRecord) -> str:
         """Format log records as a colored plus sign followed by the log message."""
         color = self.colors.get(record.levelno, 0)
-        self._style._fmt = f"[\033[{color}m+\033[0m] %(message)s"  # noqa: W0212
+        self._style._fmt = f"[\033[{color.value}m+\033[0m] %(message)s"  # noqa: W0212
         return super().format(record)
 
 
