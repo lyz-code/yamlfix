@@ -76,7 +76,7 @@ def cli(
         sys.exit(0)
 
     load_logger(verbose)
-    log.warning("YamlFix: %s files", "Checking" if check else "Fixing")
+    log.info("YamlFix: %s files", "Checking" if check else "Fixing")
 
     config = YamlfixConfig()
     configure_yamlfix(

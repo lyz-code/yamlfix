@@ -7,21 +7,17 @@ Functions:
 import logging
 import sys
 
-# Ansi color codes
-RED = 31
-YELLOW = 33
-CYAN = 36
-GREEN = 32
-
 
 class ConsoleColorFormatter(logging.Formatter):
     """Custom formatter that prints log levels to the console as colored plus signs."""
 
+    # ANSI escape codes for colored output
     colors = {
-        logging.DEBUG: GREEN,
-        logging.INFO: CYAN,
-        logging.WARNING: YELLOW,
-        logging.ERROR: RED,
+        logging.DEBUG: 32,  # GREEN
+        15: 34,  # BLUE
+        logging.INFO: 36,  # CYAN
+        logging.WARNING: 33,  # YELLOW
+        logging.ERROR: 31,  # RED
     }
 
     def format(self, record: logging.LogRecord) -> str:
@@ -37,7 +33,7 @@ def load_logger(verbose: int = 0) -> None:
     Args:
         verbose: Decrease logging threshold by 10 for each level.
     """
-    log_level = logging.WARNING - verbose * 10
+    log_level = logging.INFO - verbose * 5
     logging.basicConfig(stream=sys.stderr, level=log_level)
     for handler in logging.getLogger().handlers:
         handler.setFormatter(ConsoleColorFormatter())

@@ -84,12 +84,12 @@ def fix_files(  # pylint: disable=too-many-branches
         if fixed_source != source:
             changed = True
             if dry_run:
-                log.warning("Would fix %s", file_name)
+                log.info("Would fix %s", file_name)
             else:
-                log.warning("Fixed %s", file_name)
+                log.info("Fixed %s", file_name)
             total_fixed += 1
         else:
-            log.info("%s is already well formatted", file_name)
+            log.log(15, "%s is already well formatted", file_name)
 
         if file_name == "<stdin>":
             if dry_run is None:
@@ -106,7 +106,7 @@ def fix_files(  # pylint: disable=too-many-branches
                 file_.seek(0)
                 file_.write(fixed_source)
                 file_.truncate()
-    log.warning(
+    log.info(
         "Checked %d files: %d fixed, %d left unchanged",
         len(files),
         total_fixed,

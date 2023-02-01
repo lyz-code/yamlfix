@@ -105,17 +105,17 @@ def test_verbose_option(runner: CliRunner, verbose: int, requires_fixing: bool) 
 
     result = runner.invoke(cli, args, input=source)
 
-    warning_log_format = "[\033[33m+\033[0m]"
     debug_log_format = "[\033[32m+\033[0m]"
+    unchanged_log_format = "[\033[34m+\033[0m]"
     info_log_format = "[\033[36m+\033[0m]"
-    assert (f"{warning_log_format} Fixed <stdin>" in result.stderr) == requires_fixing
+    # Check that changes are printed at info level
+    assert (f"{info_log_format} Fixed <stdin>" in result.stderr) == requires_fixing
     if verbose == 0:
         assert debug_log_format not in result.stderr
-        assert info_log_format not in result.stderr
-        # Check that changes are printed at warning level
+        assert unchanged_log_format not in result.stderr
     if verbose >= 1:
-        # If no changes are not required, info log should not be printed
-        assert (info_log_format in result.stderr) != requires_fixing
+        # If no changes are required, unchanged log should not be printed
+        assert (unchanged_log_format in result.stderr) != requires_fixing
     if verbose >= 2:
         assert debug_log_format in result.stderr
 
@@ -135,7 +135,7 @@ def test_ignores_correct_files(
     assert test_file.read_text() == "---\na: 1\n"
     assert (
         "yamlfix.services",
-        logging.INFO,
+        15,
         f"{test_file} is already well formatted",
     ) in caplog.record_tuples
 
