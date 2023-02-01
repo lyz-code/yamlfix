@@ -31,13 +31,13 @@ class ConsoleColorFormatter(logging.Formatter):
         return super().format(record)
 
 
-def load_logger(verbose: bool = False) -> None:
+def load_logger(verbose: int = 0) -> None:
     """Configure the Logging logger.
 
     Args:
         verbose: Set the logging level to Debug.
     """
-    log_level = logging.DEBUG if verbose else logging.INFO
+    log_level = logging.WARNING - verbose * 10
     logging.basicConfig(stream=sys.stderr, level=log_level)
     for handler in logging.getLogger().handlers:
         handler.setFormatter(ConsoleColorFormatter())

@@ -3,6 +3,7 @@
 import logging
 import os
 import re
+from itertools import product
 from pathlib import Path
 from textwrap import dedent
 
@@ -87,22 +88,32 @@ def test_corrects_code_from_stdin(runner: CliRunner) -> None:
 
 
 @pytest.mark.secondary()
-@pytest.mark.parametrize("verbose", [True, False])
-def test_verbose_option(runner: CliRunner, verbose: bool) -> None:
+@pytest.mark.parametrize(
+    ("verbose", "requires_fixing"), product([0, 1, 2], [True, False])
+)
+def test_verbose_option(runner: CliRunner, verbose: int, requires_fixing: bool) -> None:
     """Prints debug level logs only when called with --verbose"""
     # Clear logging handlers for logs to work with CliRunner
     # For more info see https://github.com/pallets/click/issues/1053)
     logging.getLogger().handlers = []
-    source = "program: yamlfix"
-    args = ["-", "--verbose"] if verbose else ["-"]
+    source = "program: yamlfix" if requires_fixing else "---\nprogram: yamlfix\n"
+    args = ["-"] + ["-v"] * verbose
 
     result = runner.invoke(cli, args, input=source)
 
+    warning_log_format = "[\033[33m+\033[0m]"
     debug_log_format = "[\033[32m+\033[0m]"
-    if verbose:
-        assert debug_log_format in result.stderr
-    else:
+    info_log_format = "[\033[36m+\033[0m]"
+    assert (f"{warning_log_format} Fixed <stdin>" in result.stderr) == requires_fixing
+    if verbose == 0:
         assert debug_log_format not in result.stderr
+        assert info_log_format not in result.stderr
+        # Check that changes are printed at warning level
+    if verbose >= 1:
+        # If no changes are not required, info log should not be printed
+        assert (info_log_format in result.stderr) != requires_fixing
+    if verbose >= 2:
+        assert debug_log_format in result.stderr
 
 
 def test_ignores_correct_files(
@@ -120,8 +131,8 @@ def test_ignores_correct_files(
     assert test_file.read_text() == "---\na: 1\n"
     assert (
         "yamlfix.services",
-        logging.DEBUG,
-        f"Left file {test_file} unmodified.",
+        logging.INFO,
+        f"{test_file} is already well formatted",
     ) in caplog.record_tuples
 
 

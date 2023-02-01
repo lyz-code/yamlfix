@@ -29,7 +29,7 @@ def _find_all_yaml_files(dir_: Path) -> List[Path]:
 
 @click.command()
 @click.version_option(version="", message=version.version_info())
-@click.option("--verbose", is_flag=True, help="Enable verbose logging.")
+@click.option("--verbose", "-v", help="Enable verbose logging.", count=True)
 @click.option(
     "--check",
     is_flag=True,
@@ -81,11 +81,7 @@ def cli(
         sys.exit(0)
 
     load_logger(verbose)
-    log.info(
-        "%s files:%s",
-        "Checking" if check else "Fixing",
-        _format_file_list(files_to_fix),
-    )
+    log.warning("YamlFix: %s files", "Checking" if check else "Fixing")
 
     config = YamlfixConfig()
     configure_yamlfix(
@@ -98,7 +94,6 @@ def cli(
 
     if fixed_code is not None:
         print(fixed_code, end="")
-    log.info("Done.")
 
     if changed and check:
         sys.exit(1)
