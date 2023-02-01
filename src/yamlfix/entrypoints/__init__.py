@@ -35,7 +35,7 @@ def load_logger(verbose: int = 0) -> None:
     """Configure the Logging logger.
 
     Args:
-        verbose: Set the logging level to Debug.
+        verbose: Decrease logging threshold by 10 for each level.
     """
     log_level = logging.WARNING - verbose * 10
     logging.basicConfig(stream=sys.stderr, level=log_level)
