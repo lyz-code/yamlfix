@@ -17,11 +17,6 @@ from yamlfix.model import YamlfixConfig
 log = logging.getLogger(__name__)
 
 
-def _format_file_list(files: List[TextIOWrapper]) -> str:
-    file_names = [file.name for file in files]
-    return "\n  - ".join([""] + file_names)
-
-
 def _find_all_yaml_files(dir_: Path) -> List[Path]:
     files = [dir_.rglob(f"*.{ext}") for ext in ["yml", "yaml"]]
     return [file for list_ in files for file in list_]
