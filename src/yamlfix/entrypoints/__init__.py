@@ -9,7 +9,7 @@ import sys
 from enum import Enum
 
 
-class ANSIFGColorCodes(Enum):
+class ANSIFGColorCode(Enum):
     """ANSI escape codes for colored output."""
 
     BLACK = 30
@@ -28,16 +28,16 @@ class ConsoleColorFormatter(logging.Formatter):
 
     # ANSI escape codes for colored output
     colors = {
-        logging.DEBUG: ANSIFGColorCodes.GREEN,
-        15: ANSIFGColorCodes.BLUE,
-        logging.INFO: ANSIFGColorCodes.CYAN,
-        logging.WARNING: ANSIFGColorCodes.YELLOW,
-        logging.ERROR: ANSIFGColorCodes.RED,
+        logging.DEBUG: ANSIFGColorCode.GREEN,
+        15: ANSIFGColorCode.BLUE,
+        logging.INFO: ANSIFGColorCode.CYAN,
+        logging.WARNING: ANSIFGColorCode.YELLOW,
+        logging.ERROR: ANSIFGColorCode.RED,
     }
 
     def format(self, record: logging.LogRecord) -> str:
         """Format log records as a colored plus sign followed by the log message."""
-        color = self.colors.get(record.levelno, 0)
+        color = self.colors.get(record.levelno, ANSIFGColorCode.RESET)
         self._style._fmt = f"[\033[{color.value}m+\033[0m] %(message)s"  # noqa: W0212
         return super().format(record)
 
