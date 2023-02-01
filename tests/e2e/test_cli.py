@@ -97,7 +97,11 @@ def test_verbose_option(runner: CliRunner, verbose: int, requires_fixing: bool) 
     # For more info see https://github.com/pallets/click/issues/1053)
     logging.getLogger().handlers = []
     source = "program: yamlfix" if requires_fixing else "---\nprogram: yamlfix\n"
-    args = ["-"] + ["-v"] * verbose
+    args = ["-"]
+    if verbose >= 1:
+        args.append("--verbose")
+    if verbose >= 2:
+        args.append("-v")
 
     result = runner.invoke(cli, args, input=source)
 
