@@ -46,7 +46,7 @@ def load_logger(verbose: int = 0) -> None:
     """Configure the Logging logger.
 
     Args:
-        verbose: Decrease logging threshold by 10 for each level.
+        verbose: Allow more detailed logging output.
     """
     log_level = logging.INFO - verbose * 5
     logging.basicConfig(stream=sys.stderr, level=log_level)
