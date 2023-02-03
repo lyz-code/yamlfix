@@ -104,8 +104,8 @@ def test_verbose_option(runner: CliRunner, verbose: int, requires_fixing: bool) 
 
     result = runner.invoke(cli, args, input=source)
 
-    debug_log_format = "[\033[32m+\033[0m]"
-    unchanged_log_format = "[\033[34m+\033[0m]"
+    debug_log_format = "[\033[37m+\033[0m]"
+    unchanged_log_format = "[\033[32m+\033[0m]"
     info_log_format = "[\033[36m+\033[0m]"
     # Check that changes are printed at info level
     assert (f"{info_log_format} Fixed <stdin>" in result.stderr) == requires_fixing

@@ -28,8 +28,11 @@ class ConsoleColorFormatter(logging.Formatter):
 
     # ANSI escape codes for colored output
     colors = {
-        logging.DEBUG: ANSIFGColorCode.GREEN,
-        15: ANSIFGColorCode.BLUE,
+        logging.DEBUG: ANSIFGColorCode.WHITE,
+        # There are only 2 named levels under WARNING, we need 3 levels of verbosity
+        # Using half-way between DEBUG and INFO as additional verbosity level
+        # It is currently used for logging unchanged files
+        15: ANSIFGColorCode.GREEN,
         logging.INFO: ANSIFGColorCode.CYAN,
         logging.WARNING: ANSIFGColorCode.YELLOW,
         logging.ERROR: ANSIFGColorCode.RED,
