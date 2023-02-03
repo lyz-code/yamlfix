@@ -87,7 +87,7 @@ def fix_files(  # pylint: disable=too-many-branches
                 log.info("Would fix %s", file_name)
             else:
                 log.info("Fixed %s", file_name)
-            total_fixed += 1
+                total_fixed += 1
         else:
             log.log(15, "%s is already well formatted", file_name)
 
