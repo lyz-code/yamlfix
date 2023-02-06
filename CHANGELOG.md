@@ -1,3 +1,19 @@
+## 1.8.0 (2023-02-06)
+
+### Feat
+
+- **services.py**: Change behaviour to only list changed files by default
+
+### Fix
+
+- **services.py**: Fix counting of fixed files
+- **entrypoints.py/__init__.py**: Fix type
+
+### Refactor
+
+- **entrypoints/__init__.py**: Add comment about third logging level
+- **entrypoints/__init__.py**: Move color codes back into their own list
+
 ## 1.7.0 (2023-01-31)
 
 ### Feat
