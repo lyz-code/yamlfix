@@ -36,9 +36,7 @@ def fix_files(
 
 
 def fix_files(  # pylint: disable=too-many-branches
-    files: Files,
-    dry_run: Optional[bool] = None,
-    config: Optional[YamlfixConfig] = None,
+    files: Files, dry_run: Optional[bool] = None, config: Optional[YamlfixConfig] = None
 ) -> Union[Optional[str], Tuple[Optional[str], bool]]:  # noqa: TAE002
     """Fix the yaml source code of a list of files.
 
@@ -69,6 +67,8 @@ def fix_files(  # pylint: disable=too-many-branches
             UserWarning,
         )
 
+    total_fixed = 0
+
     for file_ in files:
         if isinstance(file_, str):
             with open(file_, "r", encoding="utf-8") as file_descriptor:
@@ -83,15 +83,21 @@ def fix_files(  # pylint: disable=too-many-branches
 
         if fixed_source != source:
             changed = True
+            if dry_run:
+                log.info("Would fix %s", file_name)
+            else:
+                log.info("Fixed %s", file_name)
+                total_fixed += 1
+        else:
+            log.log(15, "%s is already well formatted", file_name)
 
         if file_name == "<stdin>":
             if dry_run is None:
                 return fixed_source
-            return (fixed_source, changed)
+            return fixed_source, changed
 
         if fixed_source != source:
             if dry_run:
-                log.debug("Need to fix file %s.", file_name)
                 continue
             if isinstance(file_, str):
                 with open(file_, "w", encoding="utf-8") as file_descriptor:
@@ -100,14 +106,17 @@ def fix_files(  # pylint: disable=too-many-branches
                 file_.seek(0)
                 file_.write(fixed_source)
                 file_.truncate()
-            log.debug("Fixed file %s.", file_name)
-        else:
-            log.debug("Left file %s unmodified.", file_name)
+    log.info(
+        "Checked %d files: %d fixed, %d left unchanged",
+        len(files),
+        total_fixed,
+        len(files) - total_fixed,
+    )
 
     if dry_run is None:
         return None
 
-    return (None, changed)
+    return None, changed
 
 
 def fix_code(source_code: str, config: Optional[YamlfixConfig] = None) -> str:
