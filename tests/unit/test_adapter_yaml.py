@@ -670,3 +670,28 @@ class TestYamlAdapter:
         result = fix_code(source, config)
 
         assert result == fixed_source
+
+    def test_section_whitelines_begin_no_explicit_start(self) -> None:
+        """Check that no whitelines are added at start of file when explicit start \
+            is not applied."""
+        source = dedent(
+            # pylint: disable=C0303
+            """\
+            begin_section: 
+              key: value
+            """  # noqa: W291
+        )
+        fixed_source = dedent(
+            """\
+            begin_section:
+              key: value
+            """
+        )
+        config = YamlfixConfig()
+        config.section_whitelines = 1
+        config.comments_whitelines = 2
+        config.explicit_start = False
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source

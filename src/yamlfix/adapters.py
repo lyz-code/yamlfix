@@ -673,7 +673,9 @@ class SourceCodeFixer:
 
     def _fix_section_whitelines(self, source_code: str) -> str:
         re_section = "\n*(^#.*\n)*\n*^[^ ].*:\n(\n|(^  .*))+\n*"
-        re_beginning_section = f"(?P<b>---\n{re_section})"
+        # Match the first --- or start of the string \A
+        # See: https://docs.python.org/3.9/library/re.html#regular-expression-syntax
+        re_beginning_section = f"(?P<b>(?:---\n|\\A){re_section})"
         re_normal_section = f"(?P<s>{re_section})"
         re_full = f"{re_beginning_section}|{re_normal_section}"
         pattern = re.compile(re_full, flags=re.MULTILINE)
