@@ -466,7 +466,9 @@
 <span class=normal>787</span>
 <span class=normal>788</span>
 <span class=normal>789</span>
-<span class=normal>790</span></pre></div></td><td class=code><div><pre><span></span><code><span class=k>class</span> <span class=nc>SourceCodeFixer</span><span class=p>:</span>
+<span class=normal>790</span>
+<span class=normal>791</span>
+<span class=normal>792</span></pre></div></td><td class=code><div><pre><span></span><code><span class=k>class</span> <span class=nc>SourceCodeFixer</span><span class=p>:</span>
 <span class=w>    </span><span class=sd>&quot;&quot;&quot;Adapter that holds all source code yaml fixers.&quot;&quot;&quot;</span>
 
     <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>yaml</span><span class=p>:</span> <span class=n>Yaml</span><span class=p>,</span> <span class=n>config</span><span class=p>:</span> <span class=n>Optional</span><span class=p>[</span><span class=n>YamlfixConfig</span><span class=p>])</span> <span class=o>-&gt;</span> <span class=kc>None</span><span class=p>:</span>
@@ -820,7 +822,9 @@
 
     <span class=k>def</span> <span class=nf>_fix_section_whitelines</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>source_code</span><span class=p>:</span> <span class=nb>str</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
         <span class=n>re_section</span> <span class=o>=</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>*(^#.*</span><span class=se>\n</span><span class=s2>)*</span><span class=se>\n</span><span class=s2>*^[^ ].*:</span><span class=se>\n</span><span class=s2>(</span><span class=se>\n</span><span class=s2>|(^  .*))+</span><span class=se>\n</span><span class=s2>*&quot;</span>
-        <span class=n>re_beginning_section</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;(?P&lt;b&gt;---</span><span class=se>\n</span><span class=si>{</span><span class=n>re_section</span><span class=si>}</span><span class=s2>)&quot;</span>
+        <span class=c1># Match the first --- or start of the string \A</span>
+        <span class=c1># See: https://docs.python.org/3.9/library/re.html#regular-expression-syntax</span>
+        <span class=n>re_beginning_section</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;(?P&lt;b&gt;(?:---</span><span class=se>\n</span><span class=s2>|</span><span class=se>\\</span><span class=s2>A)</span><span class=si>{</span><span class=n>re_section</span><span class=si>}</span><span class=s2>)&quot;</span>
         <span class=n>re_normal_section</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;(?P&lt;s&gt;</span><span class=si>{</span><span class=n>re_section</span><span class=si>}</span><span class=s2>)&quot;</span>
         <span class=n>re_full</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&quot;</span><span class=si>{</span><span class=n>re_beginning_section</span><span class=si>}</span><span class=s2>|</span><span class=si>{</span><span class=n>re_normal_section</span><span class=si>}</span><span class=s2>&quot;</span>
         <span class=n>pattern</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>compile</span><span class=p>(</span><span class=n>re_full</span><span class=p>,</span> <span class=n>flags</span><span class=o>=</span><span class=n>re</span><span class=o>.</span><span class=n>MULTILINE</span><span class=p>)</span>
