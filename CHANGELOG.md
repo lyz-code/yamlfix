@@ -1,3 +1,9 @@
+## 1.8.1 (2023-02-13)
+
+### Fix
+
+- account for explicit_start=False when handline whitelines
+
 ## 1.8.0 (2023-02-06)
 
 ### Feat
