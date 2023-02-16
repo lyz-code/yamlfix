@@ -429,6 +429,63 @@ key: 'value'
 key: "value"
 ```
 
+### Preserve Quotes
+
+Default: `preserve_quotes: bool = False`<br>
+Environment variable override:
+```bash
+export YAMLFIX_preserve_quotes="false"
+```
+
+Keep quotes as they are
+
+```yaml
+# original
+key: [value, 'value with spaces']
+```
+
+```yaml
+# Option set to: false
+key: [value, value with spaces]
+```
+
+```yaml
+# Option set to: true
+key: [value, 'value with spaces']
+```
+
+**Notes:**
+
+You may NOT want to use it in combination with [quote basic values](#quote-basic-values) or [quote keys and basic values](#quote-keys-and-basic-values), because the output may not be uniform
+
+Example: `quote_basic_values`
+
+```yaml
+# original
+key: [value, 'value with spaces']
+```
+
+```yaml
+# preserve_quotes = true
+# quote_basic_values = true
+# quote_representation = "
+key: ["value", 'value with spaces']
+```
+
+Example: `quote_keys_and_basic_values`
+
+```yaml
+# original
+key: [value, 'value with spaces']
+```
+
+```yaml
+# preserve_quotes = true
+# quote_keys_and_basic_values = true
+# quote_representation = "
+"key": ["value", 'value with spaces']
+```
+
 # References
 
 As most open sourced programs, `yamlfix` is standing on the shoulders of giants,

@@ -211,6 +211,23 @@ class TestYamlAdapter:
 
         assert result == fixed_source
 
+    def test_preserve_quotes_config(self) -> None:
+        """Make it configurable. That quotes are preserved"""
+        source = dedent(
+            """\
+            ---
+            str_key1: "value"
+            str_key2: 'value'
+            str_key3: value
+            """
+        )
+        config = YamlfixConfig()
+        config.preserve_quotes = True
+
+        result = fix_code(source, config)
+
+        assert result == source
+
     @pytest.mark.parametrize("quote_representation", quote_representations)
     def test_quote_all_keys_and_values_config(self, quote_representation: str) -> None:
         """Quote all keys and values with configurable quote representation."""
@@ -316,6 +333,124 @@ class TestYamlAdapter:
         config = YamlfixConfig()
         config.quote_representation = quote_representation
         config.quote_basic_values = True
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source
+
+    @pytest.mark.parametrize("quote_representation", quote_representations)
+    def test_quote_all_keys_and_values_config_and_preserve_quotes(
+        self, quote_representation: str
+    ) -> None:
+        """Quote all keys and values with configurable quote representation. \
+           `quote_keys_and_basic_values` in combination with `preserve_quotes`"""
+        source = dedent(
+            """\
+            none_key: null
+            bool_key: true
+            int_key: 1
+            str_key1: "value"
+            str_key2: 'value'
+            str_key3: value
+            str_multiline: |
+              value
+              value
+            complex_key:
+              complex_key2: value
+              list:
+                - item1
+                - item2
+              complex_list:
+                - item1
+                - complex_item:
+                    key: value
+            """
+        )
+        quote = quote_representation
+        fixed_source = dedent(
+            f"""\
+            ---
+            {quote}none_key{quote}:
+            {quote}bool_key{quote}: true
+            {quote}int_key{quote}: 1
+            {quote}str_key1{quote}: "value"
+            {quote}str_key2{quote}: 'value'
+            {quote}str_key3{quote}: {quote}value{quote}
+            {quote}str_multiline{quote}: |
+              value
+              value
+            {quote}complex_key{quote}:
+              {quote}complex_key2{quote}: {quote}value{quote}
+              {quote}list{quote}: [{quote}item1{quote}, {quote}item2{quote}]
+              {quote}complex_list{quote}:
+                - {quote}item1{quote}
+                - {quote}complex_item{quote}:
+                    {quote}key{quote}: {quote}value{quote}
+            """
+        )
+        config = YamlfixConfig()
+        config.quote_representation = quote_representation
+        config.quote_keys_and_basic_values = True
+        config.preserve_quotes = True
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source
+
+    @pytest.mark.parametrize("quote_representation", quote_representations)
+    def test_quote_values_config_and_preserve_quotes(
+        self, quote_representation: str
+    ) -> None:
+        """Quote only scalar values with configurable quote representation. \
+           `quote_basic_values` in combination with `preserve_quotes`"""
+        source = dedent(
+            """\
+            none_key: null
+            bool_key: true
+            int_key: 1
+            str_key1: "value"
+            str_key2: 'value'
+            str_key3: value
+            str_multiline: |
+              value
+              value
+            complex_key:
+              complex_key2: value
+              list:
+                - item1
+                - item2
+              complex_list:
+                - item1
+                - complex_item:
+                    key: 'value?'
+            """
+        )
+        quote = quote_representation
+        fixed_source = dedent(
+            f"""\
+            ---
+            none_key:
+            bool_key: true
+            int_key: 1
+            str_key1: "value"
+            str_key2: 'value'
+            str_key3: {quote}value{quote}
+            str_multiline: |
+              value
+              value
+            complex_key:
+              complex_key2: {quote}value{quote}
+              list: [{quote}item1{quote}, {quote}item2{quote}]
+              complex_list:
+                - item1
+                - complex_item:
+                    key: 'value?'
+            """
+        )
+        config = YamlfixConfig()
+        config.quote_representation = quote_representation
+        config.quote_basic_values = True
+        config.preserve_quotes = True
 
         result = fix_code(source, config)
 
@@ -606,7 +741,7 @@ class TestYamlAdapter:
             """\
             ---
 
-            begin_section: 
+            begin_section:
               key: value
             key1: value
 
@@ -677,7 +812,7 @@ class TestYamlAdapter:
         source = dedent(
             # pylint: disable=C0303
             """\
-            begin_section: 
+            begin_section:
               key: value
             """  # noqa: W291
         )

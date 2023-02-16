@@ -30,5 +30,6 @@ class YamlfixConfig(ConfigSchema):
     none_representation: str = ""
     quote_basic_values: bool = False
     quote_keys_and_basic_values: bool = False
+    preserve_quotes: bool = False
     quote_representation: str = "'"
     sequence_style: YamlNodeStyle = YamlNodeStyle.FLOW_STYLE
