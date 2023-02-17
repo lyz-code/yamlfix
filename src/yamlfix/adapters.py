@@ -60,6 +60,7 @@ class Yaml:
         # ignore: variable has type None, what can we do, it doesn't have type hints...
         self.yaml.explicit_start = config.explicit_start  # type: ignore
         self.yaml.width = config.line_length  # type: ignore
+        self.yaml.preserve_quotes = config.preserve_quotes  # type: ignore
 
 
 class YamlfixRepresenter(RoundTripRepresenter):
