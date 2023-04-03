@@ -65,6 +65,7 @@ def fix_files(  # pylint: disable=too-many-branches
             For more information check https://github.com/lyz-code/yamlfix/pull/182
             """,
             UserWarning,
+            stacklevel=2,
         )
 
     total_fixed = 0
