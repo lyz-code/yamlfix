@@ -18,7 +18,7 @@ def configure_yamlfix(
     config_path: Optional[Path] = None
 
     if additional_config:
-        config_path_env: Optional[str] = additional_config.get("config_path", None)
+        config_path_env: Optional[str] = additional_config.get("config_path")
         if config_path_env:
             config_path = Path(config_path_env)
 
