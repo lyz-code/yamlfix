@@ -79,7 +79,6 @@ variable, use `fix_code`:
   [POSIX standard](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap03.html#tag_03_206).
 - Split long lines.
 - Respect Jinja2 syntax.
-- Ensure a `\n` exists at the end of the file.
 - Convert short lists to flow-style `list: [item, item]`
 - Convert lists longer than line-width to block-style:
   ```yaml
