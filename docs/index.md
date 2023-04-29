@@ -30,11 +30,13 @@ It has the following errors:
 After running `yamlfix` the resulting source code will be:
 
 ```yaml
+---
 book_library:
   - title: Why we sleep
     author: Matthew Walker
   - title: Harry Potter and the Methods of Rationality
     author: Eliezer Yudkowsky
+
 ```
 
 `yamlfix` can be used both as command line tool and as a library.
