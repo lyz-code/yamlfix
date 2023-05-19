@@ -616,7 +616,7 @@ class SourceCodeFixer:
           - 0 whiteline is allowed
           - Exactly `self.config.comments_whitelines` whitelines are allowed
 
-        This method removes extraneous whitelines that are not immediately followed by
+        This method also adjusts amount of whitelines that are not immediately followed by
         a comment.
 
         Args:
@@ -626,12 +626,13 @@ class SourceCodeFixer:
             Source code with appropriate whitelines standards.
         """
         config = self.config
+        n_whitelines = config.whitelines
         n_whitelines_from_content = config.comments_whitelines
 
         re_whitelines_with_comments = "\n\n+[\t ]{0,}[#]"
         re_whitelines_with_no_comments = "\n\n+[\t ]{0,}[^#\n\t ]"
 
-        remove_whitelines = partial(self._replace_whitelines, n_whitelines=0)
+        adjust_whitelines = partial(self._replace_whitelines, n_whitelines=n_whitelines)
         replace_by_n_whitelines = partial(
             self._replace_whitelines,
             n_whitelines=n_whitelines_from_content,
@@ -639,7 +640,7 @@ class SourceCodeFixer:
 
         source_code = re.sub(
             pattern=re_whitelines_with_no_comments,
-            repl=remove_whitelines,
+            repl=adjust_whitelines,
             string=source_code,
         )
         source_code = self._fix_section_whitelines(source_code)

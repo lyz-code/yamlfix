@@ -20,6 +20,7 @@ class YamlfixConfig(ConfigSchema):
     comments_min_spaces_from_content: int = 2
     comments_require_starting_space: bool = True
     comments_whitelines: int = 1
+    whitelines: int = 0
     section_whitelines: int = 0
     config_path: Optional[str] = None
     explicit_start: bool = True
