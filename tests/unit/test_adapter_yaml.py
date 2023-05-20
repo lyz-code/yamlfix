@@ -901,3 +901,41 @@ class TestYamlAdapter:
         result = fix_code(source, config)
 
         assert result == fixed_source
+
+    def test_enforcing_flow_style_together_with_adjustable_newlines(self) -> None:
+        """Checks that transforming block style sequences to flow style together with
+        newlines adjusting produces correct result.
+        """
+        source = dedent(
+            """\
+            ---
+            dict:
+              nested_dict:
+                key: value
+                key2:
+                  - list_item
+
+
+              nested_dict2:
+                key: value
+            """
+        )
+        fixed_source = dedent(
+            """\
+            ---
+            dict:
+              nested_dict:
+                key: value
+                key2: [list_item]
+
+              nested_dict2:
+                key: value
+            """
+        )
+        config = YamlfixConfig()
+        config.whitelines = 1
+        config.sequence_style = YamlNodeStyle.FLOW_STYLE
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source
