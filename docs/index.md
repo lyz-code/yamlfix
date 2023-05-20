@@ -194,6 +194,23 @@ export YAMLFIX_COMMENTS_REQUIRE_STARTING_SPACE="true"
 
 This option enforces a space between the comment indicator (`#`) and the first character in the comment. It implements the enforcement of the yamllint rule `rules.comments.require-starting-space` - see: https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.comments
 
+### Whitelines Adjusting
+
+Default: `whitelines: int = 0`<br>
+Environment variable override:
+```bash
+export YAMLFIX_WHITELINES="0"
+```
+
+This option allows to keep a speficied number of whitelines between lines. 
+
+It's useful if, for one, you like to separate GitHub Actions job steps or Docker-Compose 
+service definitions with a blank line.
+
+Bear in mind that, like **Comments Whitelines**, it won't insert whitelines if there's no 
+whitelines in the first place. It will only fix 1 or more whitelines to the desired 
+amount (or remove them completely by default).
+
 ### Comments Whitelines
 
 Default: `comments_whitelines: int = 1`<br>

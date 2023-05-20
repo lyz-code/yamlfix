@@ -599,8 +599,8 @@ class SourceCodeFixer:
           - 0 whiteline is allowed
           - Exactly `self.config.comments_whitelines` whitelines are allowed
 
-        This method also adjusts amount of whitelines that are not immediately followed by
-        a comment.
+        This method also adjusts amount of whitelines that are not immediately followed
+        by a comment.
 
         Args:
             self: Source code to be corrected.
