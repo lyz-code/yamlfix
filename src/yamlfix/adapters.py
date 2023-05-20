@@ -706,7 +706,15 @@ class SourceCodeFixer:
 
     @staticmethod
     def _add_newline_at_end_of_file(source_code: str) -> str:
-        return source_code + "\n"
+        """Ensures that the file ends with exactly one newline.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        return source_code.rstrip() + "\n"
 
     @staticmethod
     def _fix_jinja_variables(source_code: str) -> str:
