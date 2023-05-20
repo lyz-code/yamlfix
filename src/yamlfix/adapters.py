@@ -353,9 +353,9 @@ class SourceCodeFixer:
             self._restore_jinja_variables,
             self._restore_double_exclamations,
             self._fix_comments,
+            self._fix_flow_style_lists,
             self._fix_whitelines,
             self._fix_top_level_lists,
-            self._fix_flow_style_lists,
             self._add_newline_at_end_of_file,
         ]
 
@@ -478,7 +478,7 @@ class SourceCodeFixer:
         ```
 
         This function moves the closing bracket to the end of the flow-style
-        list definition.
+        list definition and positions the newlines after the closing bracket.
 
         Args:
             source_code: Source code to be corrected.
@@ -487,26 +487,9 @@ class SourceCodeFixer:
             Corrected source code.
         """
         log.debug("Fixing flow-style lists...")
-        source_lines = source_code.splitlines()
-        reversed_fixed_source_lines: List[str] = []
-
-        should_append_square_brackets: bool = False
-        for line in reversed(source_lines):
-            if line == "]":
-                should_append_square_brackets = True
-                continue
-
-            if line == "":
-                reversed_fixed_source_lines.append(line)
-                continue
-
-            if should_append_square_brackets:
-                should_append_square_brackets = False
-                reversed_fixed_source_lines.append(line + "]")
-            else:
-                reversed_fixed_source_lines.append(line)
-
-        return "\n".join(reversed(reversed_fixed_source_lines))
+        pattern = r"\[(?P<items>.*)(?P<newlines>\n+)]"
+        replacement = r"[\g<items>]\g<newlines>"
+        return re.sub(pattern, repl=replacement, string=source_code)
 
     @staticmethod
     def _fix_truthy_strings(source_code: str) -> str:
