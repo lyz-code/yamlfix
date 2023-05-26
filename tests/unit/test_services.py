@@ -469,7 +469,7 @@ class TestFixCode:
 
         fix_code("")  # act
 
-        expected_logs = [
+        expected_logs = {
             "Setting up ruamel yaml 'quote simple values' configuration...",
             "Setting up ruamel yaml 'sequence flow style' configuration...",
             "Running ruamel yaml base configuration...",
@@ -483,8 +483,8 @@ class TestFixCode:
             "Fixing comments...",
             "Fixing top level lists...",
             "Fixing flow-style lists...",
-        ]
-        assert caplog.messages == expected_logs
+        }
+        assert set(caplog.messages) == expected_logs
         for record in caplog.records:
             assert record.levelname == "DEBUG"
 

@@ -830,3 +830,112 @@ class TestYamlAdapter:
         result = fix_code(source, config)
 
         assert result == fixed_source
+
+    def test_whitelines_collapsed(self) -> None:
+        """Checks that whitelines are collapsed by default."""
+        source = dedent(
+            """\
+            key: value
+
+            dict:
+              key: value
+              nested_dict:
+                - key: value
+                  key2: value2
+
+                - key: value
+            """
+        )
+        fixed_source = dedent(
+            """\
+            ---
+            key: value
+            dict:
+              key: value
+              nested_dict:
+                - key: value
+                  key2: value2
+                - key: value
+            """
+        )
+        config = YamlfixConfig()
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source
+
+    def test_whitelines_adjusted_to_value(self) -> None:
+        """Checks that amount of whitelines are in line with the config value."""
+        source = dedent(
+            """\
+            key: value
+
+            dict:
+              key: value
+
+
+              nested_list:
+                - key: value
+                  key2: value2
+
+                - key: value
+            """
+        )
+        fixed_source = dedent(
+            """\
+            ---
+            key: value
+            dict:
+              key: value
+
+              nested_list:
+                - key: value
+                  key2: value2
+
+                - key: value
+            """
+        )
+        config = YamlfixConfig()
+        config.whitelines = 1
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source
+
+    def test_enforcing_flow_style_together_with_adjustable_newlines(self) -> None:
+        """Checks that transforming block style sequences to flow style together with
+        newlines adjusting produces correct result.
+        """
+        source = dedent(
+            """\
+            ---
+            dict:
+              nested_dict:
+                key: value
+                key2:
+                  - list_item
+
+
+              nested_dict2:
+                key: value
+            """
+        )
+        fixed_source = dedent(
+            """\
+            ---
+            dict:
+              nested_dict:
+                key: value
+                key2: [list_item]
+
+              nested_dict2:
+                key: value
+            """
+        )
+        config = YamlfixConfig()
+        config.whitelines = 1
+        config.sequence_style = YamlNodeStyle.FLOW_STYLE
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source

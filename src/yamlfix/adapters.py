@@ -353,9 +353,9 @@ class SourceCodeFixer:
             self._restore_jinja_variables,
             self._restore_double_exclamations,
             self._fix_comments,
+            self._fix_flow_style_lists,
             self._fix_whitelines,
             self._fix_top_level_lists,
-            self._fix_flow_style_lists,
             self._add_newline_at_end_of_file,
         ]
 
@@ -478,7 +478,7 @@ class SourceCodeFixer:
         ```
 
         This function moves the closing bracket to the end of the flow-style
-        list definition.
+        list definition and positions the newlines after the closing bracket.
 
         Args:
             source_code: Source code to be corrected.
@@ -487,26 +487,9 @@ class SourceCodeFixer:
             Corrected source code.
         """
         log.debug("Fixing flow-style lists...")
-        source_lines = source_code.splitlines()
-        reversed_fixed_source_lines: List[str] = []
-
-        should_append_square_brackets: bool = False
-        for line in reversed(source_lines):
-            if line == "]":
-                should_append_square_brackets = True
-                continue
-
-            if line == "":
-                reversed_fixed_source_lines.append(line)
-                continue
-
-            if should_append_square_brackets:
-                should_append_square_brackets = False
-                reversed_fixed_source_lines.append(line + "]")
-            else:
-                reversed_fixed_source_lines.append(line)
-
-        return "\n".join(reversed(reversed_fixed_source_lines))
+        pattern = r"\[(?P<items>.*)(?P<newlines>\n+)]"
+        replacement = r"[\g<items>]\g<newlines>"
+        return re.sub(pattern, repl=replacement, string=source_code)
 
     @staticmethod
     def _fix_truthy_strings(source_code: str) -> str:
@@ -616,8 +599,8 @@ class SourceCodeFixer:
           - 0 whiteline is allowed
           - Exactly `self.config.comments_whitelines` whitelines are allowed
 
-        This method removes extraneous whitelines that are not immediately followed by
-        a comment.
+        This method also adjusts amount of whitelines that are not immediately followed
+        by a comment.
 
         Args:
             self: Source code to be corrected.
@@ -626,12 +609,13 @@ class SourceCodeFixer:
             Source code with appropriate whitelines standards.
         """
         config = self.config
+        n_whitelines = config.whitelines
         n_whitelines_from_content = config.comments_whitelines
 
         re_whitelines_with_comments = "\n\n+[\t ]{0,}[#]"
         re_whitelines_with_no_comments = "\n\n+[\t ]{0,}[^#\n\t ]"
 
-        remove_whitelines = partial(self._replace_whitelines, n_whitelines=0)
+        adjust_whitelines = partial(self._replace_whitelines, n_whitelines=n_whitelines)
         replace_by_n_whitelines = partial(
             self._replace_whitelines,
             n_whitelines=n_whitelines_from_content,
@@ -639,7 +623,7 @@ class SourceCodeFixer:
 
         source_code = re.sub(
             pattern=re_whitelines_with_no_comments,
-            repl=remove_whitelines,
+            repl=adjust_whitelines,
             string=source_code,
         )
         source_code = self._fix_section_whitelines(source_code)
@@ -722,7 +706,15 @@ class SourceCodeFixer:
 
     @staticmethod
     def _add_newline_at_end_of_file(source_code: str) -> str:
-        return source_code + "\n"
+        """Ensures that the file ends with exactly one newline.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        return source_code.rstrip() + "\n"
 
     @staticmethod
     def _fix_jinja_variables(source_code: str) -> str:
