@@ -86,6 +86,34 @@ def test_corrects_code_from_stdin(runner: CliRunner) -> None:
     assert result.stdout == fixed_source
 
 
+def test_include_exclude_files(runner: CliRunner, tmp_path: Path) -> None:
+    """Correct only files matching include, and ignore files matching exclude."""
+    include1 = tmp_path / "source_1.yaml"
+    exclude1 = tmp_path / "source_2.txt"
+    (tmp_path / "foo").mkdir()
+    exclude2 = tmp_path / "foo" / "source_3.yaml"
+    test_files = [include1, exclude1, exclude2]
+    init_source = "program: yamlfix"
+    for test_file in test_files:
+        test_file.write_text(init_source)
+    fixed_source = dedent(
+        """\
+        ---
+        program: yamlfix
+        """
+    )
+
+    result = runner.invoke(
+        cli,
+        [str(tmp_path)] + ["--include", "*.yaml", "--exclude", "foo/*.yaml"],
+    )
+
+    assert result.exit_code == 0
+    assert include1.read_text() == fixed_source
+    assert exclude1.read_text() == init_source
+    assert exclude2.read_text() == init_source
+
+
 @pytest.mark.secondary()
 @pytest.mark.parametrize(
     ("verbose", "requires_fixing"), product([0, 1, 2], [True, False])

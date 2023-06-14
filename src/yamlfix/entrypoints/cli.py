@@ -17,9 +17,20 @@ from yamlfix.model import YamlfixConfig
 log = logging.getLogger(__name__)
 
 
-def _find_all_yaml_files(dir_: Path) -> List[Path]:
-    files = [dir_.rglob(f"*.{ext}") for ext in ["yml", "yaml"]]
-    return [file for list_ in files for file in list_]
+def _matches_any_glob(file_to_test: Path, globs: Optional[List[str]]) -> bool:
+    return any(file_to_test.match(glob) for glob in (globs or []))
+
+
+def _find_all_yaml_files(
+    dir_: Path, include_globs: Optional[List[str]], exclude_globs: Optional[List[str]]
+) -> List[Path]:
+    files = [dir_.rglob(glob) for glob in (include_globs or [])]
+    return [
+        file
+        for list_ in files
+        for file in list_
+        if not _matches_any_glob(file, exclude_globs)
+    ]
 
 
 @click.command()
@@ -43,12 +54,32 @@ def _find_all_yaml_files(dir_: Path) -> List[Path]:
     default="YAMLFIX",
     help="Read yamlfix relevant environment variables starting with this prefix.",
 )
+@click.option(
+    "--exclude",
+    "-e",
+    multiple=True,
+    type=str,
+    help="Files matching this glob pattern will be ignored.",
+)
+@click.option(
+    "--include",
+    "-i",
+    multiple=True,
+    type=str,
+    default=["*.yaml", "*.yml"],
+    help=(
+        "Files matching this glob pattern will be included, "
+        "unless they are also excluded. Default to '*.yaml' and '*.yml'."
+    ),
+)
 @click.argument("files", type=str, required=True, nargs=-1)
-def cli(
+def cli(  # pylint: disable=too-many-arguments
     files: Tuple[str],
     verbose: bool,
     check: bool,
     config_file: Optional[List[str]],
+    include: Optional[List[str]],
+    exclude: Optional[List[str]],
     env_prefix: str,
 ) -> None:
     """Corrects the source code of the specified files.
@@ -67,7 +98,7 @@ def cli(
         real_files = []
         for provided_file in paths:
             if provided_file.is_dir():
-                real_files.extend(_find_all_yaml_files(provided_file))
+                real_files.extend(_find_all_yaml_files(provided_file, include, exclude))
             else:
                 real_files.append(provided_file)
         files_to_fix = [file.open("r+") for file in real_files]

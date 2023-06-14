@@ -160,6 +160,10 @@ These provided arguments and environment variables would result in a merged runt
 none_representation = "~"
 ```
 
+## Configure include and exclude files
+
+Per default `yamlfix`, when run through cli, will include all `*.yaml` and `*.yml` files from the directories passed via the CLI. With `--exclude <glob>` and `--include <glob>` you can include or exclude specific files within those directories.
+
 ## Configuration Options
 
 All fields configured in the [YamlfixConfig class](./reference/#yamlfix.model.YamlfixConfig) can be provided through the means mentioned in [Configuration](#configuration). Here are the currently available configuration options with short examples on their impact to provided `yaml`-files.
