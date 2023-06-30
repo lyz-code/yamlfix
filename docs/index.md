@@ -258,7 +258,7 @@ section:
   key: value
 ```
 * Sections at the start and end of the document will have whitelines removed before and after respectively.
-
+* If `whitelines` parameter is higher than `section_whitelines`, the rule will preserve the amount of whitespaces specified by `whitelines` parameter.
 
 ### Config Path
 
