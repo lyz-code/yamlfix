@@ -658,27 +658,39 @@ class SourceCodeFixer:
 
     def _fix_section_whitelines(self, source_code: str) -> str:
         re_section = "\n*(^#.*\n)*\n*^[^ ].*:\n(\n|(^  .*))+\n*"
+
         # Match the first --- or start of the string \A
         # See: https://docs.python.org/3.9/library/re.html#regular-expression-syntax
         re_beginning_section = f"(?P<b>(?:---\n|\\A){re_section})"
         re_normal_section = f"(?P<s>{re_section})"
         re_full = f"{re_beginning_section}|{re_normal_section}"
         pattern = re.compile(re_full, flags=re.MULTILINE)
+        n_whitelines = self.config.whitelines
+        n_section_whitelines = self.config.section_whitelines
 
         def _fix_before_section(match: Match[str]) -> str:
+            whitelines = n_section_whitelines
             section = match.group("s")
             if not section:
                 return match.group()
+            if n_whitelines > n_section_whitelines and section.startswith(
+                "\n" + n_whitelines * "\n"
+            ):
+                whitelines = n_whitelines
             while section[0] == "\n":
                 section = section[1:]
-            out = "\n" * (self.config.section_whitelines + 1) + section
-            return out
+            return "\n" * (whitelines + 1) + section
 
         def _fix_after_section(match: Match[str]) -> str:
+            whitelines = n_section_whitelines
             section = match.group("b") or match.group("s")
+            if n_whitelines > n_section_whitelines and section.endswith(
+                "\n\n" + n_whitelines * "\n"
+            ):
+                whitelines = n_whitelines
             while section[-1] == "\n":
                 section = section[:-1]
-            return section + "\n" * (self.config.section_whitelines + 1)
+            return section + "\n" * (whitelines + 1)
 
         before_fixed = pattern.sub(repl=_fix_before_section, string=source_code)
         after_fixed = pattern.sub(repl=_fix_after_section, string=before_fixed)
