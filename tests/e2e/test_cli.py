@@ -92,7 +92,11 @@ def test_include_exclude_files(runner: CliRunner, tmp_path: Path) -> None:
     exclude1 = tmp_path / "source_2.txt"
     (tmp_path / "foo").mkdir()
     exclude2 = tmp_path / "foo" / "source_3.yaml"
-    test_files = [include1, exclude1, exclude2]
+    (tmp_path / "foo" / "bar").mkdir()
+    exclude3 = tmp_path / "foo" / "bar" / "source_4.yaml"
+    (tmp_path / "foo" / "baz").mkdir()
+    exclude4 = tmp_path / "foo" / "baz" / "source_5.yaml"
+    test_files = [include1, exclude1, exclude2, exclude3, exclude4]
     init_source = "program: yamlfix"
     for test_file in test_files:
         test_file.write_text(init_source)
@@ -105,13 +109,23 @@ def test_include_exclude_files(runner: CliRunner, tmp_path: Path) -> None:
 
     result = runner.invoke(
         cli,
-        [str(tmp_path)] + ["--include", "*.yaml", "--exclude", "foo/*.yaml"],
+        [str(tmp_path)]
+        + [
+            "--include",
+            "*.yaml",
+            "--exclude",
+            "foo/*.yaml",
+            "--exclude",
+            "foo/**/*.yaml",
+        ],
     )
 
     assert result.exit_code == 0
     assert include1.read_text() == fixed_source
     assert exclude1.read_text() == init_source
     assert exclude2.read_text() == init_source
+    assert exclude3.read_text() == init_source
+    assert exclude4.read_text() == init_source
 
 
 @pytest.mark.secondary()
