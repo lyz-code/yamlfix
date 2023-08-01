@@ -17,8 +17,10 @@ from yamlfix.model import YamlfixConfig
 log = logging.getLogger(__name__)
 
 
-def _matches_any_glob(file_to_test: Path, globs: Optional[List[str]]) -> bool:
-    return any(file_to_test.match(glob) for glob in (globs or []))
+def _matches_any_glob(
+    file_to_test: Path, dir_: Path, globs: Optional[List[str]]
+) -> bool:
+    return any(file_to_test in dir_.glob(glob) for glob in (globs or []))
 
 
 def _find_all_yaml_files(
@@ -29,7 +31,7 @@ def _find_all_yaml_files(
         file
         for list_ in files
         for file in list_
-        if not _matches_any_glob(file, exclude_globs)
+        if not _matches_any_glob(file, dir_, exclude_globs)
     ]
 
 
