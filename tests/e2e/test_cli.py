@@ -7,6 +7,7 @@ from itertools import product
 from pathlib import Path
 from textwrap import dedent
 
+import py  # type: ignore
 import pytest
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
@@ -410,3 +411,12 @@ def test_std_and_file_error(runner: CliRunner, tmp_path: Path) -> None:
     assert (
         str(result.exception) == "Cannot specify '-' and other files at the same time."
     )
+
+
+def test_do_not_read_folders_as_files(runner: CliRunner, tmpdir: py.path.local) -> None:
+    """Skips folders that have a .yml or .yaml extension."""
+    tmpdir.mkdir("folder.yml")
+
+    result = runner.invoke(cli, [str(tmpdir)])
+
+    assert result.exit_code == 0
