@@ -31,7 +31,7 @@ def _find_all_yaml_files(
         file
         for list_ in files
         for file in list_
-        if not _matches_any_glob(file, dir_, exclude_globs)
+        if not _matches_any_glob(file, dir_, exclude_globs) and os.path.isfile(file)
     ]
 
 
