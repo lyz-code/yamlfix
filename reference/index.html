@@ -2037,7 +2037,14 @@
 <span class=normal>154</span>
 <span class=normal>155</span>
 <span class=normal>156</span>
-<span class=normal>157</span></pre></div></td><td class=code><div><pre><span></span><code><span class=k>def</span> <span class=nf>fix_code</span><span class=p>(</span><span class=n>source_code</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>config</span><span class=p>:</span> <span class=n>Optional</span><span class=p>[</span><span class=n>YamlfixConfig</span><span class=p>]</span> <span class=o>=</span> <span class=kc>None</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
+<span class=normal>157</span>
+<span class=normal>158</span>
+<span class=normal>159</span>
+<span class=normal>160</span>
+<span class=normal>161</span>
+<span class=normal>162</span>
+<span class=normal>163</span>
+<span class=normal>164</span></pre></div></td><td class=code><div><pre><span></span><code><span class=k>def</span> <span class=nf>fix_code</span><span class=p>(</span><span class=n>source_code</span><span class=p>:</span> <span class=nb>str</span><span class=p>,</span> <span class=n>config</span><span class=p>:</span> <span class=n>Optional</span><span class=p>[</span><span class=n>YamlfixConfig</span><span class=p>]</span> <span class=o>=</span> <span class=kc>None</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=nb>str</span><span class=p>:</span>
 <span class=w>    </span><span class=sd>&quot;&quot;&quot;Fix yaml source code to correct the format.</span>
 
 <span class=sd>    It corrects these errors:</span>
@@ -2066,12 +2073,19 @@
     <span class=k>else</span><span class=p>:</span>
         <span class=n>shebang</span> <span class=o>=</span> <span class=s2>&quot;&quot;</span>
 
+    <span class=k>if</span> <span class=n>source_code</span><span class=o>.</span><span class=n>startswith</span><span class=p>(</span><span class=s2>&quot;#jinja2:&quot;</span><span class=p>)</span> <span class=ow>or</span> <span class=n>source_code</span><span class=o>.</span><span class=n>startswith</span><span class=p>(</span><span class=s2>&quot;# jinja2:&quot;</span><span class=p>):</span>
+        <span class=n>eolpos</span> <span class=o>=</span> <span class=n>source_code</span><span class=o>.</span><span class=n>find</span><span class=p>(</span><span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=p>)</span> <span class=o>+</span> <span class=mi>1</span>
+        <span class=n>jinja2</span> <span class=o>=</span> <span class=n>source_code</span><span class=p>[:</span><span class=n>eolpos</span><span class=p>]</span>
+        <span class=n>source_code</span> <span class=o>=</span> <span class=n>source_code</span><span class=p>[</span><span class=n>eolpos</span><span class=p>:]</span>
+    <span class=k>else</span><span class=p>:</span>
+        <span class=n>jinja2</span> <span class=o>=</span> <span class=s2>&quot;&quot;</span>
+
     <span class=n>yaml</span> <span class=o>=</span> <span class=n>Yaml</span><span class=p>(</span><span class=n>config</span><span class=o>=</span><span class=n>config</span><span class=p>)</span>
     <span class=n>fixer</span> <span class=o>=</span> <span class=n>SourceCodeFixer</span><span class=p>(</span><span class=n>yaml</span><span class=o>=</span><span class=n>yaml</span><span class=p>,</span> <span class=n>config</span><span class=o>=</span><span class=n>config</span><span class=p>)</span>
 
     <span class=n>source_code</span> <span class=o>=</span> <span class=n>fixer</span><span class=o>.</span><span class=n>fix</span><span class=p>(</span><span class=n>source_code</span><span class=o>=</span><span class=n>source_code</span><span class=p>)</span>
 
-    <span class=k>return</span> <span class=n>shebang</span> <span class=o>+</span> <span class=n>source_code</span>
+    <span class=k>return</span> <span class=n>jinja2</span> <span class=o>+</span> <span class=n>shebang</span> <span class=o>+</span> <span class=n>source_code</span>
 </code></pre></div></td></tr></table></div> </details> </div> </div> <div class="doc doc-object doc-function"> <h2 id=yamlfix.services.fix_files class="doc doc-heading"> <code class="highlight language-python"><span class=n>fix_files</span><span class=p>(</span><span class=n>files</span><span class=p>,</span> <span class=n>dry_run</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>config</span><span class=o>=</span><span class=kc>None</span><span class=p>)</span></code> <a href=#yamlfix.services.fix_files class=headerlink title="Permanent link">&para;</a></h2> <div class="doc doc-contents "> <p>Fix the yaml source code of a list of files.</p> <p>If the input is taken from stdin, it will return the fixed value.</p> <p><strong>Parameters:</strong></p> <table> <thead> <tr> <th>Name</th> <th>Type</th> <th>Description</th> <th>Default</th> </tr> </thead> <tbody> <tr> <td><code>files</code></td> <td> <code><span title="yamlfix.services.Files">Files</span></code> </td> <td><p>List of files to fix.</p></td> <td> <em>required</em> </td> </tr> <tr> <td><code>dry_run</code></td> <td> <code><span title="typing.Optional">Optional</span>[bool]</code> </td> <td><p>Whether to write changes or not.</p></td> <td> <code>None</code> </td> </tr> <tr> <td><code>config</code></td> <td> <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="yamlfix.model.YamlfixConfig" href="#yamlfix.model.YamlfixConfig">YamlfixConfig</a>]</code> </td> <td><p>Small set of user provided configuration options for yamlfix.</p></td> <td> <code>None</code> </td> </tr> </tbody> </table> <p><strong>Returns:</strong></p> <table> <thead> <tr> <th>Type</th> <th>Description</th> </tr> </thead> <tbody> <tr> <td> <code><span title="typing.Union">Union</span>[<span title="typing.Optional">Optional</span>[str], <span title="typing.Tuple">Tuple</span>[<span title="typing.Optional">Optional</span>[str], bool]]</code> </td> <td><p>A tuple with the following items:</p></td> </tr> <tr> <td> <code><span title="typing.Union">Union</span>[<span title="typing.Optional">Optional</span>[str], <span title="typing.Tuple">Tuple</span>[<span title="typing.Optional">Optional</span>[str], bool]]</code> </td> <td><ul> <li>Fixed code or None.</li> </ul></td> </tr> <tr> <td> <code><span title="typing.Union">Union</span>[<span title="typing.Optional">Optional</span>[str], <span title="typing.Tuple">Tuple</span>[<span title="typing.Optional">Optional</span>[str], bool]]</code> </td> <td><ul> <li>A bool to indicate whether at least one file has been changed.</li> </ul></td> </tr> </tbody> </table> <details class=quote> <summary>Source code in <code>yamlfix/services.py</code></summary> <div class=highlight><table class=highlighttable><tr><td class=linenos><div class=linenodiv><pre><span></span><span class=normal> 38</span>
 <span class=normal> 39</span>
 <span class=normal> 40</span>
