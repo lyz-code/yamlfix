@@ -74,6 +74,20 @@ class TestFixFiles:
 class TestFixCode:
     """Test the fix_code function."""
 
+    def test_fix_code_ignore_jinja2(self) -> None:
+        """Ignores jinja2 line if present at the beginning of the source."""
+        source = dedent(
+            """\
+            # jinja2:lstrip_blocks: true
+            ---
+            program: yamlfix
+            """
+        )
+
+        result = fix_code(source)
+
+        assert result == source
+
     def test_fix_code_ignore_shebang(self) -> None:
         """Ignores shebang lines if present at the beginning of the source."""
         source = dedent(

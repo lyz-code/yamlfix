@@ -69,7 +69,7 @@ source-includes = ["tests/"]
 [tool.pdm.build]
 editable-backend = "path"
 
-[tool.pdm.overrides]
+[tool.pdm.resolution.overrides]
 
 # To be removed once https://github.com/flakeheaven/flakeheaven/issues/132 is solved
 "importlib-metadata" = ">=3.10"

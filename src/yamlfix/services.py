@@ -149,9 +149,16 @@ def fix_code(source_code: str, config: Optional[YamlfixConfig] = None) -> str:
     else:
         shebang = ""
 
+    if source_code.startswith("#jinja2:") or source_code.startswith("# jinja2:"):
+        eolpos = source_code.find("\n") + 1
+        jinja2 = source_code[:eolpos]
+        source_code = source_code[eolpos:]
+    else:
+        jinja2 = ""
+
     yaml = Yaml(config=config)
     fixer = SourceCodeFixer(yaml=yaml, config=config)
 
     source_code = fixer.fix(source_code=source_code)
 
-    return shebang + source_code
+    return jinja2 + shebang + source_code
