@@ -1,13 +1,11 @@
 ---
 name: Tests
-
 on:  # yamllint disable-line rule:truthy
   push:
     branches: [main]
   pull_request:
     types: [opened, synchronize]
   workflow_dispatch:
-
 jobs:
   Tests:
     runs-on: ubuntu-latest

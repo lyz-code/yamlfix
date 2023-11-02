@@ -58,6 +58,7 @@ lint:
 	pdm run flakeheaven lint src/ tests/
 	$(isort) --check-only --df
 	$(black) --check --diff
+	yamllint .
 
 	@echo ""
 

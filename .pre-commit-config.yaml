@@ -19,8 +19,7 @@ repos:
       - name: Run mypy static analysis tool
         id: mypy
         files: src
-        additional_dependencies:
-          - pydantic
+        additional_dependencies: [pydantic]
         args:
           - --no-warn-unused-ignores
           - --ignore-missing-imports

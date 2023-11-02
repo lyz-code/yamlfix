@@ -1,12 +1,9 @@
 ---
 name: Build
-
 on:  # yamllint disable-line rule:truthy
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
-
 jobs:
   PyPI:
     name: Build and publish Python distributions to TestPyPI
