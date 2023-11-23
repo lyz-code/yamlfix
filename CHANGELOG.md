@@ -1,3 +1,14 @@
+## 1.16.0 (2023-11-23)
+
+### Feat
+
+- support Python 3.11
+
+### Fix
+
+- drop support for Python 3.7
+- switch from pdm-pep517 to pdm-backend
+
 ## 1.15.0 (2023-10-17)
 
 ## 1.14.0 (2023-08-31)
