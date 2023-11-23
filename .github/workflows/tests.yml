@@ -14,7 +14,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9, '3.10']
+        python-version: [3.8, 3.9, '3.10', '3.11']
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python ${{ matrix.python-version }}
@@ -31,20 +31,12 @@ jobs:
           source .venv/bin/activate
           pdm config python.use_venv True
           make install
-        # 3.7 is giving me some issues with flake8 and importlib-metadata, until
-        # https://github.com/flakeheaven/flakeheaven/issues/132 is done, I won't spend
-        # time testing in this environment.
-        # https://github.com/lyz-code/mkdocs-newsletter/actions/runs/3548202587/jobs/5959150030
       - name: Test linters
-        run: if [[ ${{ matrix.python-version }} != '3.7' ]];then make lint; fi
+        run: make lint
       - name: Test type checkers
         run: make mypy
-        # 3.7 is giving me some issues with flake8 and importlib-metadata, until
-        # https://github.com/flakeheaven/flakeheaven/issues/132 is done, I won't spend
-        # time testing in this environment.
-        # https://github.com/lyz-code/mkdocs-newsletter/actions/runs/3548202587/jobs/5959150030
       - name: Test security
-        run: if [[ ${{ matrix.python-version }} != '3.7' ]];then make security; fi
+        run: make security
       - name: Test with pytest
         run: make test
       - name: Upload Coverage

@@ -16,7 +16,6 @@ plugins:
           rendering:
             show_root_heading: true
             heading_level: 1
-      watch: [src]
   - autolinks
   - git-revision-date-localized:
       type: timeago
@@ -24,6 +23,9 @@ plugins:
   - minify:
       minify_html: true
   - section-index
+
+watch:
+  - src
 
 markdown_extensions:
   - abbr
