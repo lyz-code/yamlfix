@@ -1016,3 +1016,51 @@ class TestYamlAdapter:
         result = fix_code(source, config)
 
         assert result == fixed_source
+
+    def test_block_scalar_whitespace_is_preserved(self) -> None:
+        """Check that multi-line blocks with #'s in them are not treated as comments.
+        Regression test for https://github.com/lyz-code/yamlfix/issues/231
+        """
+        source = dedent(
+            """\
+            ---
+            addn_doc_key: |-
+              #######################################
+              #      This would also be broken      #
+              #######################################
+            ---
+            #Comment above the key
+            key: |-
+              ###########################################
+              #     Value with lots of whitespace       #
+              #         Some     More    Whitespace     #
+              ###########################################
+            #Comment below
+            
+            #Comment with some whitespace below
+            """  # noqa: W293
+        )
+        fixed_source = dedent(
+            """\
+            ---
+            addn_doc_key: |-
+              #######################################
+              #      This would also be broken      #
+              #######################################
+            ---
+            # Comment above the key
+            key: |-
+              ###########################################
+              #     Value with lots of whitespace       #
+              #         Some     More    Whitespace     #
+              ###########################################
+            # Comment below
+            
+            # Comment with some whitespace below
+            """  # noqa: W293
+        )
+        config = YamlfixConfig()
+
+        result = fix_code(source, config)
+
+        assert result == fixed_source
