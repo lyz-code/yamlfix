@@ -87,6 +87,7 @@ variable, use `fix_code`:
     - item
     - item
   ```
+- Quote strings that contain `:` to prevent some parsers from misinterpreting them as mappings.
 
 # Configuration
 

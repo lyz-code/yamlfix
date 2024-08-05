@@ -497,6 +497,7 @@ class TestFixCode:
             "Fixing comments...",
             "Fixing top level lists...",
             "Fixing flow-style lists...",
+            "Fixing unquoted strings with colons...",
         }
         assert set(caplog.messages) == expected_logs
         for record in caplog.records:
@@ -1032,5 +1033,108 @@ class TestFixCode:
         Then: The string has extra whitelines removed
         """
         result = fix_code(source_code=source, config=config)
+
+        assert result == desired_source
+
+    @pytest.mark.parametrize(
+        ("source", "config", "desired_source"),
+        [
+            (
+                "volumes: [/root:/mapped, a:b, 'c:d']",
+                YamlfixConfig(sequence_style=YamlNodeStyle.FLOW_STYLE),
+                dedent(
+                    """\
+                    ---
+                    volumes: ['/root:/mapped', 'a:b', 'c:d']
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    volumes:
+                      - /root:/mapped
+                      - a:b
+                      - 'c:d'
+                    """
+                ),
+                YamlfixConfig(sequence_style=YamlNodeStyle.BLOCK_STYLE),
+                dedent(
+                    """\
+                    ---
+                    volumes:
+                      - '/root:/mapped'
+                      - 'a:b'
+                      - 'c:d'
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    test:
+                      - "this one:\
+                        is ok"
+                      - fix this:one
+                      - |
+                        multiline strings:
+                        are not supported yet
+                      - >-
+                        multiline strings:
+                        are not supported yet
+                    """
+                ),
+                YamlfixConfig(sequence_style=YamlNodeStyle.BLOCK_STYLE),
+                dedent(
+                    """\
+                    ---
+                    test:
+                      - 'this one:\
+                        is ok'
+                      - 'fix this:one'
+                      - |
+                        multiline strings:
+                        are not supported yet
+                      - >-
+                        multiline strings:
+                        are not supported yet
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    merge0: &anchor
+                      host: host.docker.internal:host-gateway
+                    merge1:
+                      <<: *anchor
+                    merge2:
+                      <<: *anchor
+                    """
+                ),
+                None,
+                dedent(
+                    """\
+                    ---
+                    merge0: &anchor
+                      host: 'host.docker.internal:host-gateway'
+                    merge1:
+                      <<: *anchor
+                    merge2:
+                      <<: *anchor
+                    """
+                ),
+            ),
+        ],
+    )
+    def test_strings_with_colons_are_quoted(
+        self, source: str, config: Optional[YamlfixConfig], desired_source: str
+    ) -> None:
+        """
+        Given: Code with a string containing `:`
+        When: fix_code is run
+        Then: The string is quoted and not turned into a mapping
+        """
+        result = fix_code(source, config=config)
 
         assert result == desired_source
