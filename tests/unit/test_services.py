@@ -497,7 +497,6 @@ class TestFixCode:
             "Fixing comments...",
             "Fixing top level lists...",
             "Fixing flow-style lists...",
-            "Fixing unquoted strings with colons...",
         }
         assert set(caplog.messages) == expected_logs
         for record in caplog.records:
@@ -1040,88 +1039,60 @@ class TestFixCode:
         ("source", "config", "desired_source"),
         [
             (
-                "volumes: [/root:/mapped, a:b, 'c:d']",
+                dedent(
+                    """\
+                    ---
+                    jobs:
+                      test:
+                        container:
+                          volumes:
+                            - /data:/data
+                            - a:b  # commented
+                            - 'c:d'
+                            - >-
+                              multi:
+                              line
+                    """
+                ),
                 YamlfixConfig(sequence_style=YamlNodeStyle.FLOW_STYLE),
                 dedent(
                     """\
                     ---
-                    volumes: ['/root:/mapped', 'a:b', 'c:d']
+                    jobs:
+                      test:
+                        container:
+                          volumes:
+                            - '/data:/data'
+                            - 'a:b'  # commented
+                            - 'c:d'
+                            - 'multi: line'
                     """
                 ),
             ),
             (
                 dedent(
                     """\
-                    volumes:
-                      - /root:/mapped
-                      - a:b
-                      - 'c:d'
+                    ---
+                    jobs:
+                      test2:
+                        container:
+                          volumes:
+                            - /data:/data
+                            - a:b
+                            - 'c:d'
+                            - >-
+                              multi:
+                              line
                     """
                 ),
-                YamlfixConfig(sequence_style=YamlNodeStyle.BLOCK_STYLE),
+                YamlfixConfig(sequence_style=YamlNodeStyle.FLOW_STYLE),
                 dedent(
                     """\
                     ---
-                    volumes:
-                      - '/root:/mapped'
-                      - 'a:b'
-                      - 'c:d'
-                    """
-                ),
-            ),
-            (
-                dedent(
-                    """\
-                    test:
-                      - "this one:\
-                        is ok"
-                      - fix this:one
-                      - |
-                        multiline strings:
-                        are not supported yet
-                      - >-
-                        multiline strings:
-                        are not supported yet
-                    """
-                ),
-                YamlfixConfig(sequence_style=YamlNodeStyle.BLOCK_STYLE),
-                dedent(
-                    """\
-                    ---
-                    test:
-                      - 'this one:\
-                        is ok'
-                      - 'fix this:one'
-                      - |
-                        multiline strings:
-                        are not supported yet
-                      - >-
-                        multiline strings:
-                        are not supported yet
-                    """
-                ),
-            ),
-            (
-                dedent(
-                    """\
-                    merge0: &anchor
-                      host: host.docker.internal:host-gateway
-                    merge1:
-                      <<: *anchor
-                    merge2:
-                      <<: *anchor
-                    """
-                ),
-                None,
-                dedent(
-                    """\
-                    ---
-                    merge0: &anchor
-                      host: 'host.docker.internal:host-gateway'
-                    merge1:
-                      <<: *anchor
-                    merge2:
-                      <<: *anchor
+                    jobs:
+                      test2:
+                        container:
+                          volumes: ['/data:/data', 'a:b', 'c:d', 'multi: line']
                     """
                 ),
             ),
@@ -1131,9 +1102,9 @@ class TestFixCode:
         self, source: str, config: Optional[YamlfixConfig], desired_source: str
     ) -> None:
         """
-        Given: Code with a string containing `:`
+        Given: A GitHub Action workflow yaml containing jobs.*.containers.volumes
         When: fix_code is run
-        Then: The string is quoted and not turned into a mapping
+        Then: The volumes entries are quoted
         """
         result = fix_code(source, config=config)
 

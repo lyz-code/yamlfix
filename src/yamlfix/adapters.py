@@ -2,15 +2,15 @@
 
 import logging
 import re
-from collections.abc import Mapping
 from functools import partial
 from io import StringIO
-from typing import Any, Callable, List, Match, NamedTuple, Optional, Tuple
+from typing import Any, Callable, List, Match, Optional, Tuple
 
 from ruyaml.comments import CommentedMap, CommentedSeq
 from ruyaml.main import YAML
 from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
 from ruyaml.representer import RoundTripRepresenter
+from ruyaml.scalarstring import DoubleQuotedScalarString, SingleQuotedScalarString
 from ruyaml.tokens import CommentToken
 
 from yamlfix.model import YamlfixConfig, YamlNodeStyle
@@ -351,7 +351,6 @@ class SourceCodeFixer:
             self._fix_truthy_strings,
             self._fix_jinja_variables,
             self._ruamel_yaml_fixer,
-            self._quote_strings_with_colons,
             self._restore_truthy_strings,
             self._restore_jinja_variables,
             self._restore_double_exclamations,
@@ -382,11 +381,26 @@ class SourceCodeFixer:
         # Return the output to a string
         string_stream = StringIO()
         for source_dict in source_dicts:
+            self._quote_gha_container_volumes(source_dict)
             self.yaml.dump(source_dict, string_stream)
             source_code = string_stream.getvalue()
         string_stream.close()
 
         return source_code.strip()
+
+    def _quote_gha_container_volumes(
+        self, source_dict: CommentedMap | CommentedSeq
+    ) -> None:
+        """Quote jobs.*.container.volumes entries."""
+        if not isinstance(source_dict, CommentedMap):
+            return
+        scalar_type = SingleQuotedScalarString
+        if self.config.quote_representation == '"':
+            scalar_type = DoubleQuotedScalarString
+        for job in source_dict.get("jobs", {}).values():
+            if volumes := job.get("container", {}).get("volumes", []):
+                for i, _ in enumerate(volumes):
+                    volumes[i] = scalar_type(volumes[i])
 
     @staticmethod
     def _fix_top_level_lists(source_code: str) -> str:
@@ -798,85 +812,3 @@ class SourceCodeFixer:
             fixed_source_lines.append(line)
 
         return "\n".join(fixed_source_lines)
-
-    def _quote_strings_with_colons(self, source_code: str) -> str:
-        """Fix strings with colons to be quoted.
-
-        Example:
-            volumes: [/root:/mapped]
-        becomes
-            volumes: ["/root:/mapped"]
-
-        We do this by
-        1. loading the yaml
-        2. recursively scanning for strings that
-          * contain colons
-          * are not already quoted
-          * are not multi-line strings (see note).
-        3. Adding quotes at the string start and end locations in the source_code.
-
-        Note: Multi-line strings are not supported because ruyaml only provides the
-        start location of a scalar, but not the end location. For single-line strings
-        you can calculate the end location by adding the length of the string to the
-        start, but for strings broken over multiple lines this is not straightforward.
-        """
-        log.debug("Fixing unquoted strings with colons...")
-
-        class ToFix(NamedTuple):
-            """Where to insert quotes."""
-
-            line: int
-            start: int
-            end: int
-
-        positions_to_quote = set()
-        lines = source_code.splitlines()
-
-        def add(item: str, line: int, col: int) -> None:
-            is_quoted = lines[line][col] in ['"', "'"]
-            if ":" in item and not is_quoted:
-                to_fix = ToFix(
-                    line=line,
-                    start=col,
-                    end=col + len(item),
-                )
-                if to_fix.end <= len(lines[to_fix.line]):
-                    positions_to_quote.add(to_fix)
-                else:
-                    log.debug("Skipping %r which is multi-line", item)
-
-        def check(value: CommentedSeq | Mapping[str, Any]) -> None:
-            if isinstance(value, CommentedSeq):
-                for i, item in enumerate(value):
-                    if isinstance(item, str):
-                        line, col = value.lc.item(i)
-                        add(item, line, col)
-                    else:
-                        check(item)
-            elif isinstance(value, CommentedMap):
-                for key, item in value.items():
-                    if isinstance(item, str):
-                        try:
-                            line, col = value.lc.value(key)
-                        except (KeyError, TypeError):
-                            # May not be available if merged from an anchor
-                            pass
-                        else:
-                            add(item, line, col)
-                    else:
-                        check(item)
-
-        source_dicts = self.yaml.load_all(source_code)
-        for source_dict in source_dicts:
-            check(source_dict)
-
-        for to_fix in sorted(positions_to_quote, reverse=True):
-            lines[to_fix.line] = (self.config.quote_representation or "'").join(
-                [
-                    lines[to_fix.line][: to_fix.start],  # noqa: E203: black disagrees
-                    lines[to_fix.line][to_fix.start : to_fix.end],  # noqa: E203
-                    lines[to_fix.line][to_fix.end :],  # noqa: E203
-                ]
-            )
-
-        return "\n".join(lines)

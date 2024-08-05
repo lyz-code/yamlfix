@@ -87,7 +87,7 @@ variable, use `fix_code`:
     - item
     - item
   ```
-- Quote strings that contain `:` to prevent some parsers from misinterpreting them as mappings.
+- Quote jobs.*.containers.volumes entries in GitHub Actions workflow yamls to not confuse GitHubs Yaml parser.
 
 # Configuration
 
