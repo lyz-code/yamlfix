@@ -1,4 +1,5 @@
 """Define program entities like configuration value entities."""
+
 from enum import Enum
 from typing import Optional
 
