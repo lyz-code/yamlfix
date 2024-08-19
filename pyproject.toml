@@ -123,7 +123,7 @@ security = [
 ]
 fixers = [
     "autoimport>=1.2.2",
-    "black>=22.8.0",
+    "black>=22.8.0, <23.0.0",
     "isort>=5.10.1",
     "yamlfix>=1.0.1",
 ]
