@@ -117,8 +117,6 @@ def cli(  # pylint: disable=too-many-arguments
     )
 
     fixed_code, changed = services.fix_files(files_to_fix, check, config)
-    for file_to_close in files_to_fix:
-        file_to_close.close()
 
     if fixed_code is not None:
         print(fixed_code, end="")
