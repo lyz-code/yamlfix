@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from maison.config import ProjectConfig
+from maison.config import UserConfig
 
 from yamlfix.model import YamlfixConfig
 
@@ -22,21 +22,21 @@ def configure_yamlfix(
         if config_path_env:
             config_path = Path(config_path_env)
 
-    config: ProjectConfig = ProjectConfig(
-        config_schema=YamlfixConfig,
+    config: UserConfig = UserConfig(
+        schema=YamlfixConfig,
         merge_configs=True,
-        project_name="yamlfix",
+        package_name="yamlfix",
         source_files=config_files,
         starting_path=config_path,
     )
-    config_dict: Dict[str, Any] = config.to_dict()
+    config_dict: Dict[str, Any] = config.values
 
     if additional_config:
         for override_key, override_val in additional_config.items():
             config_dict[override_key] = override_val
 
     config.validate()
-    config_dict = config.to_dict()
+    config_dict = config.values
 
     for config_key, config_val in config_dict.items():
         setattr(yamlfix_config, config_key, config_val)

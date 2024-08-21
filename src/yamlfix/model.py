@@ -1,8 +1,9 @@
 """Define program entities like configuration value entities."""
+
 from enum import Enum
 from typing import Optional
 
-from maison.schema import ConfigSchema
+from pydantic import BaseModel
 
 
 class YamlNodeStyle(Enum):
@@ -13,7 +14,7 @@ class YamlNodeStyle(Enum):
     KEEP_STYLE = "keep_style"
 
 
-class YamlfixConfig(ConfigSchema):
+class YamlfixConfig(BaseModel):
     """Configuration entity for yamlfix."""
 
     allow_duplicate_keys: bool = False

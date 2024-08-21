@@ -103,7 +103,7 @@ def cli(  # pylint: disable=too-many-arguments
                 real_files.extend(_find_all_yaml_files(provided_file, include, exclude))
             else:
                 real_files.append(provided_file)
-        files_to_fix = [file.open("r+") for file in real_files]
+        files_to_fix = [str(file) for file in real_files]
     if not files_to_fix:
         log.warning("No YAML files found!")
         sys.exit(0)
@@ -117,8 +117,6 @@ def cli(  # pylint: disable=too-many-arguments
     )
 
     fixed_code, changed = services.fix_files(files_to_fix, check, config)
-    for file_to_close in files_to_fix:
-        file_to_close.close()
 
     if fixed_code is not None:
         print(fixed_code, end="")

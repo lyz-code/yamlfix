@@ -19,20 +19,19 @@ Files = Union[Tuple[TextIOWrapper], List[str]]
 
 
 @overload
-def fix_files(files: Files) -> Optional[str]:
-    ...  # pragma: no cover
+def fix_files(files: Files) -> Optional[str]: ...  # pragma: no cover
 
 
 @overload
-def fix_files(files: Files, dry_run: Optional[bool]) -> Tuple[Optional[str], bool]:
-    ...  # pragma: no cover
+def fix_files(
+    files: Files, dry_run: Optional[bool]
+) -> Tuple[Optional[str], bool]: ...  # pragma: no cover
 
 
 @overload
 def fix_files(
     files: Files, dry_run: Optional[bool], config: Optional[YamlfixConfig]
-) -> Tuple[Optional[str], bool]:
-    ...  # pragma: no cover
+) -> Tuple[Optional[str], bool]: ...  # pragma: no cover
 
 
 def fix_files(  # pylint: disable=too-many-branches
