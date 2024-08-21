@@ -3,7 +3,7 @@
 from enum import Enum
 from typing import Optional
 
-from maison.schema import ConfigSchema
+from pydantic import BaseModel
 
 
 class YamlNodeStyle(Enum):
@@ -13,8 +13,7 @@ class YamlNodeStyle(Enum):
     BLOCK_STYLE = "block_style"
     KEEP_STYLE = "keep_style"
 
-
-class YamlfixConfig(ConfigSchema):
+class YamlfixConfig(BaseModel):
     """Configuration entity for yamlfix."""
 
     allow_duplicate_keys: bool = False
