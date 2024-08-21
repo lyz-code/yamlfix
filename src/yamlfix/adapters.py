@@ -6,9 +6,11 @@ from functools import partial
 from io import StringIO
 from typing import Any, Callable, List, Match, Optional, Tuple
 
+from ruyaml.comments import CommentedMap, CommentedSeq
 from ruyaml.main import YAML
 from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
 from ruyaml.representer import RoundTripRepresenter
+from ruyaml.scalarstring import DoubleQuotedScalarString, SingleQuotedScalarString
 from ruyaml.tokens import CommentToken
 
 from yamlfix.model import YamlfixConfig, YamlNodeStyle
@@ -379,11 +381,26 @@ class SourceCodeFixer:
         # Return the output to a string
         string_stream = StringIO()
         for source_dict in source_dicts:
+            self._quote_gha_container_volumes(source_dict)
             self.yaml.dump(source_dict, string_stream)
             source_code = string_stream.getvalue()
         string_stream.close()
 
         return source_code.strip()
+
+    def _quote_gha_container_volumes(
+        self, source_dict: CommentedMap | CommentedSeq
+    ) -> None:
+        """Quote jobs.*.container.volumes entries."""
+        if not isinstance(source_dict, CommentedMap):
+            return
+        scalar_type = SingleQuotedScalarString
+        if self.config.quote_representation == '"':
+            scalar_type = DoubleQuotedScalarString
+        for job in source_dict.get("jobs", {}).values():
+            if volumes := job.get("container", {}).get("volumes", []):
+                for i, _ in enumerate(volumes):
+                    volumes[i] = scalar_type(volumes[i])
 
     @staticmethod
     def _fix_top_level_lists(source_code: str) -> str:

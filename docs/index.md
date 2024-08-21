@@ -87,6 +87,7 @@ variable, use `fix_code`:
     - item
     - item
   ```
+- Quote jobs.*.containers.volumes entries in GitHub Actions workflow yamls to not confuse GitHubs Yaml parser.
 
 # Configuration
 
