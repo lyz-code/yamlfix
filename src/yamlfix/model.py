@@ -13,6 +13,7 @@ class YamlNodeStyle(Enum):
     BLOCK_STYLE = "block_style"
     KEEP_STYLE = "keep_style"
 
+
 class YamlfixConfig(BaseModel):
     """Configuration entity for yamlfix."""
 
