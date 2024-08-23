@@ -1,3 +1,9 @@
+## 1.16.1 (2024-08-23)
+
+### Fix
+
+- pin dependencies for python 3.8
+
 ## 1.16.0 (2023-11-23)
 
 ### Feat
