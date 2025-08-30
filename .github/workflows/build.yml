@@ -12,15 +12,15 @@ jobs:
     name: Build and publish Python distributions to TestPyPI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
       - uses: pdm-project/setup-pdm@main
         name: Setup Python and PDM
         with:
-          python-version: 3.9
+          python-version: 3.11
       - name: Build package
         run: make build-package
       - name: Publish distribution to Test PyPI
-        uses: pypa/gh-action-pypi-publish@master
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.test_pypi_password }}
           repository_url: https://test.pypi.org/legacy/
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           # Number of commits to fetch. 0 indicates all history.
           # Default: 1
@@ -37,7 +37,7 @@ jobs:
       - uses: pdm-project/setup-pdm@main
         name: Setup Python and PDM
         with:
-          python-version: 3.9
+          python-version: 3.11
       - name: Install dependencies
         run: make install
       - name: Build the Documentation
