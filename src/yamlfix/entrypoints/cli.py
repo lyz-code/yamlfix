@@ -17,7 +17,7 @@ from yamlfix.services import Files
 log = logging.getLogger(__name__)
 
 
-_GLOB_CACHE = {}
+_GLOB_CACHE: dict[tuple[str, str, str], set[Path]] = {}
 
 
 def _clear_glob_cache() -> None:
@@ -25,14 +25,14 @@ def _clear_glob_cache() -> None:
     _GLOB_CACHE.clear()
 
 
-def _glob_cache(dir_: Path, glob: str) -> set:
+def _glob_cache(dir_: Path, glob: str) -> set[Path]:
     cache_key = (str(dir_), glob, "g")
     if cache_key not in _GLOB_CACHE:
         _GLOB_CACHE[cache_key] = set(dir_.glob(glob))
     return _GLOB_CACHE[cache_key]
 
 
-def _rglob_cache(dir_: Path, glob: str) -> set:
+def _rglob_cache(dir_: Path, glob: str) -> set[Path]:
     cache_key = (str(dir_), glob, "r")
     if cache_key not in _GLOB_CACHE:
         _GLOB_CACHE[cache_key] = set(dir_.rglob(glob))

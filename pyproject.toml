@@ -289,7 +289,7 @@ pyflakes = [
 
 [tool.flakeheaven.exceptions."tests/"]
 flake8-aaa = [
-  "-AAA01 ", # no Act block found in test
+  "-AAA01", # no Act block found in test
   "-AAA03", # expected 1 blank line before Act block, found none
   "-AAA04", # expected 1 blank line before Assert block, found none
   "-AAA05", # blank line in block

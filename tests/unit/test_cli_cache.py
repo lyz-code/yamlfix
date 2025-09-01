@@ -1,6 +1,7 @@
 """Unit tests for CLI glob caching functions."""
 
 from pathlib import Path
+from typing import Generator
 
 import pytest
 
@@ -13,7 +14,7 @@ from yamlfix.entrypoints.cli import (
 
 
 @pytest.fixture(autouse=True)
-def clear_cache():
+def _clear_cache() -> Generator[None, None, None]:
     """Clear the glob cache before and after each test."""
     _clear_glob_cache()
     yield
@@ -40,7 +41,7 @@ def test_directory(tmp_path: Path) -> Path:
 class TestGlobCache:
     """Test the _glob_cache function."""
 
-    def test_glob_cache_basic_functionality(self, test_directory: Path):
+    def test_glob_cache_basic_functionality(self, test_directory: Path) -> None:
         """Test that _glob_cache returns correct files and caches results."""
         result = _glob_cache(test_directory, "*.yaml")
 
@@ -53,7 +54,7 @@ class TestGlobCache:
         cache_key = (str(test_directory), "*.yaml", "g")
         assert cache_key in _GLOB_CACHE
 
-    def test_glob_cache_uses_cache_on_repeat_calls(self, test_directory: Path):
+    def test_glob_cache_uses_cache_on_repeat_calls(self, test_directory: Path) -> None:
         """Test that subsequent calls use cached results."""
         # First call
         result1 = _glob_cache(test_directory, "*.yaml")
@@ -68,7 +69,7 @@ class TestGlobCache:
 
     def test_glob_cache_different_patterns_create_separate_entries(
         self, test_directory: Path
-    ):
+    ) -> None:
         """Test that different glob patterns create separate cache entries."""
         result_yaml = _glob_cache(test_directory, "*.yaml")
         result_yml = _glob_cache(test_directory, "*.yml")
@@ -80,7 +81,7 @@ class TestGlobCache:
 
     def test_glob_cache_different_directories_create_separate_entries(
         self, test_directory: Path
-    ):
+    ) -> None:
         """Test that different directories create separate cache entries."""
         # Create another directory
         other_dir = test_directory / "other"
@@ -99,7 +100,7 @@ class TestGlobCache:
 class TestRglobCache:
     """Test the _rglob_cache function."""
 
-    def test_rglob_cache_basic_functionality(self, test_directory: Path):
+    def test_rglob_cache_basic_functionality(self, test_directory: Path) -> None:
         """Test that _rglob_cache returns correct files recursively and caches results."""
         result = _rglob_cache(test_directory, "*.yaml")
 
@@ -112,7 +113,9 @@ class TestRglobCache:
         cache_key = (str(test_directory), "*.yaml", "r")
         assert cache_key in _GLOB_CACHE
 
-    def test_rglob_cache_vs_glob_cache_different_keys(self, test_directory: Path):
+    def test_rglob_cache_vs_glob_cache_different_keys(
+        self, test_directory: Path
+    ) -> None:
         """Test that rglob and glob use different cache keys."""
         glob_result = _glob_cache(test_directory, "*.yaml")
         rglob_result = _rglob_cache(test_directory, "*.yaml")
@@ -125,7 +128,7 @@ class TestRglobCache:
         assert test_directory / "subdir" / "nested.yaml" in rglob_result
         assert test_directory / "subdir" / "nested.yaml" not in glob_result
 
-    def test_rglob_cache_uses_cache_on_repeat_calls(self, test_directory: Path):
+    def test_rglob_cache_uses_cache_on_repeat_calls(self, test_directory: Path) -> None:
         """Test that subsequent rglob calls use cached results."""
         result1 = _rglob_cache(test_directory, "*.yaml")
         cache_size_after_first = len(_GLOB_CACHE)
@@ -140,7 +143,7 @@ class TestRglobCache:
 class TestCacheClear:
     """Test the _clear_glob_cache function."""
 
-    def test_clear_glob_cache_empties_cache(self, test_directory: Path):
+    def test_clear_glob_cache_empties_cache(self, test_directory: Path) -> None:
         """Test that cache clearing removes all entries."""
         # Populate cache with several entries
         _glob_cache(test_directory, "*.yaml")
@@ -154,7 +157,7 @@ class TestCacheClear:
 
         assert len(_GLOB_CACHE) == 0
 
-    def test_clear_glob_cache_allows_fresh_caching(self, test_directory: Path):
+    def test_clear_glob_cache_allows_fresh_caching(self, test_directory: Path) -> None:
         """Test that after clearing, caching works normally again."""
         # First round of caching
         _glob_cache(test_directory, "*.yaml")
@@ -172,14 +175,14 @@ class TestCacheClear:
 class TestCacheKeyConstruction:
     """Test that cache keys are constructed correctly."""
 
-    def test_cache_key_includes_directory_path(self, test_directory: Path):
+    def test_cache_key_includes_directory_path(self, test_directory: Path) -> None:
         """Test that cache keys include the directory path."""
         _glob_cache(test_directory, "*.yaml")
 
         expected_key = (str(test_directory), "*.yaml", "g")
         assert expected_key in _GLOB_CACHE
 
-    def test_cache_key_distinguishes_glob_vs_rglob(self, test_directory: Path):
+    def test_cache_key_distinguishes_glob_vs_rglob(self, test_directory: Path) -> None:
         """Test that glob and rglob operations have different key suffixes."""
         _glob_cache(test_directory, "*.yaml")
         _rglob_cache(test_directory, "*.yaml")

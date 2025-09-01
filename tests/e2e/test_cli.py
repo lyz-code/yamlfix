@@ -14,7 +14,7 @@ import pytest
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
 
-from yamlfix.entrypoints.cli import cli
+from yamlfix.entrypoints.cli import _clear_glob_cache, cli
 from yamlfix.version import __version__
 
 
@@ -435,11 +435,6 @@ def test_glob_cache_is_fast(runner: CliRunner, tmpdir: Path) -> None:
     for i in range(1000):
         (tmpdir / f"use_me_{i}.yaml").write_text("program: yamlfix", encoding="utf-8")
 
-    # Clear any existing cache
-    from yamlfix.entrypoints.cli import _clear_glob_cache
-
-    _clear_glob_cache()
-
     # Test with cache (second run should benefit from cache)
     start_time = time.time()
     result = runner.invoke(
@@ -472,26 +467,22 @@ def test_glob_cache_excludes_slow(runner: CliRunner, tmpdir: Path) -> None:
     with mock.patch(
         "yamlfix.entrypoints.cli._glob_cache",
         side_effect=lambda dir_, glob: set(dir_.glob(glob)),
+    ), mock.patch(
+        "yamlfix.entrypoints.cli._rglob_cache",
+        side_effect=lambda dir_, glob: set(dir_.rglob(glob)),
     ):
-        with mock.patch(
-            "yamlfix.entrypoints.cli._rglob_cache",
-            side_effect=lambda dir_, glob: set(dir_.rglob(glob)),
-        ):
-            result1 = runner.invoke(
-                cli,
-                [
-                    str(tmpdir),
-                    "--exclude",
-                    "dont_*.yaml",
-                    "--exclude",
-                    "dont_use_me_*.yaml",
-                ],
-            )
+        result1 = runner.invoke(
+            cli,
+            [
+                str(tmpdir),
+                "--exclude",
+                "dont_*.yaml",
+                "--exclude",
+                "dont_use_me_*.yaml",
+            ],
+        )
     end_time = time.time()
     no_cache_time = end_time - start_time
-
-    # Clear any existing cache
-    from yamlfix.entrypoints.cli import _clear_glob_cache
 
     _clear_glob_cache()
 
