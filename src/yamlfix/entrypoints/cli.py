@@ -7,12 +7,12 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import click
-from _io import TextIOWrapper
 
 from yamlfix import services, version
 from yamlfix.config import configure_yamlfix
 from yamlfix.entrypoints import load_logger
 from yamlfix.model import YamlfixConfig
+from yamlfix.services import Files
 
 log = logging.getLogger(__name__)
 
@@ -90,11 +90,11 @@ def cli(  # pylint: disable=too-many-arguments
 
     Use - to read from stdin. No other files can be specified in this case.
     """
-    files_to_fix: List[TextIOWrapper] = []
+    files_to_fix: Files = []
     if "-" in files:
         if len(files) > 1:
             raise ValueError("Cannot specify '-' and other files at the same time.")
-        files_to_fix = [sys.stdin]
+        files_to_fix = (sys.stdin,)  # type: ignore[assignment]
     else:
         paths = [Path(file) for file in files]
         real_files = []

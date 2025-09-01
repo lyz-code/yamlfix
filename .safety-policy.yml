@@ -10,6 +10,9 @@ security: # configuration for the `safety check` command
         # We recommend making use of the optional `reason` and `expires` keys for each vulnerability that you ignore.
         70612: # Example vulnerability ID
             reason: we don't use jinja2 from_string
+        76170:
+            reason: Temporary ignore while upgrading Python versions and dropping 3.8 support
+            expires: '2025-10-31'
     continue-on-vulnerability-error: False # Suppress non-zero exit codes when vulnerabilities are found. Enable this in pipelines and CI/CD processes if you want to pass builds that have vulnerabilities. We recommend you set this to False.
 alert: # configuration for the `safety alert` command
     security:

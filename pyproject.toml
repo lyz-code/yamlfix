@@ -42,7 +42,6 @@ classifiers=[
     "Operating System :: POSIX",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -270,6 +269,7 @@ pylint = [
   "-W1201", # Use lazy % formatting in logging functions. Deprecated rule in favor of
             # f-strings.
   "-C0301", # Lines too long. Already covered by E501.
+  "-R0917", # Too many positional arguments
 ]
 mccabe = ["+*"]
 pep8-naming = ["+*"]
@@ -288,6 +288,12 @@ pyflakes = [
 ]
 
 [tool.flakeheaven.exceptions."tests/"]
+flake8-aaa = [
+  "-AAA01 ", # no Act block found in test
+  "-AAA03", # expected 1 blank line before Act block, found none
+  "-AAA04", # expected 1 blank line before Assert block, found none
+  "-AAA05", # blank line in block
+]
 flake8-docstrings = [
   "-D205", # 1 blank line required between summary line and description
   "-D212", # Multi-line docstring summary should start at the first line
@@ -296,7 +302,11 @@ flake8-docstrings = [
 ]
 flake8-annotations = [
   "-ANN001",
+  "-ANN201", # Missing return type annotation for public function
   "-ANN401", # Dynamically typed expressions (typing.Any) are disallowed
+]
+flake8-pytest-style = [
+  "-PT023", # use @pytest.mark.secondary over @pytest.mark.secondary(
 ]
 pylint = [
   "-R0201", # Method could be a function. Raised because the methods of a test class
@@ -304,8 +314,12 @@ pylint = [
   "-W0613", # Unused argument in function, but in tests there are fixtures that even
             # though they are not used in the function directly, they are used to
             # configure the test.
+  "-W0621", # Redefining name 'xyz' from outer scope
   "-R0904", # Too many public methods (25/20) (too-many-public-methods)
   "-C0302", # Allows module to have unlimited number of lines.
+]
+pycodestyle = [
+  "-E501", # line too long
 ]
 
 [tool.flakeheaven.exceptions."tests/factories.py"]
