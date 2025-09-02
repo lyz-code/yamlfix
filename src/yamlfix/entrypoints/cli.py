@@ -17,22 +17,12 @@ from yamlfix.services import Files
 log = logging.getLogger(__name__)
 
 
-def _matches_any_glob(
-    file_to_test: Path, dir_: Path, globs: Optional[List[str]]
-) -> bool:
-    return any(file_to_test in dir_.glob(glob) for glob in (globs or []))
-
-
 def _find_all_yaml_files(
-    dir_: Path, include_globs: Optional[List[str]], exclude_globs: Optional[List[str]]
+    dir_: Path, include_globs: List[str], exclude_globs: Optional[List[str]]
 ) -> List[Path]:
-    files = [dir_.rglob(glob) for glob in (include_globs or [])]
-    return [
-        file
-        for list_ in files
-        for file in list_
-        if not _matches_any_glob(file, dir_, exclude_globs) and os.path.isfile(file)
-    ]
+    files = {f for glob in (include_globs) for f in dir_.rglob(glob) if f.is_file()}
+    files.difference_update(f for exc in (exclude_globs or []) for f in dir_.rglob(exc))
+    return sorted(files)
 
 
 @click.command()
@@ -80,7 +70,7 @@ def cli(  # pylint: disable=too-many-arguments
     verbose: bool,
     check: bool,
     config_file: Optional[List[str]],
-    include: Optional[List[str]],
+    include: List[str],
     exclude: Optional[List[str]],
     env_prefix: str,
 ) -> None:
