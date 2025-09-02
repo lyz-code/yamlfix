@@ -1,5 +1,5 @@
 """Define adapter / helper classes to hide unrelated functionality in."""
-
+import io
 import logging
 import re
 from functools import partial
@@ -12,6 +12,7 @@ from ruyaml.representer import RoundTripRepresenter
 from ruyaml.tokens import CommentToken
 
 from yamlfix.model import YamlfixConfig, YamlNodeStyle
+from yamlfix.util import walk_object
 
 log = logging.getLogger(__name__)
 
@@ -334,18 +335,12 @@ class SourceCodeFixer:
         self.yaml = yaml.yaml
         self.config = config or YamlfixConfig()
 
-    def fix(self, source_code: str) -> str:
-        """Run all yaml source code fixers.
-
-        Args:
-            source_code: Source code to be corrected.
-
-        Returns:
-            Corrected source code.
-        """
-        log.debug("Running source code fixers...")
-
-        fixers = [
+        # The list of fixers to run, and the index of the currently called fixer.
+        # This allows fixers which might need to reinvoke other fixers to reinvoke the
+        # previous fixers (currently fix comments does this as it needs to re-emit the
+        # YAML).
+        self._fixer_idx = -1
+        self._fixers = [
             self._fix_truthy_strings,
             self._fix_jinja_variables,
             self._ruamel_yaml_fixer,
@@ -359,8 +354,40 @@ class SourceCodeFixer:
             self._add_newline_at_end_of_file,
         ]
 
-        for fixer in fixers:
+    def _rerun_previous_fixers(self, source_code: str) -> str:
+        """Run all the previous source code fixers except the currently running one.
+
+        This is re-entrant safe and will correctly restore the fixer idx once it's
+        complete.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        cur_fixer_idx = self._fixer_idx
+        for fixer_idx, fixer in enumerate(self._fixers[:cur_fixer_idx]):
+            self._fixer_idx = fixer_idx
             source_code = fixer(source_code)
+        # Restore fixer idx
+        self._fixer_idx = cur_fixer_idx
+        return source_code
+
+    def fix(self, source_code: str) -> str:
+        """Run all yaml source code fixers.
+
+        Args:
+            source_code: Source code to be corrected.
+
+        Returns:
+            Corrected source code.
+        """
+        log.debug("Running source code fixers...")
+
+        # Just use the re-run system do it.
+        self._fixer_idx = len(self._fixers)
+        source_code = self._rerun_previous_fixers(source_code)
 
         return source_code
 
@@ -573,24 +600,102 @@ class SourceCodeFixer:
     def _fix_comments(self, source_code: str) -> str:
         log.debug("Fixing comments...")
         config = self.config
-        comment_start = " " * config.comments_min_spaces_from_content + "#"
 
-        fixed_source_lines = []
+        # We need the source lines for the comment fixers to analyze whitespace easily
+        source_lines = source_code.splitlines()
 
-        for line in source_code.splitlines():
-            # Comment at the start of the line
-            if config.comments_require_starting_space and re.search(r"(^|\s)#\w", line):
-                line = line.replace("#", "# ")
-            # Comment in the middle of the line, but it's not part of a string
-            if (
-                config.comments_min_spaces_from_content > 1
-                and " #" in line
-                and line[-1] not in ["'", '"']
-            ):
-                line = re.sub(r"(.+\S)(\s+?)#", rf"\1{comment_start}", line)
-            fixed_source_lines.append(line)
+        yaml = YAML(typ="rt")
+        # Hijack config options from the regular fixer
+        yaml.explicit_start = self.yaml.explicit_start
+        yaml.width = self.yaml.width
+        # preserve_quotes however must always be true, otherwise we change output
+        # unexpectedly.
+        yaml.preserve_quotes = True  # type: ignore
+        yaml_documents = list(yaml.load_all(source_code))
 
-        return "\n".join(fixed_source_lines)
+        handled_comments: List[CommentToken] = []
+
+        def _comment_token_cb(target: Any) -> None:  # noqa:W0613,ANN401
+            """This function is a callback for walk_object.
+
+            This implements the actual comment fixing, and is used because comment
+            objects are structured in nested-lists and can repeat.
+            """
+            if not isinstance(target, CommentToken):
+                return
+            if any(target is e for e in handled_comments):
+                # This comment was handled at a higher level already.
+                return
+            if target.value is None:
+                return
+            comment_lines = target.value.split("\n")
+            fixed_comment_lines = []
+            for line in comment_lines:
+                if config.comments_require_starting_space and re.search(
+                    r"(^|\s)#\w", line
+                ):
+                    line = line.replace("#", "# ")
+                fixed_comment_lines.append(line)
+
+            # Update the comment with the fixed lines
+            target.value = "\n".join(fixed_comment_lines)
+
+            if config.comments_min_spaces_from_content > 1:
+                # It's hard to reconstruct exactly where the content is, but since we
+                # have the line numbers what we do is lookup the literal source line
+                # here and check where the whitespace is compared to where we know the
+                # comment starts.
+                source_line = source_lines[target.start_mark.line]
+                content_part = source_line[0 : target.start_mark.column]  # noqa: E203
+                # Find the non-whitespace position in the content part
+                rx_match = re.match(r"^.*\S", content_part)
+                if (
+                    rx_match is not None
+                ):  # If no match then nothing to do - no content to be away from
+                    _, content_end = rx_match.span()
+                    # If there's less than min-spaces from content, we're going to add
+                    # some.
+                    if (
+                        target.start_mark.column - content_end
+                        < config.comments_min_spaces_from_content
+                    ):
+                        # Handled
+                        target.start_mark.column = (
+                            content_end + config.comments_min_spaces_from_content
+                        )
+            # Some ruyaml objects will return attached comments at multiple levels (but
+            # not all). Keep track of which comments we've already processed to avoid
+            # double processing them (important because we use raw source lines to
+            # determine content position above).
+            handled_comments.append(target)
+
+        def _comment_fixer(target: Any) -> None:  # noqa:W0613,ANN401
+            """This function is a callback for walk_object.
+
+            walk_object calls it for every object it finds, and then will walk the
+            mapping/sequence subvalues and call this function on those too. This gives
+            us direct access to all round tripped comments.
+            """
+            if not hasattr(target, "ca"):
+                # Scalar or other object with no comment parameter.
+                return
+            # Find all comment tokens and fix them
+            walk_object(target.ca.comment, _comment_token_cb)
+            walk_object(target.ca.end, _comment_token_cb)
+            walk_object(target.ca.items, _comment_token_cb)
+            walk_object(target.ca.pre, _comment_token_cb)
+
+        # Walk the object and invoke the comment fixer
+        walk_object(yaml_documents, _comment_fixer)
+
+        # Dump out the YAML documents
+        stream = io.StringIO()
+        yaml.dump_all(yaml_documents, stream=stream)
+
+        fixed_source_code = stream.getvalue()
+        # Reinvoke the previous fixers to ensure we fix the new output we just created.
+        fixed_source_code = self._rerun_previous_fixers(fixed_source_code)
+        return fixed_source_code
 
     def _fix_whitelines(self, source_code: str) -> str:
         """Fixes number of consecutive whitelines.
