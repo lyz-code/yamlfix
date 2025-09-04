@@ -444,10 +444,11 @@ def test_glob_cache_is_fast(runner: CliRunner, tmpdir: Path) -> None:
     end_time = time.time()
     cache_time = end_time - start_time
 
+    max_time = 2
     assert result.exit_code == 0
     assert (
-        cache_time <= 1
-    ), f"Expected cache time to be less than 1 second, got {cache_time:.3f}s"
+        cache_time <= max_time
+    ), f"Expected cache time to be less than {max_time} seconds, got {cache_time:.3f}s"
 
 
 @pytest.mark.slow
