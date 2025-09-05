@@ -17,16 +17,38 @@ from yamlfix.services import Files
 log = logging.getLogger(__name__)
 
 
+_GLOB_CACHE: dict[tuple[str, str, str], set[Path]] = {}
+
+
+def _clear_glob_cache() -> None:
+    """Clear the glob cache to prevent memory leaks in long-running processes."""
+    _GLOB_CACHE.clear()
+
+
+def _glob_cache(dir_: Path, glob: str) -> set[Path]:
+    cache_key = (str(dir_), glob, "g")
+    if cache_key not in _GLOB_CACHE:
+        _GLOB_CACHE[cache_key] = set(dir_.glob(glob))
+    return _GLOB_CACHE[cache_key]
+
+
+def _rglob_cache(dir_: Path, glob: str) -> set[Path]:
+    cache_key = (str(dir_), glob, "r")
+    if cache_key not in _GLOB_CACHE:
+        _GLOB_CACHE[cache_key] = set(dir_.rglob(glob))
+    return _GLOB_CACHE[cache_key]
+
+
 def _matches_any_glob(
     file_to_test: Path, dir_: Path, globs: Optional[List[str]]
 ) -> bool:
-    return any(file_to_test in dir_.glob(glob) for glob in (globs or []))
+    return any(file_to_test in _glob_cache(dir_, glob) for glob in (globs or []))
 
 
 def _find_all_yaml_files(
     dir_: Path, include_globs: Optional[List[str]], exclude_globs: Optional[List[str]]
 ) -> List[Path]:
-    files = [dir_.rglob(glob) for glob in (include_globs or [])]
+    files = [list(_rglob_cache(dir_, glob)) for glob in (include_globs or [])]
     return [
         file
         for list_ in files
@@ -120,6 +142,9 @@ def cli(  # pylint: disable=too-many-arguments
 
     if fixed_code is not None:
         print(fixed_code, end="")
+
+    # Clear cache to prevent memory leaks in long-running processes
+    _clear_glob_cache()
 
     if changed and check:
         sys.exit(1)

@@ -3,16 +3,18 @@
 import logging
 import os
 import re
+import time
 from itertools import product
 from pathlib import Path
 from textwrap import dedent
+from unittest import mock
 
 import py  # type: ignore
 import pytest
 from _pytest.logging import LogCaptureFixture
 from click.testing import CliRunner
 
-from yamlfix.entrypoints.cli import cli
+from yamlfix.entrypoints.cli import _clear_glob_cache, cli
 from yamlfix.version import __version__
 
 
@@ -420,3 +422,85 @@ def test_do_not_read_folders_as_files(runner: CliRunner, tmpdir: py.path.local) 
     result = runner.invoke(cli, [str(tmpdir)])
 
     assert result.exit_code == 0
+
+
+def test_glob_cache_is_fast(runner: CliRunner, tmpdir: Path) -> None:
+    """Test that glob caching improves performance."""
+    # Create 1000 files in the tmpdir
+    for i in range(1000):
+        (tmpdir / f"dont_use_me_{i}.yaml").write_text(
+            "program: yamlfix", encoding="utf-8"
+        )
+
+    for i in range(1000):
+        (tmpdir / f"use_me_{i}.yaml").write_text("program: yamlfix", encoding="utf-8")
+
+    # Test with cache (second run should benefit from cache)
+    start_time = time.time()
+    result = runner.invoke(
+        cli,
+        [str(tmpdir), "--exclude", "dont_*.yaml", "--exclude", "dont_use_me_*.yaml"],
+    )
+    end_time = time.time()
+    cache_time = end_time - start_time
+
+    max_time = 2
+    assert result.exit_code == 0
+    assert (
+        cache_time <= max_time
+    ), f"Expected cache time to be less than {max_time} seconds, got {cache_time:.3f}s"
+
+
+@pytest.mark.slow
+def test_glob_cache_excludes_slow(runner: CliRunner, tmpdir: Path) -> None:
+    """Test that glob caching improves performance with multiple exclude patterns."""
+    # Create 1000 files in the tmpdir
+    for i in range(1000):
+        (tmpdir / f"dont_use_me_{i}.yaml").write_text(
+            "program: yamlfix", encoding="utf-8"
+        )
+
+    for i in range(1000):
+        (tmpdir / f"use_me_{i}.yaml").write_text("program: yamlfix", encoding="utf-8")
+
+    # Test without cache (mock to bypass cache)
+    start_time = time.time()
+    with mock.patch(
+        "yamlfix.entrypoints.cli._glob_cache",
+        side_effect=lambda dir_, glob: set(dir_.glob(glob)),
+    ), mock.patch(
+        "yamlfix.entrypoints.cli._rglob_cache",
+        side_effect=lambda dir_, glob: set(dir_.rglob(glob)),
+    ):
+        result1 = runner.invoke(
+            cli,
+            [
+                str(tmpdir),
+                "--exclude",
+                "dont_*.yaml",
+                "--exclude",
+                "dont_use_me_*.yaml",
+            ],
+        )
+    end_time = time.time()
+    no_cache_time = end_time - start_time
+
+    _clear_glob_cache()
+
+    # Test with cache (second run should benefit from cache)
+    start_time = time.time()
+    result2 = runner.invoke(
+        cli,
+        [str(tmpdir), "--exclude", "dont_*.yaml", "--exclude", "dont_use_me_*.yaml"],
+    )
+    end_time = time.time()
+    cache_time = end_time - start_time
+
+    # Cache should be faster (less time)
+    assert cache_time <= no_cache_time * 0.5, (
+        f"Cached version should be faster or comparable to non-cached. "
+        f"Cache time: {cache_time:.3f}s, No cache time: {no_cache_time:.3f}s"
+    )
+
+    assert result1.exit_code == 0
+    assert result2.exit_code == 0
