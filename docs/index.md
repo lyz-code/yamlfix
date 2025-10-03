@@ -92,15 +92,15 @@ variable, use `fix_code`:
 
 `yamlfix` uses the `maison` library to find and parse configuration from standard locations, and can additionally be configured through environment variables.
 
-Any configuration found in the [YamlfixConfig class](./reference/#yamlfix.model.YamlfixConfig) can be set through your projects `pyproject.toml`, a custom `toml`-file or through the environment by providing an environment variable like `{yamlfix_env_prefix}_{yamlfix_config_key}`.
+Any configuration found in the [YamlfixConfig class](./reference/#yamlfix.model.YamlfixConfig) can be set through your projects' `pyproject.toml`, a `.yamlfix.toml` file, a custom `toml`-file or through the environment by providing an environment variable like `{yamlfix_env_prefix}_{yamlfix_config_key}`.
 
 Configuration options that are provided through environment variables have higher priority than options provided through configuration files and will override those keys.
 
 All provided [configuration options](#configuration-options), be it through `pyproject.toml`, config-files or env-vars, will be parsed by `pydantic`, so the target value type (str, bool, int, etc.) will be enforced, even if the provided value has the wrong type (for example all env vars in linux systems are strings, but pydantic will parse them to bools/numbers where necessary).
 
-## Auto-Configure through `pyproject.toml`
+## Auto-Configure through `pyproject.toml` or `.yamlfix.toml`
 
-The `maison` library will automatically pick up your `yamlfix` configuration through your projects `pyproject.toml`. It will look in the section named `tool.yamlfix` and apply the provided [configuration options](#configuration-options). For example:
+The `maison` library will automatically pick up your `yamlfix` configuration through your projects' `pyproject.toml`. It will look in the section named `tool.yamlfix` and apply the provided [configuration options](#configuration-options). For example:
 
 ```toml
 # pyproject.toml
@@ -111,13 +111,55 @@ line_length = 80
 none_representation = "null"
 ```
 
-## Provide config-files
+When running `yamlfix` as a standalone cli application it might be desireable to provide a config file containing just the configuration related to `yamlfix`. The `maison` library will therefore also read `.yamlfix.toml` and `yamlfix.toml` if they exist. No section headers are necessary for these configuration files, as the expected behaviour is, that those files contain only configuration related to `yamlfix`. For example:
 
-When running `yamlfix` as a standalone cli application it might be desireable to provide a config file containing just the configuration related to `yamlfix`. A cli-argument `-c` (`--config-file`) can be provided multiple times to read configuration values from `toml` formatted files. The rightmost value-files override the value-files preceding them, only trumped by environment variables. No section headers are necessary for these configuration files, as the expected behaviour is, that those files contain only configuration related to `yamlfix`. For example:
+```toml
+# .yamlfix.toml
+allow_duplicate_keys = true
+line_length = 80
+none_representation = "null"
+```
+
+The configurations from `pyproject.toml`, `yamlfix.toml`, and `.yamlfix.toml` are merged from left to right. This means that settings in `yamlfix.toml` override those in `pyproject.toml` and settings in `.yamlfix.toml` override those in `pyproject.toml` and `yamlfix.toml`. Environment variables override all settings set in configuration files. For example:
+
+```toml
+# pyproject.toml
+allow_duplicate_keys = false
+line_length = 100
+preserve_quotes = false
+```
+
+```toml
+# yamlfix.toml
+allow_duplicate_keys = true
+preserve_quotes = true
+```
+
+```toml
+# .yamlfix.toml
+preserve_quotes = false
+```
+
+These provided configuration files would result in a merged runtime-configuration of:
+```toml
+# merged configuration
+allow_duplicate_keys = true
+line_length = 100
+preserve_quotes = false
+```
+
+## Custom config-files
+
+ A cli-argument `-c` (`--config-file`) can be provided multiple times to read configuration values from `toml` formatted files. If `-c` is provided, the default configuration files are ignored. The rightmost value-files override the value-files preceding them, only trumped by environment variables. No section headers are necessary for these configuration files, as the expected behaviour is, that those files contain only configuration related to `yamlfix`. For example:
 
 ```bash
 # run yamlfix with two config files
 yamlfix -c base.toml --config-file environment.toml file.yaml
+```
+
+```toml
+# .yamlfix.toml
+preserve_quotes = true
 ```
 
 ```toml
@@ -206,13 +248,13 @@ Environment variable override:
 export YAMLFIX_WHITELINES="0"
 ```
 
-This option allows to keep a speficied number of whitelines between lines. 
+This option allows to keep a speficied number of whitelines between lines.
 
-It's useful if, for one, you like to separate GitHub Actions job steps or Docker-Compose 
+It's useful if, for one, you like to separate GitHub Actions job steps or Docker-Compose
 service definitions with a blank line.
 
-Bear in mind that, like **Comments Whitelines**, it won't insert whitelines if there's no 
-whitelines in the first place. It will only fix 1 or more whitelines to the desired 
+Bear in mind that, like **Comments Whitelines**, it won't insert whitelines if there's no
+whitelines in the first place. It will only fix 1 or more whitelines to the desired
 amount (or remove them completely by default).
 
 ### Comments Whitelines
@@ -268,7 +310,7 @@ Environment variable override:
 export YAMLFIX_CONFIG_PATH="/etc/yamlfix/"
 ```
 
-Configure the base config-path that `maison` will look for a `pyproject.toml` configuration file. This path is traversed upwards until such a file is found.
+Configure the base config-path that `maison` will look for a `pyproject.toml`, `.yamlfix.toml`, or `yamlfix.toml` configuration file. This path is traversed upwards until such a file is found.
 
 ### Explicit Document Start
 

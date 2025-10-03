@@ -215,40 +215,38 @@ def test_check_one_file_no_changes(runner: CliRunner, tmp_path: Path) -> None:
     assert test_file.read_text() == test_file_source
 
 
-def test_config_parsing(runner: CliRunner, tmp_path: Path) -> None:
-    """Provided config options are parsed, merged, and applied correctly."""
+def test_default_config_parsing(runner: CliRunner, tmp_path: Path) -> None:
+    """Default configuration files are parsed, merged, and applied correctly."""
     os.environ["YAMLFIX_CONFIG_PATH"] = str(tmp_path)
     pyproject_config = dedent(
         """\
         [tool.yamlfix]
         line_length = 90
         quote_basic_values = "true"
+        quote_representation = "'"
+        none_represtation = ""
         """
     )
     pyproject_config_file = tmp_path / "pyproject.toml"
     pyproject_config_file.write_text(pyproject_config)
-    toml_config = dedent(
+
+    nodot_toml_config = dedent(
         """\
         none_representation = "null"
         quote_representation = '"'
         """
     )
-    toml_config_file = tmp_path / "yamlfix.toml"
-    toml_config_file.write_text(toml_config)
+    nodot_toml_config_file = tmp_path / "yamlfix.toml"
+    nodot_toml_config_file.write_text(nodot_toml_config)
 
-    # the ini config is currenlty parsed incorrectly and it is not possible to provide
-    # a top level config option with it: https://github.com/dbatten5/maison/issues/199
-    ini_config = dedent(
+    dot_toml_config = dedent(
         """\
-        [DEFAULT]
-        quote_representation = "'"
-
-        [yamlfix]
         none_representation = "~"
         """
     )
-    ini_config_file = tmp_path / "yamlfix.ini"
-    ini_config_file.write_text(ini_config)
+    dot_toml_config_file = tmp_path / ".yamlfix.toml"
+    dot_toml_config_file.write_text(dot_toml_config)
+
     test_source = dedent(
         f"""\
         ---
@@ -265,6 +263,92 @@ def test_config_parsing(runner: CliRunner, tmp_path: Path) -> None:
     )
     test_source_file = tmp_path / "source.yaml"
     test_source_file.write_text(test_source)
+
+    result = runner.invoke(
+        cli,
+        [
+            str(test_source_file),
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert test_source_file.read_text() == dedent(
+        f"""\
+        ---
+        really_long_string: >
+          {("abcdefghij " * 9).strip()}
+          abcdefghij
+        single_quoted_string: "value1"
+        double_quoted_string: "value2"
+        unquoted_string: "value3"
+        none_value: ~
+        none_value2: ~
+        none_value3: ~
+        none_value4: ~
+        """
+    )
+
+
+def test_custom_config_parsing(runner: CliRunner, tmp_path: Path) -> None:
+    """Provided config options are parsed, merged, and applied correctly."""
+    os.environ["YAMLFIX_CONFIG_PATH"] = str(tmp_path)
+    pyproject_config = dedent(
+        """\
+        [tool.yamlfix]
+        line_length = 90
+        quote_basic_values = "true"
+        """
+    )
+    pyproject_config_file = tmp_path / "pyproject.toml"
+    pyproject_config_file.write_text(pyproject_config)
+
+    toml_config = dedent(
+        """\
+        none_representation = "null"
+        quote_representation = '"'
+        """
+    )
+    toml_config_file = tmp_path / "custom.toml"
+    toml_config_file.write_text(toml_config)
+
+    # the ini config is currenlty parsed incorrectly and it is not possible to provide
+    # a top level config option with it: https://github.com/dbatten5/maison/issues/199
+    ini_config = dedent(
+        """\
+        [DEFAULT]
+        quote_representation = "'"
+
+        [yamlfix]
+        none_representation = "~"
+        """
+    )
+    ini_config_file = tmp_path / "custom.ini"
+    ini_config_file.write_text(ini_config)
+
+    test_source = dedent(
+        f"""\
+        ---
+        really_long_string: >
+          {("abcdefghij " * 10).strip()}
+        single_quoted_string: 'value1'
+        double_quoted_string: "value2"
+        unquoted_string: value3
+        none_value:
+        none_value2: ~
+        none_value3: null
+        none_value4: NULL
+        """
+    )
+    test_source_file = tmp_path / "source.yaml"
+    test_source_file.write_text(test_source)
+
+    ignored_config = dedent(
+        """\
+        quote_keys_and_basic_values = true
+        """
+    )
+    ignored_config_file = tmp_path / ".yamlfix.toml"
+    ignored_config_file.write_text(ignored_config)
 
     # we have to provide the pyproject.toml as a relative path to YAMLFIX_CONFIG_PATH
     # until this is fixed: https://github.com/dbatten5/maison/issues/141
