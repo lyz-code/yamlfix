@@ -22,6 +22,13 @@ def configure_yamlfix(
         if config_path_env:
             config_path = Path(config_path_env)
 
+    if not config_files:
+        config_files = [
+            "pyproject.toml",
+            "yamlfix.toml",
+            ".yamlfix.toml",
+        ]
+
     config: UserConfig = UserConfig(
         schema=YamlfixConfig,
         merge_configs=True,
