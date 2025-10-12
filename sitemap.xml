@@ -2,27 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://lyz-code.github.io/yamlfix/</loc>
-         <lastmod>2024-08-21</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-10-12</lastmod>
     </url>
     <url>
          <loc>https://lyz-code.github.io/yamlfix/contributing/</loc>
-         <lastmod>2024-08-21</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-10-12</lastmod>
     </url>
     <url>
          <loc>https://lyz-code.github.io/yamlfix/editor_integration/</loc>
-         <lastmod>2024-08-21</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-10-12</lastmod>
     </url>
     <url>
          <loc>https://lyz-code.github.io/yamlfix/reference/</loc>
-         <lastmod>2024-08-21</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-10-12</lastmod>
     </url>
     <url>
          <loc>https://lyz-code.github.io/yamlfix/adr/adr/</loc>
-         <lastmod>2024-08-21</lastmod>
-         <changefreq>daily</changefreq>
+         <lastmod>2025-10-12</lastmod>
     </url>
 </urlset>
