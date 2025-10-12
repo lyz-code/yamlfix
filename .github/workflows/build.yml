@@ -1,7 +1,7 @@
 ---
 name: Build
 
-on:  # yamllint disable-line rule:truthy
+on: # yamllint disable-line rule:truthy
   push:
     branches:
       - main
@@ -23,7 +23,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.test_pypi_password }}
-          repository_url: https://test.pypi.org/legacy/
+          repository_url: https://test.pypi.org/simple/
           skip_existing: true
   Documentation:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
       - name: Build the Documentation
         run: make build-docs
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./site
