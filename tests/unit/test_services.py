@@ -483,7 +483,7 @@ class TestFixCode:
 
         fix_code("")  # act
 
-        expected_logs = {
+        expected_logs = {  # noqa: W0130
             "Setting up ruamel yaml 'quote simple values' configuration...",
             "Setting up ruamel yaml 'sequence flow style' configuration...",
             "Running ruamel yaml base configuration...",
@@ -495,6 +495,14 @@ class TestFixCode:
             "Restoring jinja2 variables...",
             "Restoring double exclamations...",
             "Fixing comments...",
+            # Fixing comments causes a re-run of fixers, so we get duplicates from here
+            "Fixing truthy strings...",
+            "Fixing jinja2 variables...",
+            "Running ruamel yaml fixer...",
+            "Restoring truthy strings...",
+            "Restoring jinja2 variables...",
+            "Restoring double exclamations...",
+            # End fixing comments duplicates
             "Fixing top level lists...",
             "Fixing flow-style lists...",
         }
