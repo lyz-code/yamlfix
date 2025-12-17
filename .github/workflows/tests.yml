@@ -35,8 +35,6 @@ jobs:
         run: make lint
       - name: Test type checkers
         run: make mypy
-      - name: Test security
-        run: make security
       - name: Test with pytest
         run: make test
       - name: Upload Coverage

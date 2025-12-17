@@ -579,15 +579,17 @@ class SourceCodeFixer:
 
         for line in source_code.splitlines():
             # Comment at the start of the line
-            if config.comments_require_starting_space and re.search(r"(^|\s)#\w", line):
-                line = line.replace("#", "# ")
+            if config.comments_require_starting_space:
+                line = re.sub(r"^(|[^\"']*\s)#(\w)", r"\1# \2", line)
             # Comment in the middle of the line, but it's not part of a string
             if (
                 config.comments_min_spaces_from_content > 1
                 and " #" in line
                 and line[-1] not in ["'", '"']
             ):
-                line = re.sub(r"(.+\S)(\s+?)#", rf"\1{comment_start}", line)
+                line = re.sub(
+                    r"^([^\"']*[^\"' \t])(\s+?)#", rf"\1{comment_start}", line
+                )
             fixed_source_lines.append(line)
 
         return "\n".join(fixed_source_lines)
