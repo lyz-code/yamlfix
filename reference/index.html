@@ -472,7 +472,9 @@
 <span class=normal>794</span>
 <span class=normal>795</span>
 <span class=normal>796</span>
-<span class=normal>797</span></pre></div></td><td class=code><div><pre><span></span><code><span class=k>class</span><span class=w> </span><span class=nc>SourceCodeFixer</span><span class=p>:</span>
+<span class=normal>797</span>
+<span class=normal>798</span>
+<span class=normal>799</span></pre></div></td><td class=code><div><pre><span></span><code><span class=k>class</span><span class=w> </span><span class=nc>SourceCodeFixer</span><span class=p>:</span>
 <span class=w>    </span><span class=sd>&quot;&quot;&quot;Adapter that holds all source code yaml fixers.&quot;&quot;&quot;</span>
 
     <span class=k>def</span><span class=w> </span><span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>yaml</span><span class=p>:</span> <span class=n>Yaml</span><span class=p>,</span> <span class=n>config</span><span class=p>:</span> <span class=n>Optional</span><span class=p>[</span><span class=n>YamlfixConfig</span><span class=p>])</span> <span class=o>-&gt;</span> <span class=kc>None</span><span class=p>:</span>
@@ -731,15 +733,17 @@
 
         <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>source_code</span><span class=o>.</span><span class=n>splitlines</span><span class=p>():</span>
             <span class=c1># Comment at the start of the line</span>
-            <span class=k>if</span> <span class=n>config</span><span class=o>.</span><span class=n>comments_require_starting_space</span> <span class=ow>and</span> <span class=n>re</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=sa>r</span><span class=s2>&quot;(^|\s)#\w&quot;</span><span class=p>,</span> <span class=n>line</span><span class=p>):</span>
-                <span class=n>line</span> <span class=o>=</span> <span class=n>line</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s2>&quot;#&quot;</span><span class=p>,</span> <span class=s2>&quot;# &quot;</span><span class=p>)</span>
+            <span class=k>if</span> <span class=n>config</span><span class=o>.</span><span class=n>comments_require_starting_space</span><span class=p>:</span>
+                <span class=n>line</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>sub</span><span class=p>(</span><span class=sa>r</span><span class=s2>&quot;^(|[^</span><span class=se>\&quot;</span><span class=s2>&#39;]*\s)#(\w)&quot;</span><span class=p>,</span> <span class=sa>r</span><span class=s2>&quot;\1# \2&quot;</span><span class=p>,</span> <span class=n>line</span><span class=p>)</span>
             <span class=c1># Comment in the middle of the line, but it&#39;s not part of a string</span>
             <span class=k>if</span> <span class=p>(</span>
                 <span class=n>config</span><span class=o>.</span><span class=n>comments_min_spaces_from_content</span> <span class=o>&gt;</span> <span class=mi>1</span>
                 <span class=ow>and</span> <span class=s2>&quot; #&quot;</span> <span class=ow>in</span> <span class=n>line</span>
                 <span class=ow>and</span> <span class=n>line</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=ow>not</span> <span class=ow>in</span> <span class=p>[</span><span class=s2>&quot;&#39;&quot;</span><span class=p>,</span> <span class=s1>&#39;&quot;&#39;</span><span class=p>]</span>
             <span class=p>):</span>
-                <span class=n>line</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>sub</span><span class=p>(</span><span class=sa>r</span><span class=s2>&quot;(.+\S)(\s+?)#&quot;</span><span class=p>,</span> <span class=sa>rf</span><span class=s2>&quot;\1</span><span class=si>{</span><span class=n>comment_start</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>,</span> <span class=n>line</span><span class=p>)</span>
+                <span class=n>line</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>sub</span><span class=p>(</span>
+                    <span class=sa>r</span><span class=s2>&quot;^([^</span><span class=se>\&quot;</span><span class=s2>&#39;]*[^</span><span class=se>\&quot;</span><span class=s2>&#39; \t])(\s+?)#&quot;</span><span class=p>,</span> <span class=sa>rf</span><span class=s2>&quot;\1</span><span class=si>{</span><span class=n>comment_start</span><span class=si>}</span><span class=s2>&quot;</span><span class=p>,</span> <span class=n>line</span>
+                <span class=p>)</span>
             <span class=n>fixed_source_lines</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
 
         <span class=k>return</span> <span class=s2>&quot;</span><span class=se>\n</span><span class=s2>&quot;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>fixed_source_lines</span><span class=p>)</span>
