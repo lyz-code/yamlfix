@@ -586,6 +586,7 @@ class SourceCodeFixer:
                 config.comments_min_spaces_from_content > 1
                 and " #" in line
                 and line[-1] not in ["'", '"']
+                and not line.lstrip().startswith("#")
             ):
                 line = re.sub(
                     r"^([^\"']*[^\"' \t])(\s+?)#", rf"\1{comment_start}", line

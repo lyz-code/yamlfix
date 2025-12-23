@@ -81,6 +81,8 @@ class TestYamlAdapter:
             # comment
             project_name: yamlfix #comment
             "key #1": 'value #2'
+            #   comment
+            #      #!/usr/bin/env bash
             """
         )
         fixed_source = dedent(
@@ -89,6 +91,8 @@ class TestYamlAdapter:
             # comment
             project_name: yamlfix  # comment
             'key #1': 'value #2'
+            #   comment
+            #      #!/usr/bin/env bash
             """
         )
         config = YamlfixConfig()
