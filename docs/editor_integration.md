@@ -26,7 +26,7 @@ You'll need to add the following lines to your project's
 ```yaml
 repos:
   - repo: https://github.com/lyz-code/yamlfix/
-    rev: main
+    rev: 1.18.0
     hooks:
       - id: yamlfix
 ```
