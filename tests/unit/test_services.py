@@ -1034,3 +1034,78 @@ class TestFixCode:
         result = fix_code(source_code=source, config=config)
 
         assert result == desired_source
+
+    @pytest.mark.parametrize(
+        ("source", "config", "desired_source"),
+        [
+            (
+                dedent(
+                    """\
+                    ---
+                    jobs:
+                      test:
+                        container:
+                          volumes:
+                            - /data:/data
+                            - a:b  # commented
+                            - 'c:d'
+                            - >-
+                              multi:
+                              line
+                    """
+                ),
+                YamlfixConfig(sequence_style=YamlNodeStyle.FLOW_STYLE),
+                dedent(
+                    """\
+                    ---
+                    jobs:
+                      test:
+                        container:
+                          volumes:
+                            - '/data:/data'
+                            - 'a:b'  # commented
+                            - 'c:d'
+                            - 'multi: line'
+                    """
+                ),
+            ),
+            (
+                dedent(
+                    """\
+                    ---
+                    jobs:
+                      test2:
+                        container:
+                          volumes:
+                            - /data:/data
+                            - a:b
+                            - 'c:d'
+                            - >-
+                              multi:
+                              line
+                    """
+                ),
+                YamlfixConfig(sequence_style=YamlNodeStyle.FLOW_STYLE),
+                dedent(
+                    """\
+                    ---
+                    jobs:
+                      test2:
+                        container:
+                          volumes: ['/data:/data', 'a:b', 'c:d', 'multi: line']
+                    """
+                ),
+            ),
+        ],
+    )
+    def test_strings_with_colons_are_quoted(
+        self, source: str, config: Optional[YamlfixConfig], desired_source: str
+    ) -> None:
+        """
+        Given: A GitHub Action workflow yaml containing jobs.*.containers.volumes
+        When: fix_code is run
+        Then: The volumes entries are quoted
+        """
+        result = fix_code(source, config=config)
+
+        assert result == desired_source
