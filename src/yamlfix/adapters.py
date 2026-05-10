@@ -374,9 +374,42 @@ class SourceCodeFixer:
             Corrected source code.
         """
         log.debug("Running ruamel yaml fixer...")
-        source_dicts = self.yaml.load_all(source_code)
 
-        # Return the output to a string
+        source_dicts = list(self.yaml.load_all(source_code))
+
+        # If ruyaml returned no documents (empty file) or all None
+        # (comment-only document), run the normal dump. ruyaml will
+        # output '---\\n...' for a comment-only document with ---,
+        # or an empty string for a comment-only document without ---.
+        # This loses comments, so we detect this case and preserve
+        # the original text instead.
+        if not source_dicts:
+            # Empty file / no documents — ruyaml returns [].
+            return source_code.strip()
+
+        if all(d is None for d in source_dicts):
+            # Comment-only document(s) — ruyaml returns [None].
+            # Check if the source has actual content (comments).
+            has_content = any(
+                line.strip()
+                and not line.strip().startswith("---")
+                and not line.strip().startswith("...")
+                for line in source_code.splitlines()
+            )
+            if not has_content:
+                # Truly blank apart from markers — let ruyaml handle it.
+                string_stream = StringIO()
+                for source_dict in source_dicts:
+                    self.yaml.dump(source_dict, string_stream)
+                source_code = string_stream.getvalue()
+                string_stream.close()
+                return source_code.strip()
+            # Source has comments only — preserve the original text.
+            # The remaining fixers (_fix_comments, _fix_whitelines, etc.)
+            # will handle comment formatting.
+            return source_code.strip()
+
+        # Normal path: dump each document through ruyaml
         string_stream = StringIO()
         for source_dict in source_dicts:
             self.yaml.dump(source_dict, string_stream)
