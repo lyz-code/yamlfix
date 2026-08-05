@@ -47,7 +47,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.indent_offset = 4
         config.indent_mapping = 4
         config.indent_sequence = 8
@@ -142,7 +141,6 @@ class TestYamlAdapter:
             """  # noqa: E501
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.line_length = 100
 
         result = fix_code(source, config)
@@ -177,7 +175,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.line_length = 20
 
         result = fix_code(source, config)
@@ -210,7 +207,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.none_representation = none_representation
 
         result = fix_code(source, config)
@@ -282,7 +278,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.quote_representation = quote_representation
         config.quote_keys_and_basic_values = True
 
@@ -338,7 +333,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.quote_representation = quote_representation
         config.quote_basic_values = True
 
@@ -397,7 +391,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.quote_representation = quote_representation
         config.quote_keys_and_basic_values = True
         config.preserve_quotes = True
@@ -457,7 +450,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.quote_representation = quote_representation
         config.quote_basic_values = True
         config.preserve_quotes = True
@@ -484,7 +476,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
@@ -513,7 +504,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.sequence_style = YamlNodeStyle.BLOCK_STYLE
 
         result = fix_code(source, config)
@@ -576,7 +566,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
@@ -617,7 +606,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
@@ -662,7 +650,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.line_length = 40
         config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
@@ -722,7 +709,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.sequence_style = YamlNodeStyle.FLOW_STYLE
 
         result = fix_code(source, config)
@@ -875,7 +861,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
 
         result = fix_code(source, config)
 
@@ -914,7 +899,6 @@ class TestYamlAdapter:
             """
         )
         config = YamlfixConfig()
-        config.explicit_start = True
         config.whitelines = 1
 
         result = fix_code(source, config)

@@ -24,7 +24,7 @@ class YamlfixConfig(BaseModel):
     whitelines: int = 0
     section_whitelines: int = 0
     config_path: Optional[str] = None
-    explicit_start: Optional[bool] = None
+    explicit_start: bool = True
     indent_mapping: int = 2
     indent_offset: int = 2
     indent_sequence: int = 4
