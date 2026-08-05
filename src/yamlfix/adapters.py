@@ -58,7 +58,8 @@ class Yaml:
 
         # Start the document with ---
         # ignore: variable has type None, what can we do, it doesn't have type hints...
-        self.yaml.explicit_start = config.explicit_start  # type: ignore
+        if config.explicit_start is not None:
+            self.yaml.explicit_start = config.explicit_start  # type: ignore
         self.yaml.width = config.line_length  # type: ignore
         self.yaml.preserve_quotes = config.preserve_quotes  # type: ignore
 
@@ -374,14 +375,36 @@ class SourceCodeFixer:
             Corrected source code.
         """
         log.debug("Running ruamel yaml fixer...")
-        source_dicts = self.yaml.load_all(source_code)
+
+        # Detect if the original source starts with an explicit document marker
+        original_has_explicit_start = source_code.lstrip().startswith("---")
+
+        source_dicts = list(self.yaml.load_all(source_code))
+
+        # When explicit_start is None (leave as-is), temporarily set ruyaml's
+        # explicit_start based on whether the original source had it
+        restore_explicit_start = False
+        if self.config.explicit_start is None:
+            restore_explicit_start = True
+            self.yaml.explicit_start = original_has_explicit_start  # type: ignore
+
+        # Determine if ruyaml will emit --- for each document
+        yaml_emits_start = bool(self.yaml.explicit_start)
 
         # Return the output to a string
         string_stream = StringIO()
-        for source_dict in source_dicts:
+        for i, source_dict in enumerate(source_dicts):
+            if i > 0 and not yaml_emits_start:
+                # Inter-document separators are structurally required;
+                # only add manually if ruyaml isn't already emitting them
+                string_stream.write("---\n")
             self.yaml.dump(source_dict, string_stream)
-            source_code = string_stream.getvalue()
+        source_code = string_stream.getvalue()
         string_stream.close()
+
+        # Restore ruyaml's explicit_start to None if we changed it
+        if restore_explicit_start:
+            self.yaml.explicit_start = None  # type: ignore
 
         return source_code.strip()
 

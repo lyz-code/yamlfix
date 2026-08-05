@@ -53,8 +53,10 @@ class TestFixFiles:
             program: yamlfix
             """
         )
+        config = YamlfixConfig()
+        config.explicit_start = True
 
-        fix_files([str(test_file)], False)  # act
+        fix_files([str(test_file)], False, config)  # act
 
         assert test_file.read_text() == fixed_source
 
@@ -124,8 +126,10 @@ class TestFixCode:
             program: yamlfix
             """
         )
+        config = YamlfixConfig()
+        config.explicit_start = True
 
-        result = fix_code(source)
+        result = fix_code(source, config)
 
         assert result == fixed_source
 
