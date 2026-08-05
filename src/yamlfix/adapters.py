@@ -374,13 +374,23 @@ class SourceCodeFixer:
             Corrected source code.
         """
         log.debug("Running ruamel yaml fixer...")
-        source_dicts = self.yaml.load_all(source_code)
+
+        # Detect if the original source starts with an explicit document marker
+        source_dicts = list(self.yaml.load_all(source_code))
+
+        # Determine if ruyaml will emit --- for each document
+        yaml_emits_start = bool(self.yaml.explicit_start)
 
         # Return the output to a string
         string_stream = StringIO()
-        for source_dict in source_dicts:
+        for i, source_dict in enumerate(source_dicts):
+            if i > 0 and not yaml_emits_start:
+                # Inter-document separators are structurally required for
+                # multi-document YAML; always preserve them even when
+                # explicit_start is False (which only controls the leading ---)
+                string_stream.write("---\n")
             self.yaml.dump(source_dict, string_stream)
-            source_code = string_stream.getvalue()
+        source_code = string_stream.getvalue()
         string_stream.close()
 
         return source_code.strip()
