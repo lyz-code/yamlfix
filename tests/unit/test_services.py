@@ -494,6 +494,7 @@ class TestFixCode:
             "Restoring truthy strings...",
             "Restoring jinja2 variables...",
             "Restoring double exclamations...",
+            "Restoring unicode escapes...",
             "Fixing comments...",
             "Fixing top level lists...",
             "Fixing flow-style lists...",
@@ -618,6 +619,33 @@ class TestFixCode:
         result = fix_code(source)
 
         assert result == desired_source
+
+    def test_fix_code_preserves_unicode_emojis_in_double_quoted_strings(
+        self,
+    ) -> None:
+        r"""
+        Given: Code with emojis (non-BMP unicode) in double-quoted strings
+        When: fix_code is run with preserve_quotes=True
+        Then: The emojis are preserved, not escaped to \Uxxxxxxxx sequences
+
+        Regression test for https://github.com/lyz-code/yamlfix/issues/300
+        """
+        source = dedent(
+            """\
+            ---
+            stages:
+              - "🔬 checks"
+              - "🚀 Release"
+            """
+        )
+        config = YamlfixConfig()
+        config.preserve_quotes = True
+
+        result = fix_code(source, config)
+
+        assert "🔬" in result
+        assert "🚀" in result
+        assert "\\U" not in result
 
     def test_fix_code_respects_jinja_variables_with_equals(
         self,

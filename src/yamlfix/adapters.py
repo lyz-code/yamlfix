@@ -15,6 +15,12 @@ from yamlfix.model import YamlfixConfig, YamlNodeStyle
 
 log = logging.getLogger(__name__)
 
+# Pattern matching escaped non-BMP unicode sequences produced by ruyaml's emitter.
+# ruyaml (v0.91.0) only allows characters up to U+FFFD, escaping supplementary
+# plane characters (emojis, etc.) as \Uxxxxxxxx. This is fixed on ruyaml's main
+# branch but not yet released to PyPI.
+_UNICODE_ESCAPE_RE = re.compile(r"[\\]U([0-9A-Fa-f]{8})")
+
 
 class Yaml:
     """Adapter that holds the configured ruaml yaml fixer."""
@@ -352,6 +358,7 @@ class SourceCodeFixer:
             self._restore_truthy_strings,
             self._restore_jinja_variables,
             self._restore_double_exclamations,
+            self._restore_unicode_escapes,
             self._fix_comments,
             self._fix_flow_style_lists,
             self._fix_whitelines,
@@ -717,6 +724,17 @@ class SourceCodeFixer:
             fixed_source_lines.append(line)
 
         return "\n".join(fixed_source_lines)
+
+    @staticmethod
+    def _restore_unicode_escapes(source_code: str) -> str:
+        r"""Restore escaped non-BMP unicode sequences to their original characters.
+
+        The ruyaml emitter (v0.91.0) escapes supplementary plane characters
+        (U+10000 to U+10FFFF, including emojis) in double-quoted strings as
+        \Uxxxxxxxx sequences. This converts them back to the actual characters.
+        """
+        log.debug("Restoring unicode escapes...")
+        return _UNICODE_ESCAPE_RE.sub(lambda m: chr(int(m.group(1), 16)), source_code)
 
     @staticmethod
     def _add_newline_at_end_of_file(source_code: str) -> str:
