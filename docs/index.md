@@ -343,7 +343,9 @@ export YAMLFIX_SEQUENCE_STYLE="flow_style"
 
 Available values: `flow_style`, `block_style`, `keep_style`
 
-Transform sequences (lists) to either flow-style, block-style or leave them as-is. If enabled `yamlfix` will also ensure, that flow-style lists are automatically converted to block-style if the resulting key+list elements would breach the line-length. For example:
+Transform sequences (lists) to either flow-style, block-style or leave them as-is.
+With `flow_style`, a list following its own comment stays in block style, as do
+lists that would exceed the configured line length. For example:
 
 Set to `true` (flow-style):
 ```yaml

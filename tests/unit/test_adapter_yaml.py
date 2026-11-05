@@ -4,6 +4,7 @@ from textwrap import dedent
 
 import pytest
 from ruyaml.constructor import DuplicateKeyError
+from ruyaml.main import YAML
 
 from yamlfix.model import YamlfixConfig, YamlNodeStyle
 from yamlfix.services import fix_code
@@ -571,6 +572,48 @@ class TestYamlAdapter:
         result = fix_code(source, config)
 
         assert result == fixed_source
+
+    @pytest.mark.parametrize(
+        ("style", "sequence", "expected"),
+        [
+            (YamlNodeStyle.FLOW_STYLE, "- item", "- item"),
+            (YamlNodeStyle.BLOCK_STYLE, "- item", "- item"),
+            (YamlNodeStyle.KEEP_STYLE, "- item", "- item"),
+            (YamlNodeStyle.KEEP_STYLE, "[item]", "[item]"),
+            (YamlNodeStyle.BLOCK_STYLE, "[]", "[]"),
+        ],
+    )
+    def test_sequence_after_standalone_comment(
+        self, style: YamlNodeStyle, sequence: str, expected: str
+    ) -> None:
+        """Keep the comment and sequence attached to the same mapping value."""
+        prefix = "---\nouter:\n  key:\n    # sequence comment\n    "
+        source = f"{prefix}{sequence}\n"
+        config = YamlfixConfig(sequence_style=style)
+
+        result = fix_code(source, config)
+
+        assert result == f"{prefix}{expected}\n"
+        safe_yaml = YAML(typ="safe")
+        assert safe_yaml.load(result) == safe_yaml.load(source)
+        assert fix_code(result, config) == result
+
+    def test_flow_sequence_mapping_key_stays_at_mapping_indentation(self) -> None:
+        """Only indent flow sequences used as values after a line break."""
+        source = "---\n[a, b]: value\nscalar: value\n"
+
+        assert fix_code(source) == source
+
+    def test_indentationless_sequence_keeps_first_item_comment(self) -> None:
+        """Preserve a leading comment even when it is attached to the first item."""
+        source = "---\nitems:\n  # lead\n  - item\nnext: done\n"
+        expected = "---\nitems:\n  # lead\n- item\nnext: done\n"
+        config = YamlfixConfig(indent_sequence=2, indent_offset=0)
+
+        result = fix_code(source, config)
+
+        assert result == expected
+        assert fix_code(result, config) == result
 
     def test_sequence_block_style_enforcement_for_lists_with_non_scalar_values(
         self,
