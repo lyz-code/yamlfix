@@ -6,6 +6,7 @@ from functools import partial
 from io import StringIO
 from typing import Any, Callable, List, Match, Optional, Tuple
 
+from ruyaml.emitter import Emitter
 from ruyaml.main import YAML
 from ruyaml.nodes import MappingNode, Node, ScalarNode, SequenceNode
 from ruyaml.representer import RoundTripRepresenter
@@ -26,6 +27,7 @@ class Yaml:
             config: Small set of user provided configuration options for yamlfix.
         """
         self.yaml = YAML()
+        self.yaml.Emitter = YamlfixEmitter
         self.config = config or YamlfixConfig()
 
         # we have to call setattr with the string value, because the internal ruyaml
@@ -61,6 +63,26 @@ class Yaml:
         self.yaml.explicit_start = config.explicit_start  # type: ignore
         self.yaml.width = config.line_length  # type: ignore
         self.yaml.preserve_quotes = config.preserve_quotes  # type: ignore
+
+
+class YamlfixEmitter(Emitter):
+    """Indent flow sequences split from their mapping keys by comments."""
+
+    def expect_flow_sequence(self) -> None:
+        """Keep the sequence nested beneath its mapping key."""
+        if (
+            self.mapping_context
+            and not self.simple_key_context
+            and not self.flow_level
+            and self.column == 0
+        ):
+            self.write_indicator(
+                " " * ((self.indent or 0) + self.best_map_indent),
+                False,
+                whitespace=True,
+                indention=True,
+            )
+        super().expect_flow_sequence()
 
 
 class YamlfixRepresenter(RoundTripRepresenter):
@@ -264,9 +286,16 @@ class YamlfixRepresenter(RoundTripRepresenter):
     def _seq_contains_non_empty_comments(seq_node: Node) -> bool:
         comment_tokens: List[CommentToken] = []
 
+        if seq_node.comment and seq_node.comment[1]:
+            comment_tokens.extend(seq_node.comment[1])
+
         for node in seq_node.value:
             if isinstance(node, ScalarNode) and isinstance(node.comment, list):
-                comment_tokens.extend(node.comment)
+                for comment in node.comment:
+                    if isinstance(comment, list):
+                        comment_tokens.extend(comment)
+                    elif isinstance(comment, CommentToken):
+                        comment_tokens.append(comment)
 
         return any(
             isinstance(comment_token, CommentToken)
