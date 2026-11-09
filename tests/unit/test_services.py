@@ -1034,3 +1034,25 @@ class TestFixCode:
         result = fix_code(source_code=source, config=config)
 
         assert result == desired_source
+
+    @pytest.mark.parametrize(
+        "source",
+        [
+            "---\n# only a comment\n",
+            "---\n# one\n# two\n",
+            "# before\n---\n# after\n",
+        ],
+    )
+    def test_fix_code_keeps_comments_of_files_without_content(
+        self, source: str
+    ) -> None:
+        """
+        Given: Code that has comments and document markers but no content
+        When: fix_code is run
+        Then: The comments are kept
+        """
+        result = fix_code(source_code=source)
+
+        for line in source.splitlines():
+            if line.startswith("#"):
+                assert line in result
