@@ -374,6 +374,11 @@ class SourceCodeFixer:
             Corrected source code.
         """
         log.debug("Running ruamel yaml fixer...")
+        if self._has_only_comments(source_code):
+            # ruamel would replace the empty documents with `...` and drop
+            # the comments, so leave the source as it is.
+            return source_code.strip()
+
         source_dicts = self.yaml.load_all(source_code)
 
         # Return the output to a string
@@ -384,6 +389,22 @@ class SourceCodeFixer:
         string_stream.close()
 
         return source_code.strip()
+
+    @staticmethod
+    def _has_only_comments(source_code: str) -> bool:
+        """Check if the source has comments but no yaml content.
+
+        Document markers (`---`) and blank lines are ignored.
+
+        Args:
+            source_code: Source code to be checked.
+
+        Returns:
+            True if there is at least a comment and nothing else.
+        """
+        lines = [line.strip() for line in source_code.splitlines() if line.strip()]
+        content = [line for line in lines if line != "---"]
+        return bool(content) and all(line.startswith("#") for line in content)
 
     @staticmethod
     def _fix_top_level_lists(source_code: str) -> str:
