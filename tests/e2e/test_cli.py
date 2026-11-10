@@ -34,6 +34,16 @@ def test_version(runner: CliRunner) -> None:
     )
 
 
+def test_missing_file_reports_clean_error(
+    runner: CliRunner, tmp_path: Path
+) -> None:
+    """A nonexistent file fails with a clean usage error, not a traceback."""
+    result = runner.invoke(cli, [str(tmp_path / "does-not-exist.yaml")])
+
+    assert result.exit_code == 2
+    assert "does not exist" in result.stderr
+
+
 def test_corrects_one_file(runner: CliRunner, tmp_path: Path) -> None:
     """Correct the source code of a file."""
     test_file = tmp_path / "source.yaml"
