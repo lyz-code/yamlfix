@@ -123,6 +123,8 @@ def cli(  # pylint: disable=too-many-arguments
         for provided_file in paths:
             if provided_file.is_dir():
                 real_files.extend(_find_all_yaml_files(provided_file, include, exclude))
+            elif not provided_file.exists():
+                raise click.BadParameter(f"File {provided_file} does not exist.")
             else:
                 real_files.append(provided_file)
         files_to_fix = [str(file) for file in real_files]
